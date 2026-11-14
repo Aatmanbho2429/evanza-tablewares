@@ -8,8 +8,10 @@ WordPress runs in WordPress Playground (no PHP or Docker needed).
 
 ```bash
 npm install
-npm run dev          # http://127.0.0.1:9400, auto-logged in as admin
+npm run dev          # http://127.0.0.1:9400
 ```
+
+WordPress admin: http://127.0.0.1:9400/wp-admin/ (always use 127.0.0.1, not localhost). Log in with Playground's default local account, username `admin`, password `password`. This account exists only in the local Playground site, which is rebuilt on every start.
 
 The first boot downloads WordPress and takes a minute or two. `wp/blueprint.json` turns on `WP_DEBUG`, sets `/%postname%/` permalinks and activates the theme; activation creates the pages, menus and demo products. The site is rebuilt from scratch on every start, and theme edits show on reload (the theme folder is mounted live).
 

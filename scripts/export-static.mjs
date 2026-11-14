@@ -81,7 +81,17 @@ async function main() {
 		for (const ref of refs) {
 			let p = decodeURI(ref.slice(BASE.length).split(/[?#]/)[0]);
 			if (p.endsWith('/')) p += 'index.html';
-			if (!(await exists(join(OUT, p)))) missing.add(ref);
+			if (await exists(join(OUT, p))) continue;
+			// Photos added in WP admin live in uploads/: download them from the dev server
+			if (p.startsWith('/wp-content/uploads/')) {
+				const res = await fetch(ORIGIN + encodeURI(p));
+				if (res.ok) {
+					await mkdir(dirname(join(OUT, p)), { recursive: true });
+					await writeFile(join(OUT, p), Buffer.from(await res.arrayBuffer()));
+					continue;
+				}
+			}
+			missing.add(ref);
 		}
 	}
 	console.log(`\nExported ${pages.length} pages + 404 to static/`);
