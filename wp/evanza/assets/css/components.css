@@ -42,6 +42,16 @@
 	opacity: 0.4;
 	pointer-events: none;
 }
+.btn--lg {
+	min-height: 4.25rem;
+	padding: 0 2.4rem;
+	font-size: 1.0625rem;
+}
+@media (max-width: 30rem) {
+	.btn--lg {
+		width: 100%;
+	}
+}
 /* Text button (header actions, filter popovers) */
 .text-btn {
 	display: inline-flex;

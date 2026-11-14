@@ -30,6 +30,9 @@ function evanza_enqueue_assets() {
 	if ( is_singular( 'evanza_product' ) ) {
 		$styles[] = 'product';
 	}
+	if ( is_page( array( 'about', 'gallery', 'contact' ) ) ) {
+		$styles[] = 'pages';
+	}
 	$previous = array();
 	foreach ( $styles as $name ) {
 		$handle = 'evanza-' . $name;
@@ -39,6 +42,11 @@ function evanza_enqueue_assets() {
 	wp_enqueue_script_module( 'evanza-main', evanza_asset_url( 'js/main.js' ), array(), evanza_asset_version( 'js/main.js' ) );
 	if ( is_post_type_archive( 'evanza_product' ) ) {
 		wp_enqueue_script_module( 'evanza-collection', evanza_asset_url( 'js/collection.js' ), array(), evanza_asset_version( 'js/collection.js' ) );
+	}
+	foreach ( array( 'about', 'gallery', 'contact' ) as $page_slug ) {
+		if ( is_page( $page_slug ) ) {
+			wp_enqueue_script_module( 'evanza-' . $page_slug, evanza_asset_url( "js/{$page_slug}.js" ), array(), evanza_asset_version( "js/{$page_slug}.js" ) );
+		}
 	}
 	if ( is_singular( 'evanza_product' ) ) {
 		wp_enqueue_script_module( 'evanza-product', evanza_asset_url( 'js/product.js' ), array(), evanza_asset_version( 'js/product.js' ) );

@@ -35,7 +35,7 @@ export function initRail(el) {
 		if (!down) return;
 		down = false;
 		if (!moved) return;
-		let v = velocity * 16; // px per frame
+		let v = Math.max(-30, Math.min(30, velocity * 16)); // px per frame
 		const glide = () => {
 			el.scrollLeft += v;
 			v *= 0.94;

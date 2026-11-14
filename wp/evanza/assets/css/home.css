@@ -449,16 +449,6 @@
 	min-height: 2.75rem;
 	font-weight: 600;
 }
-.btn--lg {
-	min-height: 4.25rem;
-	padding: 0 2.4rem;
-	font-size: 1.0625rem;
-}
-@media (max-width: 30rem) {
-	.btn--lg {
-		width: 100%;
-	}
-}
 
 @media (max-width: 40rem) {
 	.morbi__photo {
