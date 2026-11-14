@@ -134,4 +134,15 @@ await sharp({ create: { width: 1200, height: 900, channels: 3, background: '#c9d
 	.png()
 	.toFile(shot);
 
+// Default share image (Open Graph): 1200x630, the logo and a mug on a glaze colour.
+const ogMug = await sharp(join(root, 'wp/evanza/assets/img/mock/bella-belly-mug-green.svg')).resize(520, 520).png().toBuffer();
+const ogLogo = await sharp(join(dest, 'brand/logo-dark-480.webp')).resize({ width: 240 }).png().toBuffer();
+await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#c9d8a6' } })
+	.composite([
+		{ input: ogMug, left: 600, top: 70 },
+		{ input: ogLogo, left: 80, top: 80 },
+	])
+	.jpeg({ quality: 88 })
+	.toFile(join(dest, 'brand/og-default.jpg'));
+
 console.log(`images: ${count} sources written to ${dest}`);

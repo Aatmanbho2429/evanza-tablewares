@@ -73,10 +73,10 @@
 	--ink: var(--chalk);
 	--ink-2: color-mix(in srgb, var(--chalk) 86%, transparent);
 }
-/* Secondary text on glaze rooms: Graphite at 78% keeps AA contrast on every light glaze. */
+/* Secondary text on glaze rooms: Graphite at 86% keeps AA contrast on every light glaze. */
 [data-tone="light"] {
 	--ink: var(--graphite);
-	--ink-2: color-mix(in srgb, var(--graphite) 78%, transparent);
+	--ink-2: color-mix(in srgb, var(--graphite) 86%, transparent);
 }
 
 .admin-bar {

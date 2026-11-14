@@ -31,6 +31,9 @@ function transform(html) {
 		.replace(/<link[^>]+(wp-json|xmlrpc\.php|oembed|api\.w\.org|rel=["']shortlink|rel=["']dns-prefetch|\/feed\/)[^>]*>\s*/gi, '')
 		.replaceAll('/__not-found__/', '/')
 		.replaceAll(encodeURIComponent(ORIGIN), encodeURIComponent(SITE_URL))
+		// Share tags and structured data need absolute URLs (scrapers do not resolve a bare path)
+		.replace(/(<meta [^>]*content=")http:\/\/127\.0\.0\.1:9400([^"]*")/gi, (_, a, b) => a + SITE_URL + b)
+		.replace(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/gi, (_, a, body, c) => a + body.replaceAll(ORIGIN, SITE_URL) + c)
 		.replace(/<head>/i, `<head>\n${STATIC_HEAD}`)
 		.replaceAll(ORIGIN, BASE)
 		.replaceAll(ORIGIN.replaceAll('/', '\\/'), BASE.replaceAll('/', '\\/'));

@@ -8,7 +8,7 @@ $biz = evanza_business();
 <html <?php language_attributes(); ?> class="no-js">
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>

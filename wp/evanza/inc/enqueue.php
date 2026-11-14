@@ -95,43 +95,14 @@ add_action( 'wp_head', 'evanza_head_extras', 2 );
 function evanza_head_extras() {
 	printf( '<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n", esc_url( evanza_asset_url( 'fonts/bricolage-grotesque.woff2' ) ) );
 	echo '<meta name="theme-color" content="#efefec">' . "\n";
-	$og = array(
-		'og:type'        => 'website',
-		'og:site_name'   => 'Evanza Tablewares',
-		'og:title'       => wp_get_document_title(),
-		'og:description' => 'Ceramic mug manufacturer in Morbi, Gujarat. Everyday mugs, gift sets, cafe and hotel ranges and custom printing, in bulk.',
-		'og:image'       => evanza_asset_url( 'img/brand/mark-512.png' ),
-		'og:url'         => home_url( add_query_arg( null, null ) ),
-	);
-	foreach ( $og as $property => $content ) {
-		printf( '<meta property="%s" content="%s">' . "\n", esc_attr( $property ), esc_attr( $content ) );
+	if ( evanza_uses_3d() ) {
+		// The mug viewer is imported after the page paints; fetch it early so it is ready sooner.
+		foreach ( array( 'js/mug3d.js', 'vendor/three/three.module.js', 'vendor/three/three.core.js', 'vendor/three/addons/environments/RoomEnvironment.js' ) as $module ) {
+			printf( '<link rel="modulepreload" href="%s">' . "\n", esc_url( evanza_asset_url( $module ) ) );
+		}
 	}
-	echo '<meta name="twitter:card" content="summary">' . "\n";
-	echo '<meta name="description" content="' . esc_attr( 'Evanza Tablewares is a ceramic mug manufacturer in Morbi, Gujarat. Everyday mugs, gift sets, cafe and hotel ranges and custom printing, in every glaze and in bulk.' ) . '">' . "\n";
 	if ( ! has_site_icon() ) {
 		printf( '<link rel="icon" type="image/png" sizes="32x32" href="%s">' . "\n", esc_url( evanza_asset_url( 'img/brand/mark-32.png' ) ) );
 		printf( '<link rel="apple-touch-icon" href="%s">' . "\n", esc_url( evanza_asset_url( 'img/brand/mark-180.png' ) ) );
 	}
-}
-
-// Readable document titles for the product archive.
-add_filter( 'document_title_parts', 'evanza_document_title' );
-function evanza_document_title( $parts ) {
-	if ( is_post_type_archive( 'evanza_product' ) ) {
-		$parts['title'] = 'Ceramic mug collection';
-	}
-	return $parts;
-}
-
-// Settings the enquiry list and product buttons read (Customizer values).
-add_action( 'wp_footer', 'evanza_print_config', 1 );
-function evanza_print_config() {
-	$config = array(
-		'whatsapp'   => evanza_whatsapp_number(),
-		'email'      => evanza_enquiry_email(),
-		'contactUrl' => home_url( '/contact/' ),
-		'collection' => home_url( '/collection/' ),
-		'siteName'   => 'Evanza Tablewares',
-	);
-	echo '<script type="application/json" id="evanza-config">' . wp_json_encode( $config, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP ) . "</script>\n"; // phpcs:ignore WordPress.Security.EscapeOutput
 }

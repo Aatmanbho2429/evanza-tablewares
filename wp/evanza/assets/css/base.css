@@ -73,6 +73,9 @@ textarea {
 button {
 	cursor: pointer;
 	touch-action: manipulation;
+	-webkit-user-select: none;
+	user-select: none;
+	-webkit-touch-callout: none;
 }
 a {
 	color: inherit;
@@ -160,7 +163,7 @@ h3,
 	width: 100%;
 	max-width: calc(var(--max) + var(--gutter) * 2);
 	margin-inline: auto;
-	padding-inline: var(--gutter);
+	padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
 }
 
 /* Accessibility */

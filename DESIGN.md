@@ -27,7 +27,7 @@ A room sets two custom properties and everything inside follows them, so compone
 - `data-tone="light"` (default) gives `--ink: Graphite`, `--ink-2: Slate`. `data-tone="dark"` gives `--ink: Chalk`, `--ink-2: Chalk at 70%`.
 - Product and collection rooms derive the field from the variant: `color-mix(in oklch, <variant hex> 35%, var(--chalk))`; JS picks the tone from the field's luminance.
 
-Contrast: Graphite on every light glaze is 12:1 or better. Slate on Pistachio and Powder is below 4.5:1, so on glaze rooms secondary text uses Graphite at 78% (`--ink-2` is recomputed by `color-mix` per room, never Slate).
+Contrast: Graphite on every light glaze is 12:1 or better. Slate on Pistachio and Powder is below 4.5:1, so on glaze rooms secondary text uses Graphite at 86% (`--ink-2` is recomputed by `color-mix` per room, never Slate).
 
 No gradients anywhere, no shadows on tiles. The only shadow is the 3D mug's soft contact shadow.
 
