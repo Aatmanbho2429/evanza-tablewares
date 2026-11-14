@@ -32,12 +32,10 @@ await copyMinified(nm('three/examples/jsm/controls/OrbitControls.js'), 'vendor/t
 await copy(nm('gsap/dist/gsap.min.js'), 'vendor/gsap/gsap.min.js');
 await copy(nm('gsap/dist/ScrollTrigger.min.js'), 'vendor/gsap/ScrollTrigger.min.js');
 
-// Lenis (classic script, exposes window.Lenis)
-await copy(nm('lenis/dist/lenis.min.js'), 'vendor/lenis/lenis.min.js');
+// Lenis (ES module, minified)
+await copyMinified(nm('lenis/dist/lenis.mjs'), 'vendor/lenis/lenis.mjs');
 
-// Fonts: latin subset only
-await copy(nm('@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2'), 'fonts/instrument-serif-400.woff2');
-await copy(nm('@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2'), 'fonts/instrument-serif-400-italic.woff2');
-await copy(nm('@fontsource-variable/geist/files/geist-latin-wght-normal.woff2'), 'fonts/geist-variable.woff2');
+// Font: Bricolage Grotesque variable (opsz, wdth, wght), latin subset
+await copy(nm('@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-standard-normal.woff2'), 'fonts/bricolage-grotesque.woff2');
 
 console.log('vendor: done');

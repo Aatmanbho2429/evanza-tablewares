@@ -1,6 +1,6 @@
 # Evanza Tablewares website
 
-Custom WordPress theme (`wp/evanza/`) for Evanza Tablewares, plus a generated static preview. See `PLAN.md` for the full spec.
+Custom WordPress theme (`wp/evanza/`) for Evanza Tablewares, plus a generated static preview. See `PLAN.md` for the spec and `DESIGN.md` for the design system and wireframes.
 
 ## Run locally
 
@@ -18,6 +18,6 @@ The first boot downloads WordPress and takes a minute or two. `wp/blueprint.json
 | Command | What it does |
 |---|---|
 | `npm run dev` | Start WordPress on port 9400 |
-| `npm run vendor` | Copy three, GSAP, Lenis and fonts from `node_modules` into the theme |
-| `npm run images` | Convert `images/` into WebP files under `wp/evanza/assets/img/` |
-| `npm run mock-images` | Generate the tinted SVG mugs for variants with no photo |
+| `npm run vendor` | Copy three, GSAP, Lenis and the font from `node_modules` into the theme |
+| `npm run images` | Convert `images/` into WebP files and monochrome logos under `wp/evanza/assets/img/` |
+| `npm run mock-images` | Generate the transparent SVG mug renders for variants with no photo |

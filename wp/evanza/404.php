@@ -7,14 +7,14 @@ get_header();
 		'template-parts/page-head',
 		null,
 		array(
-			'eyebrow' => '404',
-			'title'   => 'This page <em>slipped</em> off the shelf.',
-			'lede'    => 'The page you are looking for does not exist or has moved.',
+			'title' => "That page isn't here.",
+			'lede'  => 'It may have moved. The collection is a good place to start again.',
+			'room'  => 'blush',
 		)
 	);
 	?>
-	<div class="container">
-		<a class="btn" href="<?php echo esc_url( home_url( '/collection/' ) ); ?>">Browse the collection <?php echo evanza_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
+	<div class="container" style="padding-block: var(--s-7)">
+		<a class="btn" href="<?php echo esc_url( home_url( '/collection/' ) ); ?>">See the collection</a>
 	</div>
 </main>
 <?php get_footer(); ?>

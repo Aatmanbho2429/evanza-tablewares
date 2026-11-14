@@ -8,9 +8,8 @@ $catalogue = evanza_get_products();
 		'template-parts/page-head',
 		null,
 		array(
-			'eyebrow' => 'Collection',
-			'title'   => 'Mugs made in <em>Morbi</em>.',
-			'lede'    => 'Browse the range by category and colour, then send us an enquiry.',
+			'title' => 'The collection.',
+			'lede'  => 'Browse the range by category and colour, then send us an enquiry.',
 		)
 	);
 	?>

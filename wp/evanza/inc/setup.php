@@ -78,18 +78,12 @@ function evanza_create_menus() {
 	$locations = get_theme_mod( 'nav_menu_locations', array() );
 
 	$primary_items = array(
-		'Home'       => home_url( '/' ),
-		'About'      => home_url( '/about/' ),
-		'Gallery'    => home_url( '/gallery/' ),
-		'Collection' => home_url( '/collection/' ),
-		'Contact'    => home_url( '/contact/' ),
-	);
-	$footer_items  = array(
 		'Collection' => home_url( '/collection/' ),
 		'About'      => home_url( '/about/' ),
 		'Gallery'    => home_url( '/gallery/' ),
 		'Contact'    => home_url( '/contact/' ),
 	);
+	$footer_items  = $primary_items;
 
 	$locations['primary'] = evanza_ensure_menu( 'Primary', $primary_items );
 	$locations['footer']  = evanza_ensure_menu( 'Footer', $footer_items );

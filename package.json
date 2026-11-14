@@ -9,8 +9,7 @@
     "mock-images": "node scripts/make-mock-images.mjs"
   },
   "devDependencies": {
-    "@fontsource-variable/geist": "^5.3.0",
-    "@fontsource/instrument-serif": "^5.3.0",
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
     "@wp-playground/cli": "^3.1.64",
     "esbuild": "^0.28.2",
     "gsap": "^3.15.1",

@@ -1,8 +1,10 @@
-# Evanza Tablewares — Website Development Plan
+# Evanza Tablewares — Website Development Plan (v2: full redesign)
 
 Ceramic mug manufacturer, Morbi, Gujarat (since 2022). Live site today: https://evanzatablewares.com/ (WordPress on Hostinger — we do **not** touch it).
 
-Goal: an aesthetic, minimal website with 3D and motion. Five pages: **Home, About, Gallery, Collection, Contact**. **Collection is the most important page**: an enquiry catalogue that feels like a modern e‑commerce store (Myntra‑style filters and colour swatches).
+Goal: a **brand-new, unique** website that is aesthetic, minimal, 3D and animated, with five pages: **Home, About, Gallery, Collection, Contact**. **Collection is the most important page**: an enquiry catalogue that feels like a modern e‑commerce store (category and colour filters; Myntra‑style colour options per product).
+
+> **v2 change:** the client wants a total revamp. Nothing visual carries over from the current site: **no teal brand colour, no cream/porcelain + serif look** (the v1 design system is scrapped). It must not look like a typical template or "AI-made" site. Architecture, tooling and the data layer from v1 stay.
 
 ---
 
@@ -13,164 +15,178 @@ Goal: an aesthetic, minimal website with 3D and motion. Five pages: **Home, Abou
 | Real site | A custom **WordPress theme** in `wp/evanza/`. This is the source of truth and what goes to Hostinger. |
 | Preview | `static/` is a **generated** HTML export of the running WordPress site, deployed to GitHub Pages. Never hand-edit `static/`. |
 | Shopping | **Enquiry catalogue**, with no cart, prices or payments. Buyers build an **enquiry list** and send it via WhatsApp / email / contact form. |
-| Catalogue PDFs | One **global** "Download catalogue" button and a **per‑category** button. No PDFs exist yet, so the links are static and point to one placeholder PDF. |
-| Products | **Dummy data** for now (seeded from `wp/evanza/data/products.json`), with real photos from `images/` where they fit. |
-| Local WordPress | **WordPress Playground CLI** (`@wp-playground/cli`, already a devDependency). No PHP/Docker on this machine. |
-| GitHub | Public repo `evanza-tablewares` on account `Aatmanbho2429`. Pages URL: `https://aatmanbho2429.github.io/evanza-tablewares/`. The lead (not the coding agent) creates the repo and pushes. |
+| Catalogue PDFs | One **global** and one **per‑category** "Download catalogue" button. No PDFs yet, so the links are static and point to `assets/catalogues/catalogue-placeholder.pdf`. |
+| Products | **Dummy data** (`wp/evanza/data/products.json`: 20 products, 8 categories), with real photos from `images/` where they fit. |
+| Local WordPress | **WordPress Playground CLI** (`npm run dev` → http://127.0.0.1:9400). No PHP/Docker on this machine. |
+| GitHub | Public repo `evanza-tablewares` on `Aatmanbho2429` → `https://aatmanbho2429.github.io/evanza-tablewares/`. The lead creates the repo and pushes. |
+
+---
+
+## Design direction: "Colour rooms"
+
+**The idea.** Evanza's product *is* colour: the same mug in a dozen glazes. So the site takes its colour from the glazes, not from a brand accent. Each section is a **flat, full‑bleed colour field ("room") holding one object**, a real-time 3D Evanza mug, with **huge, active typography**. It's calm and minimal, but unmistakably this brand.
+
+**The signature interaction: the glaze pour.** When a visitor picks a colour (home hero, collection colour filter, product swatch), the new colour **floods the room as a circle expanding from the exact swatch they pressed** (clip-path / circle reveal, ~700 ms, ease-out), and the 3D mug recolours in the same beat. This is the one memorable moment; it recurs on Home, Collection and Product so the site feels like one system.
+
+**Depth through type.** In the hero, the headline is split into a back layer and a front layer with the WebGL canvas between them, so the mug sits *inside* the words.
+
+### Palette (named tokens; no cream, no terracotta, no teal accent)
+| Token | Hex | Use |
+|---|---|---|
+| Chalk | `#EFEFEC` | Base background (cool off-white) |
+| Graphite | `#161616` | Text, UI, dark rooms |
+| Slate | `#5C5C58` | Secondary text (AA on Chalk) |
+| Pistachio | `#C9D8A6` | Glaze room |
+| Butter | `#F1DC8B` | Glaze room |
+| Powder | `#BCD3E6` | Glaze room |
+| Blush | `#EEC3C9` | Glaze room |
+| Bottle | `#1F4A42` | Dark glaze room (light text) |
+| Midnight | `#1E2340` | Dark glaze room (light text) |
+
+On product and collection pages the room colour is derived from the selected **variant hex**: field = `color-mix(in oklch, <variant> 35%, Chalk)` for a tone-on-tone look. Dark variants (luminance check in JS) flip the room to `data-tone="dark"` with light text. The logo is shown **monochrome** (Graphite or white). Generate single-colour logo assets; don't use the teal logo.
+
+### Typography
+- **One family: Bricolage Grotesque** (variable: `opsz`, `wdth`, `wght`), via `@fontsource-variable/bricolage-grotesque`, self-hosted. Headlines condensed (`wdth` ~75), heavy, very large, tight leading, and treated as a design element. Body uses the text optical size at regular weight, max ~70ch.
+- Sentence case everywhere. Plain, warm, direct copy in Evanza's own voice ("Crafted for coffee lovers." is their tagline).
+
+### Do not (anti-generic list)
+Cream background + serif + terracotta/teal accent · Instrument Serif / Geist / Inter / Space Grotesk · tracked ALL-CAPS eyebrows · monospace "data" labels · middle‑dot meta strings · hairline-rule broadsheet layouts · identical rounded cards with uniform soft shadows · gradient washes / glassmorphism · italic or coloured emphasis on one headline word · arrows on every link · fade-and-slide on every section · hover effects on everything · numbered markers (except the genuinely sequential making process) · the "big number + small label" stat hero.
+
+### Motion budget
+- **One orchestrated moment per page:** Home = hero entrance + 3D scroll story · Collection = glaze pour on colour filter + FLIP re-order · Product = glaze pour on swatch change · About = sticky process sequence · Gallery = drag-able shelves with momentum.
+- Everything else moves **only in response to the user** (filter, open, drag), to show what changed. Curves and durations follow the `animate` / `emil-design-eng` skills (fast ease-out for UI, no bounce on enter, interruptible).
+- `prefers-reduced-motion`: the glaze pour becomes an instant colour change, 3D shows a still pose, and smooth scroll is off.
+
+### Skills the coding agent must use
+Installed in `~/.claude/skills`; load them with the Skill tool if available, otherwise read `~/.agents/skills/<name>/SKILL.md`.
+- `design-taste-frontend`: overall taste and finish gate (run its checker if provided). PLAN.md wins on concept, palette, type and 3D.
+- `animate`, `choreograph`: hero entrance, glaze pour, FLIP, scroll story.
+- `emil-design-eng`, `apple-design`: component polish, press states, drawer and sheet behaviour.
+- `gestures`: gallery shelves drag, mobile filter sheet, product image swipe.
+- `animation-performance`: 3D and scroll performance.
+- `mobile-native`: mobile pass (100vh, tap highlight, safe areas).
+- Online reference, Anthropic's `frontend-design` skill: write the token system and ASCII wireframes **before** building, review them against the brief, and remove one element before finishing. Its don'ts are folded into the list above.
+
+---
 
 ## Repository layout
 
 ```
 Evanza Tablewares/
-├── PLAN.md                     ← this file
-├── package.json                ← npm scripts (dev, vendor, images, export, package)
+├── PLAN.md  DESIGN.md (tokens + wireframes, written in Phase 1)  README.md
+├── package.json                ← npm scripts (dev, vendor, images, mock-images, export, package)
 ├── images/                     ← original client photos (gitignored, read-only source)
 ├── wp/
-│   ├── blueprint.json          ← Playground blueprint (activate theme, permalinks)
-│   └── evanza/                 ← THE WordPress theme (classic PHP theme, no build step)
-│       ├── style.css  functions.php  header.php  footer.php  index.php  404.php
-│       ├── front-page.php  page-about.php  page-gallery.php  page-contact.php
-│       ├── archive-evanza_product.php   ← Collection page (/collection/)
-│       ├── single-evanza_product.php    ← Product page (/collection/<slug>/)
-│       ├── inc/                 ← cpt.php, seed.php, products.php, enqueue.php, customizer.php, contact.php …
-│       ├── data/products.json   ← dummy product seed
+│   ├── blueprint.json
+│   └── evanza/                 ← THE WordPress theme (classic PHP, no bundler)
+│       ├── front-page.php page-about.php page-gallery.php page-contact.php
+│       ├── archive-evanza_product.php   ← Collection (/collection/)
+│       ├── single-evanza_product.php    ← Product (/collection/<slug>/)
+│       ├── inc/  data/products.json
 │       └── assets/ css/ js/ img/ vendor/ fonts/ catalogues/
-├── scripts/                    ← optimize-images, vendor copy, mock images, export-static, package-theme
-├── static/                     ← GENERATED export for GitHub Pages (+ .nojekyll)
-└── .github/workflows/pages.yml ← deploys static/ to GitHub Pages
+├── scripts/                    ← optimize-images, vendor, make-mock-images, export-static, package-theme
+├── static/                     ← GENERATED export for GitHub Pages
+└── .github/workflows/pages.yml
 ```
 
 ## Tech choices
+- **Classic PHP theme, no bundler.** Modern CSS (custom properties, `color-mix`, container queries, `clamp()`), vanilla ES modules, and an `importmap` for `three`. Vendored libs live in `assets/vendor/` (`npm run vendor`), committed.
+- **3D: one procedural mug module, `assets/js/mug3d.js`.** LatheGeometry body with real wall thickness and rolled rim, tube handle (classic / latte cone / heart / belly / espresso shapes from product `shape`), `MeshPhysicalMaterial` glaze with clearcoat, RoomEnvironment + PMREM lighting, soft contact shadow, and a **material state uniform** for the Home story: `bisque` (matte raw clay, subtle noise) → `glazing` (glaze rises from the base via a noise threshold) → `fired` (brief warm kiln glow) → `glazed`.
+  API: `createMugViewer(canvas, { colors:{body,inner,handle}, shape, autoRotate, interactive, state })` → `{ setColors(c, {animate}), setShape(), setState(name, progress), dispose() }`. Pause the render loop when offscreen or the tab is hidden; cap DPR at 2; fall back to a still image without WebGL.
+- **Motion:** GSAP + ScrollTrigger (scroll story, pinning), FLIP for grid re-order, Lenis smooth scroll (desktop only).
+- **Data path:** CPT `evanza_product` + taxonomy `evanza_category`. `evanza_get_products()` prints inline JSON `<script type="application/json" id="evanza-products">`, so the JS needs no API and the static export captures it.
+- **Product images:** each variant's **card image is a transparent studio render** (SVG from `scripts/make-mock-images.mjs`, restyled for v2: transparent background, soft realistic cylinder shading, inner-colour rim, matching the 3D mug's look) shown on a tone-on-tone tile. Real photos (when present) are the hover image and fill the product gallery.
 
-- **Classic PHP theme, no bundler.** Plain modern CSS (custom properties, container queries, `clamp()`), vanilla ES modules, and an `<script type="importmap">` for `three`. Vendored libs are copied from `node_modules` into `assets/vendor/` by `npm run vendor` and committed, so the theme zip is self-contained for Hostinger.
-- **3D:** Three.js. A **procedural ceramic mug** (LatheGeometry body with real wall thickness and rim, tube handle, `MeshPhysicalMaterial` with clearcoat glaze, RoomEnvironment lighting, soft contact shadow), built once as a reusable module `assets/js/mug3d.js`:
-  `createMugViewer(canvas, { body, inner, handle, shape: 'classic'|'latte'|'heart', autoRotate, interactive })` → `{ setColors(), setShape(), dispose() }`.
-  The same module powers the Home hero and the Product page, where it recolours live when a swatch is picked.
-- **Motion:** GSAP + ScrollTrigger (scroll reveals, pinned sections, counters), FLIP for grid re-ordering on filter, Lenis for smooth scroll (optional, off on touch). Everything respects `prefers-reduced-motion`, and 3D falls back to a still image when WebGL is unavailable.
-- **Product data path:** CPT `evanza_product` + taxonomy `evanza_category`. PHP helper `evanza_get_products()` returns the exact JSON shape below and prints it inline as `<script type="application/json" id="evanza-products">`, so the JS needs no API and the static export captures it automatically.
-- **Design direction:** warm "porcelain" neutrals (off-white `#F5F1EA`-ish background, near-black ink), logo teal **`#0081A5`** as the single accent used sparingly, large elegant serif display type paired with a clean sans, generous whitespace, soft shadows, rounded corners, real photography. Logos: `Evanza-LOGO-1.png` (dark text, light backgrounds), `white-logo.png` (dark backgrounds), `cropped-white-1-1.png` (mark / favicon).
-
-## Product data shape (`products.json` and `evanza_get_products()`)
-
-```json
-{
-  "categories": [
-    { "slug": "latte-mugs", "name": "Latte Mugs", "description": "…", "cover": "assets/img/…", "catalogue": "assets/catalogues/catalogue-placeholder.pdf" }
-  ],
-  "colorFamilies": [ { "slug": "teal", "name": "Teal", "hex": "#1f6f6a" } ],
-  "catalogue": "assets/catalogues/catalogue-placeholder.pdf",
-  "products": [
-    {
-      "slug": "aura-latte-mug",
-      "name": "Aura Latte Mug",
-      "category": "latte-mugs",
-      "badges": ["new"],
-      "featured": true,
-      "shape": "latte",
-      "specs": { "capacity": "350 ml", "material": "Stoneware", "finish": "Glossy", "microwaveSafe": true, "dishwasherSafe": true, "moq": "500 pcs" },
-      "description": "…",
-      "variants": [
-        { "slug": "navy", "name": "Midnight Navy", "family": "navy", "hex": "#1d2346", "inner": "#1d2346", "handle": "#1d2346", "images": ["assets/img/products/016A1265-1600.webp"] }
-      ]
-    }
-  ]
-}
-```
-
-Dummy data: **~20 products across 6–8 categories, 2–6 colours each.** Suggested categories from the photos: Classic Mugs, Latte Mugs, Two‑Tone Mugs, Heart Handle Mugs, Marble & Gradient, Printed / Sublimation, Espresso & Small Cups, Gift Sets. Colour families: White, Black, Grey, Red, Pink, Orange, Yellow, Green, Teal, Blue, Navy, Purple, Brown, Multi.
-Variants with a matching real photo use it. For the rest, `scripts/make-mock-images.mjs` generates a clean studio-style **SVG mug tinted with the variant colours** (body / inner / handle) and writes its path into `images[]`. Every variant always has at least one image.
+## Product data shape
+Unchanged from v1 (`categories[]`, `colorFamilies[]`, `catalogue`, `products[]` with `slug, name, category, badges, featured, shape, specs{capacity, material, finish, microwaveSafe, dishwasherSafe, moq}, description, variants[{slug, name, family, hex, inner, handle, images[]}]`). Every variant has at least one image.
 
 ---
 
-## Phases
+## Page designs (v2)
 
-Each phase ends with a **git commit** (`Phase N: …`) and its **Verify** checks passing. Don't push. WordPress runs with `WP_DEBUG` on, and pages must render with zero PHP notices, warnings or JS console errors.
+**Header (all pages).** A thin bar with the monochrome logo, nav (Collection first, then About, Gallery, Contact) and an "Enquiry (n)" text button. It takes the tone of the room beneath it (light or dark), hides on scroll down, and shows on scroll up. Mobile: full-screen menu in Graphite with large type.
 
-### Phase 0: Project setup & local WordPress
-- `wp/evanza/` theme skeleton (`style.css` header, `functions.php`, `index.php`, `header.php`, `footer.php`).
-- `wp/blueprint.json`: activate theme `evanza`, set permalinks `/%postname%/`, and set WP_DEBUG.
-- npm script `dev`: `wp-playground-cli server --port=9400 --mount=./wp/evanza:/wordpress/wp-content/themes/evanza --blueprint=./wp/blueprint.json --login` (adjust flags as needed; document in README).
-- Theme **activation routine** (`after_switch_theme`, idempotent): creates pages Home / About / Gallery / Contact, sets Home as static front page, and creates the primary + footer menus. It runs the same way on Playground and on Hostinger.
-- **Verify:** `npm run dev` boots; `/`, `/about/`, `/gallery/`, `/contact/` return 200 with the theme active.
+**Home**
+1. *Hero room:* the 3D mug nested inside a giant split headline, with 5–6 glaze dots. Tapping a dot triggers the glaze pour and recolours the mug. Drag to spin. CTAs: "See the collection", "Download catalogue". Entrance: the type parts and the mug rises and settles (the one orchestrated load moment).
+2. *Clay to cup (scroll story, pinned):* the mug drops to raw `bisque`, then glaze rises up it, the kiln glow fires, and it ends glazed. Three short lines of copy about Morbi clay and the factory. This is the only scroll-driven 3D.
+3. *Shop by category:* a list of category names in very large type. Hovering a name floats that category's render beside the cursor; tapping goes to `/collection/?category=…`. Mobile: rows with a small render.
+4. *New in:* a horizontal, drag-able rail of product tiles.
+5. *Made in Morbi:* a full-bleed factory photo, a short paragraph and the certification marks (ISO 9001:2015, CE, QSA) as a plain line.
+6. *Catalogue + contact:* a Butter room with a large "Get the catalogue" button and WhatsApp / email links.
 
-### Phase 1: Design system, layout shell, image pipeline
-- `scripts/optimize-images.mjs` (use `sharp`): converts the needed photos from `images/` → `wp/evanza/assets/img/{products,factory,certificates,brand}/` as WebP at 800 and 1600 widths. Skip `eff1_5.gif` (58 MB) and the decorative `Shap-*`, `bheja-1`, `overlay_dark_480` files.
-- `scripts/vendor.mjs` → copies three (module build + needed `examples/jsm` files), gsap + ScrollTrigger, and lenis into `assets/vendor/`.
-- `assets/css/`: tokens (colour, type scale, spacing, radius, shadow, easing), reset, typography, buttons, form fields, chips, utility classes. Self-hosted or Google fonts.
-- Header: logo, nav (Home, About, Gallery, Collection, Contact), enquiry-list icon with count badge, transparent over hero → solid on scroll, accessible mobile menu.
-- Footer: logo, short brand line, quick links, the 4 MD contacts, email, address, "Download catalogue" link, ©.
-- Global JS: reveal-on-scroll helper, reduced-motion guard, page-enter fade.
-- **Verify:** every page shows the header/footer; the mobile menu opens and closes with the keyboard; the layout works at 375 px and 1440 px widths.
+**Collection ⭐**
+- Page top: a big title, a short line, the result count, and a **"Download full catalogue (PDF)"** button.
+- **Glaze bar:** a row of glaze drops (one per colour family, with counts), the primary colour filter. Picking one pours that colour into the page header and filters (multi-select; a product matches when any variant matches).
+- **Sticky filter bar:** Category (popover multi-select with counts), Colour (popover, same state as the glaze bar), Sort (Featured, Newest, Name A–Z), active-filter chips with ✕ and "Clear all". Mobile: a "Filter & sort (n)" button opens a bottom sheet with "Show N products".
+- **URL sync:** `?category=a,b&color=x,y&sort=name`. Shareable; back/forward works.
+- When exactly one category is selected: a **"Download <Category> catalogue (PDF)"** strip.
+- **Product tiles:** a flat tone-on-tone square (field mixed from the shown variant), the transparent render centred, then name, capacity and colour dots below. Hovering or tapping a dot swaps the render *and* the tile colour (Myntra-style); "+N" after 5. When a colour filter is active the tile shows the matching variant. Pointer hover reveals the real photo if one exists. No shadows, no uniform rounded-card look. Links go to `/collection/<slug>/?colour=<variant>`.
+- FLIP re-order on filter change; an empty state that invites clearing filters; a `<noscript>` server-rendered list.
 
-### Phase 2: Product data layer
-- Register CPT `evanza_product` (`has_archive` + rewrite slug `collection`) and taxonomy `evanza_category`.
-- `data/products.json` dummy data per the shape above, plus `scripts/make-mock-images.mjs`.
-- `inc/seed.php`: on activation, if there are no products, imports `products.json` (posts, terms, specs and variants into post meta, `menu_order`).
-- `inc/products.php`: `evanza_get_products()`, `evanza_get_product($id)`, and the inline-JSON printer. Asset paths resolve to full theme URLs.
-- Placeholder `assets/catalogues/catalogue-placeholder.pdf` (a 1‑page "Catalogue coming soon" PDF); global and per‑category catalogue URLs come from the data and can be swapped later.
-- **Verify:** WP admin lists ~20 products in 6–8 categories; `/collection/` source contains valid product JSON; the seed doesn't duplicate on re-activation.
+**Product**
+- Left: a tone-on-tone room with the **live 3D mug (default view)**, drag to rotate, and photo thumbnails below (tap → photo replaces 3D; a "3D" thumb returns to it). Mobile: swipe between 3D and photos.
+- Right: breadcrumb, name, short description, **"Colour: Midnight Navy"** with swatches. A swatch triggers the glaze pour of the room, recolours the 3D mug, swaps the photos and updates `?colour=` (no reload). Then specs (capacity, material, finish, microwave/dishwasher safe, MOQ), **Enquire on WhatsApp** (prefilled product + colour + URL), **Add to enquiry list** (quantity), and **Download <Category> catalogue**.
+- Related products rail (same category).
+- **Enquiry list:** localStorage; header count; slide-in drawer with product, colour dot and editable quantity; "Send on WhatsApp", "Send by email" (mailto) and "Use contact form" (prefills Contact).
 
-### Phase 3: Collection page ⭐ (most important)
-- Page header: title, short intro, **"Download full catalogue (PDF)"** button, result count.
-- **Filters:** Category (checkboxes with counts), Colour (round swatch chips with counts; one product matches when **any** variant matches; multi-select). **Sort:** Featured, Newest, Name A–Z. Active-filter chips with ✕ and "Clear all". Counts update for the current selection.
-- **URL sync:** `?category=latte-mugs,two-tone-mugs&color=teal,black&sort=name`. Shareable; back/forward works.
-- Desktop: sticky left filter sidebar. Mobile: "Filter & Sort" bar that opens a bottom sheet with an "Apply (N)" button.
-- **Product cards:** image (hover → second image / gentle zoom; subtle 3D tilt on pointer), name, category, capacity, badge, **colour dots** (hover/tap a dot swaps the card image to that colour, Myntra-style; "+N" when more than 5). When a colour filter is active, the card shows the matching variant first. The card links to `/collection/<slug>/?colour=<variant>`.
-- **Per-category catalogue:** when exactly one category is selected, show a banner "Download <Category> catalogue (PDF)". Also give each category a card/row in a "Shop by category" strip at the top.
-- Animations: staggered reveal on load; FLIP re-order on filter change; skeleton shimmer while images load. Empty state with "Clear filters".
-- `<noscript>` fallback: a simple server-rendered product list.
-- **Verify:** filter combos produce correct counts/results; reload with a query string restores the state; the mobile sheet works at 375 px; keyboard and screen-reader labels are present on all controls.
+**About:** a full-bleed factory exterior photo with a short statement. **Making process** (sequential, so numbered 1–5 is fine): Clay → Forming → Glazing → Firing → Packing & dispatch, as a sticky photo stack that swaps per step on scroll, using the factory photos. Then certificates (lightbox) and the four MDs with tap-to-call / WhatsApp.
+
+**Gallery:** three **shelves** (Products, Factory, Certificates), each a horizontal drag-able row with momentum (native scroll-snap on touch). Tapping opens an accessible lightbox (keyboard, swipe, captions).
+
+**Contact:** a Blush room with a giant "Let's talk." (or similar), the form (name, company, email, phone, country, category of interest, message, honeypot) prefilled from the enquiry list, the four MD contacts, email, address, and an embedded Google Map.
+
+---
+
+## Phases & status
+
+Each phase ends with a **git commit** (`Phase N: …`) and its **Verify** checks. Don't push. WP_DEBUG is on: zero PHP notices/warnings and zero JS console errors.
+
+### Phase 0: Project setup & local WordPress ✅ done
+Theme skeleton, Playground blueprint, idempotent activation routine (pages, front page, menus), `npm run dev`.
+
+### Phase 1 (REDO for v2): Design system, shell, signature prototype
+- Write **`DESIGN.md`**: the tokens above (colour, type scale, spacing, radii, motion curves and durations), type specimen notes, and **ASCII wireframes for all 5 pages + product page**, reviewed against the brief and the "Do not" list.
+- Replace the v1 CSS tokens, fonts (remove Instrument Serif + Geist; add Bricolage Grotesque) and component styles; restyle header, footer, mobile menu and 404 to v2. Monochrome logo assets via `optimize-images`.
+- Build `mug3d.js` (shapes, glaze material, lighting, shadow, `setColors` with animated transition, drag-to-rotate, offscreen pause, fallback) and the **Home hero prototype**: split-type depth layering + glaze dots + glaze pour + entrance.
+- Keep the v1 image pipeline, vendor script and catalogue placeholder.
+- **Verify:** the hero runs smoothly; the glaze pour originates from the pressed dot; reduced-motion works; layout works at 375 / 768 / 1440 px; no v1 tokens or fonts remain (`grep` for `#0081a5`, `#f5f1ea`, `Instrument`, `Geist`).
+- **⏸ Checkpoint:** stop here for lead review (screenshots of hero, header/footer, DESIGN.md) before Phase 2 is committed further.
+
+### Phase 2: Product data layer (finish)
+- CPT `evanza_product` (`has_archive` + rewrite slug `collection`), taxonomy `evanza_category`, seed on activation from `products.json` (idempotent), `evanza_get_products()` + inline JSON, catalogue URLs.
+- Restyle `make-mock-images.mjs` renders for v2 (transparent background, refined shading; see Tech choices).
+- **Verify:** admin lists 20 products in 8 categories; `/collection/` source has valid JSON; re-activation doesn't duplicate.
+
+### Phase 3: Collection page ⭐
+Build everything under *Page designs → Collection*.
+**Verify:** filter combos give correct results and counts; URL state restores on reload and back/forward; glaze pour + FLIP feel smooth; mobile sheet works at 375 px; all controls have keyboard and screen-reader labels.
 
 ### Phase 4: Product page + enquiry list
-- `/collection/<slug>/`: breadcrumb; image gallery (thumbnails, main image, hover zoom, swipe on mobile); **"View in 3D" toggle** using `mug3d.js` (drag to rotate, recolours with the selected swatch, uses the product `shape`).
-- **Colour selector** ("Colour: Midnight Navy"): swatches swap the gallery images and 3D colours and update `?colour=` without reload.
-- Specs table, description, badges.
-- CTAs: **Enquire on WhatsApp** (`https://wa.me/<number>?text=` prefilled with product, colour and page URL), **Add to enquiry list** (with quantity), **Download <Category> catalogue (PDF)**.
-- **Enquiry list:** localStorage; header badge; slide-in drawer listing product, colour swatch and editable quantity; "Send via WhatsApp" (builds one message), "Send via email" (mailto), "Go to contact form" (prefills the Contact message).
-- Related products (same category) carousel.
-- Customizer settings (`inc/customizer.php`): WhatsApp number (default `919898798986`), enquiry email (default `evanzatableware@gmail.com`), global catalogue URL.
-- **Verify:** every product page renders; the swatch updates images, 3D and URL; the enquiry list persists across pages; the WhatsApp message text is correct.
+Build everything under *Page designs → Product*, plus Customizer settings: WhatsApp number (default `919898798986`), enquiry email (default `evanzatableware@gmail.com`), global catalogue URL.
+**Verify:** every product page renders; a swatch updates the room, 3D, photos and URL; the enquiry list persists across pages; the WhatsApp text is correct.
 
-### Phase 5: Home page
-- **3D hero:** procedural mug, slow auto-rotate, pointer parallax, soft steam wisps, and a colour that cycles through 4–5 brand glazes (or the user clicks colour dots). Headline "Crafted for coffee lovers." with a short sub-line and CTAs "Explore collection" / "Download catalogue".
-- Category marquee / "Shop by category" grid → links to `/collection/?category=…`.
-- Featured products (cards reused from Collection).
-- "Made in Morbi" story strip with a factory photo + animated stats (e.g. founded 2022, capacity, colours, countries; use clearly-placeholder numbers the client can edit).
-- Interactive "Pick your glaze" colour section: click a colour family → shows matching products.
-- Certifications strip (ISO 9001:2015, CE, QSA) and a contact CTA.
-- **Verify:** the hero runs at 60 fps on a laptop; it pauses when offscreen; reduced-motion shows a still image; Lighthouse performance ≥ 80 on desktop.
+### Phase 5: Home page (rest)
+Sections 2–6 of *Page designs → Home*, including the `bisque → glazing → fired → glazed` scroll story.
+**Verify:** 60 fps on a laptop; the 3D pauses offscreen; reduced-motion gives a static sequence; Lighthouse performance ≥ 80 on desktop.
 
 ### Phase 6: About, Gallery, Contact
-- **About:** story (since 2022, Morbi), mission/values, a scroll-driven **process timeline** (Clay → Forming → Glazing → Firing → Quality check → Packing → Dispatch) using the factory WhatsApp photos, factory exterior image, certificates with lightbox, team / MD contacts.
-- **Gallery:** filter tabs (All / Products / Factory / Certificates), masonry grid, reveal animation, accessible lightbox (keyboard, swipe, captions).
-- **Contact:** form (name, company, email, phone, country, interested category, message, honeypot) → `admin-post.php` handler with nonce + sanitising + `wp_mail` to the enquiry email, with success/error states; prefilled from the enquiry list. Contact cards (4 MDs with tap-to-call + WhatsApp), email, address, embedded Google Map of the factory address.
-- **Verify:** the form submits on WP (in Playground, check the handler returns success; real mail delivery is a Hostinger concern); the lightbox works by keyboard; pages work at 375 px.
+Per *Page designs*. The contact form uses an `admin-post.php` handler with nonce + sanitising + `wp_mail`, with success/error states.
+**Verify:** the form handler succeeds in Playground; the lightbox and shelves work by keyboard and touch; 375 px layouts hold up.
 
 ### Phase 7: Static export → GitHub Pages
-- `scripts/export-static.mjs` (`npm run export`): with the dev server running, crawl the site (all pages, the collection, every product URL, 404), save to `static/**/index.html`, copy the theme assets, rewrite `http://127.0.0.1:9400` (including the JSON-escaped `http:\/\/…` form) to the base path `/evanza-tablewares`, strip WP-only tags (wp-json links, RSD, emoji, admin bar), inject `window.EVANZA_STATIC = true`, write `static/.nojekyll` and `static/404.html`. Product query params like `?colour=` keep working.
-- In static mode the contact form shows "Preview site: send via email/WhatsApp" and falls back to a prefilled mailto.
-- `npm run preview:static`: a tiny local server that serves `static/` under `/evanza-tablewares/` for testing.
-- `.github/workflows/pages.yml`: on push to `main`, upload `static/` as the Pages artifact and deploy.
-- **Verify:** `preview:static` shows the whole site with working filters, swatches, 3D, gallery and navigation; there are zero 404s in the network tab.
-- *(Lead: create the public repo, push, enable Pages with the workflow source.)*
+`scripts/export-static.mjs` (`npm run export`): crawl all pages and product URLs from the running dev server → `static/`; rewrite `http://127.0.0.1:9400` (and JSON-escaped `http:\/\/…`) to `/evanza-tablewares`; strip WP-only tags; inject `window.EVANZA_STATIC = true` (the contact form then falls back to a prefilled mailto); write `.nojekyll` and `404.html`. Add `npm run preview:static` (serves `static/` under `/evanza-tablewares/`) and `.github/workflows/pages.yml` (deploy `static/` on push to `main`).
+**Verify:** the preview works fully with zero 404s. *(Lead: create the repo, push, enable Pages.)*
 
 ### Phase 8: WordPress admin editing + Hostinger package
-- Product edit screen meta boxes: **Specs** fields and a **Colour variants repeater** (name, colour family select, body/inner/handle colour pickers, images from the Media Library, drag to reorder). Category term meta: **Catalogue PDF** (media picker) and cover image. Customizer: global catalogue PDF.
-- Images uploaded in WP admin flow into `evanza_get_products()` (attachment URLs), so client edits appear on the site with no code.
-- `scripts/package-theme.mjs` (`npm run package`) → `dist/evanza-theme.zip`.
-- `DEPLOY-HOSTINGER.md`: back up the current site, upload the theme zip, activate it (auto-creates pages and demo products), set the Customizer values, use an SMTP plugin for reliable mail, replace demo products, and switch DNS/live only when ready.
-- **Verify:** in Playground, add a new product with 2 colours via admin; it appears on Collection with working swatches.
+Product meta boxes (specs; colour-variant repeater with name, family, body/inner/handle colour pickers, Media Library images, reorder), category term meta (catalogue PDF, cover), Customizer global catalogue PDF. Data from admin flows through `evanza_get_products()`. `npm run package` → `dist/evanza-theme.zip`. Write `DEPLOY-HOSTINGER.md` (backup, upload, activate, Customizer, SMTP plugin, replace demo products, go live).
+**Verify:** a product added via admin with 2 colours appears on Collection with working swatches.
 
 ### Phase 9: Polish & QA
-- Performance: lazy images with `srcset`/`sizes`, preload hero assets, three.js loaded only on pages that use it, fonts `display=swap`.
-- SEO: titles/meta descriptions, Open Graph, `Product` + `Organization` JSON-LD, sitemap via WP core.
-- Accessibility: focus styles, contrast, alt text, aria on filters/drawer/lightbox, skip link.
-- Cross-browser check (Chrome, Safari, mobile Safari sizes). Final `npm run export`.
+`srcset`/lazy images, three.js only on pages that use it, preload hero assets, SEO (titles, meta, OG, `Product` + `Organization` JSON-LD), accessibility (focus, contrast, alt, aria, skip link), `design-taste-frontend` finish gate, cross-browser and mobile pass, final export.
 
 ---
 
 ## Working agreement for the coding agent
-- Work phase by phase, in order, and commit after each phase.
-- Match this plan; if something in it is wrong or impossible, stop and report instead of improvising a different architecture.
-- Don't push, create GitHub repos, or touch the live site.
-- If a command is blocked by permissions, report it; don't work around it.
+- Phases in order; commit after each; stop at checkpoints for lead review.
+- Follow this plan. If something is wrong or impossible, stop and report rather than improvising a different architecture.
+- Don't push, create repos, or touch the live site. If a command is denied by permissions, report it; don't work around it.

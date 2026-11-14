@@ -1,24 +1,22 @@
 <?php
 /**
- * Heading block for inner pages.
+ * Heading for inner pages: a colour room with a big title.
  *
- * @param array $args eyebrow, title, lede.
+ * @param array $args title, lede, room (a --glaze token name, default chalk), tone.
  */
 $args = wp_parse_args(
 	$args,
 	array(
-		'eyebrow' => '',
-		'title'   => '',
-		'lede'    => '',
+		'title' => '',
+		'lede'  => '',
+		'room'  => 'chalk',
+		'tone'  => 'light',
 	)
 );
 ?>
-<section class="page-head">
+<section class="page-head room" data-room data-tone="<?php echo esc_attr( $args['tone'] ); ?>" style="--room: var(--<?php echo esc_attr( $args['room'] ); ?>)">
 	<div class="container">
-		<?php if ( $args['eyebrow'] ) : ?>
-			<span class="eyebrow"><?php echo esc_html( $args['eyebrow'] ); ?></span>
-		<?php endif; ?>
-		<h1><?php echo wp_kses( $args['title'], array( 'em' => array() ) ); ?></h1>
+		<h1><?php echo esc_html( $args['title'] ); ?></h1>
 		<?php if ( $args['lede'] ) : ?>
 			<p class="lede"><?php echo esc_html( $args['lede'] ); ?></p>
 		<?php endif; ?>

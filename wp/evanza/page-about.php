@@ -7,9 +7,9 @@ get_header();
 		'template-parts/page-head',
 		null,
 		array(
-			'eyebrow' => 'About',
-			'title'   => 'Made in <em>Morbi</em>.',
-			'lede'    => 'A ceramic mug factory in Morbi, Gujarat, producing since 2022.',
+			'title' => 'Made in Morbi.',
+			'lede'  => 'A ceramic mug factory in Morbi, Gujarat, producing since 2022.',
+			'room'  => 'chalk',
 		)
 	);
 	?>

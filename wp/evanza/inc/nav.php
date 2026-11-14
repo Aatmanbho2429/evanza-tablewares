@@ -28,10 +28,9 @@ function evanza_nav_link_attributes( $atts, $item ) {
 /** Used when a menu location has no menu assigned. */
 function evanza_fallback_menu( $args = array() ) {
 	$items = array(
-		'Home'       => home_url( '/' ),
+		'Collection' => home_url( '/collection/' ),
 		'About'      => home_url( '/about/' ),
 		'Gallery'    => home_url( '/gallery/' ),
-		'Collection' => home_url( '/collection/' ),
 		'Contact'    => home_url( '/contact/' ),
 	);
 	$class = isset( $args['menu_class'] ) ? $args['menu_class'] : 'nav-list';

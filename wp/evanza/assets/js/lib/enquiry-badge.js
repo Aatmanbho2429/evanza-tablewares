@@ -15,7 +15,6 @@ export function initEnquiryBadge() {
 		const n = countItems();
 		document.querySelectorAll('[data-enquiry-count]').forEach((badge) => {
 			badge.textContent = String(n);
-			badge.hidden = n === 0;
 		});
 		document.querySelectorAll('[data-enquiry-open]').forEach((el) => {
 			el.setAttribute('aria-label', n ? `Enquiry list, ${n} item${n === 1 ? '' : 's'}` : 'Enquiry list');

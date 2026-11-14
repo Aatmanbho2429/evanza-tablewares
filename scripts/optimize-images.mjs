@@ -59,10 +59,13 @@ const other = [
 	{ group: 'brand', file: 'iStock-1141639313.jpg', name: 'contact', widths: PHOTO },
 ];
 
-// Logos are trimmed to their artwork and keep transparency.
+// Logos are single-colour silhouettes of the original artwork (the site is monochrome:
+// Graphite on light rooms, Chalk on dark rooms). logo-dark = dark ink, logo-light = light ink.
+const GRAPHITE = '#161616';
+const CHALK = '#efefec';
 const logos = [
-	{ file: 'Evanza-LOGO-1.png', name: 'logo-dark', widths: [240, 480] },
-	{ file: 'white-logo.png', name: 'logo-light', widths: [240, 480] },
+	{ name: 'logo-dark', ink: GRAPHITE, widths: [240, 480] },
+	{ name: 'logo-light', ink: CHALK, widths: [240, 480] },
 ];
 
 // Only the folders this script owns; assets/img/mock is written by make-mock-images.mjs.
@@ -83,24 +86,37 @@ for (const p of [...products, ...factory, ...other]) {
 	await writeSizes(join(src, p.file), p.group, p.name, p.widths);
 	count++;
 }
+const logoSrc = join(src, 'Evanza-LOGO-1.png');
+const trimmedLogo = await sharp(logoSrc).trim({ threshold: 1 }).toBuffer();
+const logoAlpha = await sharp(trimmedLogo).extractChannel('alpha').toBuffer();
+const logoMeta = await sharp(trimmedLogo).metadata();
 for (const l of logos) {
-	const trimmed = await sharp(join(src, l.file)).trim({ threshold: 1 }).toBuffer();
-	await writeSizes(trimmed, 'brand', l.name, l.widths, { quality: 92 });
+	const solid = await sharp({ create: { width: logoMeta.width, height: logoMeta.height, channels: 3, background: l.ink } })
+		.joinChannel(logoAlpha)
+		.png()
+		.toBuffer();
+	await writeSizes(solid, 'brand', l.name, l.widths, { quality: 92 });
 	count++;
 }
 
-// Favicon / app icon: the white mark recoloured to the brand teal.
+// Favicon / app icon: the mark in Chalk on a Graphite square.
 const markSrc = join(src, 'cropped-white-1-1.png');
-const alpha = await sharp(markSrc).extractChannel('alpha').toBuffer();
-const { width, height } = await sharp(markSrc).metadata();
-const teal = await sharp({ create: { width, height, channels: 3, background: '#0081A5' } }).joinChannel(alpha).png().toBuffer();
-const trimmedMark = await sharp(teal).trim({ threshold: 1 }).toBuffer();
+const markAlpha = await sharp(markSrc).extractChannel('alpha').toBuffer();
+const markMeta = await sharp(markSrc).metadata();
+const chalkMark = await sharp({ create: { width: markMeta.width, height: markMeta.height, channels: 3, background: CHALK } })
+	.joinChannel(markAlpha)
+	.png()
+	.toBuffer();
+const trimmedMark = await sharp(chalkMark).trim({ threshold: 1 }).toBuffer();
 await mkdir(join(dest, 'brand'), { recursive: true });
 for (const size of [32, 180, 512]) {
-	const pad = Math.round(size * 0.08);
-	await sharp(trimmedMark)
+	const pad = Math.round(size * 0.2);
+	const mark = await sharp(trimmedMark)
 		.resize(size - pad * 2, size - pad * 2, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
-		.extend({ top: pad, bottom: pad, left: pad, right: pad, background: { r: 0, g: 0, b: 0, alpha: 0 } })
+		.png()
+		.toBuffer();
+	await sharp({ create: { width: size, height: size, channels: 4, background: GRAPHITE } })
+		.composite([{ input: mark, gravity: 'center' }])
 		.png()
 		.toFile(join(dest, 'brand', `mark-${size}.png`));
 }

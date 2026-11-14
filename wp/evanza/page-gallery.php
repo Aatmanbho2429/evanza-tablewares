@@ -7,9 +7,9 @@ get_header();
 		'template-parts/page-head',
 		null,
 		array(
-			'eyebrow' => 'Gallery',
-			'title'   => 'Inside the <em>factory</em>.',
-			'lede'    => 'Products, process and certificates.',
+			'title' => 'Gallery.',
+			'lede'  => 'Our mugs, our factory and our certificates.',
+			'room'  => 'powder',
 		)
 	);
 	?>

@@ -10,15 +10,27 @@ function evanza_asset_version( $relative ) {
 	return file_exists( $file ) ? (string) filemtime( $file ) : EVANZA_VERSION;
 }
 
+/** Pages that load three.js. */
+function evanza_uses_3d() {
+	return is_front_page() || is_singular( 'evanza_product' );
+}
+
 add_action( 'wp_enqueue_scripts', 'evanza_enqueue_assets' );
 function evanza_enqueue_assets() {
+	$styles = array( 'tokens', 'base', 'components', 'layout' );
+	if ( is_front_page() ) {
+		$styles[] = 'home';
+	}
 	$previous = array();
-	foreach ( array( 'tokens', 'base', 'components', 'layout' ) as $name ) {
+	foreach ( $styles as $name ) {
 		$handle = 'evanza-' . $name;
 		wp_enqueue_style( $handle, evanza_asset_url( "css/{$name}.css" ), $previous, evanza_asset_version( "css/{$name}.css" ) );
 		$previous = array( $handle );
 	}
 	wp_enqueue_script_module( 'evanza-main', evanza_asset_url( 'js/main.js' ), array(), evanza_asset_version( 'js/main.js' ) );
+	if ( is_front_page() ) {
+		wp_enqueue_script_module( 'evanza-home', evanza_asset_url( 'js/home.js' ), array(), evanza_asset_version( 'js/home.js' ) );
+	}
 }
 
 // Block, global and emoji styles are not used by this classic theme.
@@ -33,18 +45,31 @@ remove_action( 'wp_footer', 'wp_enqueue_global_styles', 1 );
 remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 remove_action( 'wp_print_styles', 'print_emoji_styles' );
 
-// Flag JS early so CSS can hide reveal-on-scroll content only when scripts run.
+// Flag JS early. If the page scripts never run, a timeout reveals anything they would have prepared.
 add_action( 'wp_head', 'evanza_head_js_flag', 0 );
 function evanza_head_js_flag() {
-	echo "<script>document.documentElement.className=document.documentElement.className.replace('no-js','js');</script>\n";
+	echo "<script>document.documentElement.className=document.documentElement.className.replace('no-js','js');setTimeout(function(){document.documentElement.classList.add('js-ready')},2500);</script>\n";
+}
+
+// Import map for three.js, only where it is used. Must come before any module script.
+add_action( 'wp_head', 'evanza_head_importmap', 1 );
+function evanza_head_importmap() {
+	if ( ! evanza_uses_3d() ) {
+		return;
+	}
+	$map = array(
+		'imports' => array(
+			'three'          => evanza_asset_url( 'vendor/three/three.module.js' ),
+			'three/addons/'  => evanza_asset_url( 'vendor/three/addons/' ),
+		),
+	);
+	echo '<script type="importmap">' . wp_json_encode( $map, JSON_UNESCAPED_SLASHES ) . "</script>\n"; // phpcs:ignore WordPress.Security.EscapeOutput
 }
 
 add_action( 'wp_head', 'evanza_head_extras', 2 );
 function evanza_head_extras() {
-	foreach ( array( 'instrument-serif-400.woff2', 'geist-variable.woff2' ) as $font ) {
-		printf( '<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n", esc_url( evanza_asset_url( 'fonts/' . $font ) ) );
-	}
-	echo '<meta name="theme-color" content="#f5f1ea">' . "\n";
+	printf( '<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n", esc_url( evanza_asset_url( 'fonts/bricolage-grotesque.woff2' ) ) );
+	echo '<meta name="theme-color" content="#efefec">' . "\n";
 	if ( ! has_site_icon() ) {
 		printf( '<link rel="icon" type="image/png" sizes="32x32" href="%s">' . "\n", esc_url( evanza_asset_url( 'img/brand/mark-32.png' ) ) );
 		printf( '<link rel="apple-touch-icon" href="%s">' . "\n", esc_url( evanza_asset_url( 'img/brand/mark-180.png' ) ) );
