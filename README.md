@@ -21,3 +21,16 @@ The first boot downloads WordPress and takes a minute or two. `wp/blueprint.json
 | `npm run vendor` | Copy three, GSAP, Lenis and the font from `node_modules` into the theme |
 | `npm run images` | Convert `images/` into WebP files and monochrome logos under `wp/evanza/assets/img/` |
 | `npm run mock-images` | Generate the transparent SVG mug renders for variants with no photo |
+| `npm run export` | Crawl the running dev server into `static/` (GitHub Pages preview) |
+| `npm run preview:static` | Serve `static/` at http://127.0.0.1:9500/evanza-tablewares/ |
+
+## Publish the static preview
+
+Live preview: https://aatmanbho2429.github.io/evanza-tablewares/
+
+1. `npm run dev` (keep it running)
+2. `npm run export` (rebuilds `static/` and fails if any referenced file is missing)
+3. Optional: `npm run preview:static` and click through the site
+4. Commit and push `static/` to `main`. `.github/workflows/pages.yml` deploys it.
+
+On the static copy the contact form opens a prefilled email instead of posting to WordPress.

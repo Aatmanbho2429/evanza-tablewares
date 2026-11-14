@@ -1,0 +1,116 @@
+/* Product tile: a flat tone-on-tone square with the render, name, capacity and colour dots. Used on Collection and Product. */
+
+.tile {
+	min-width: 0;
+}
+.tile__link {
+	display: block;
+	text-decoration: none;
+}
+.tile__art {
+	--c: #cfcfca;
+	position: relative;
+	display: block;
+	aspect-ratio: 1;
+	overflow: hidden;
+	/* A flat tone-on-tone square: the variant colour at 36% over a neutral. */
+	background: color-mix(in oklch, var(--c) 36%, #dcdcd6);
+	transition: background-color 300ms var(--ease-out);
+}
+.tile__render,
+.tile__photo {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+.tile__render {
+	object-fit: contain;
+	padding: 5%;
+}
+.tile__photo {
+	object-fit: cover;
+	opacity: 0;
+	transition: opacity 250ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+	.tile__link:hover .has-photo .tile__photo {
+		opacity: 1;
+	}
+}
+.tile__name {
+	display: block;
+	margin-top: var(--s-3);
+	font-size: clamp(1.15rem, 1rem + 0.9vw, 1.6rem);
+	line-height: 1.02;
+}
+.tile__meta {
+	display: block;
+	margin-top: 0.2rem;
+	font-size: var(--t-small);
+	color: var(--ink-2);
+}
+.tile__dots {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin: 0.15rem 0 0 -0.4rem;
+}
+.glaze--tile {
+	width: 1.75rem;
+	height: 1.75rem;
+}
+.glaze--tile::before {
+	width: 0.95rem;
+	height: 0.95rem;
+}
+.glaze--tile::after {
+	inset: 0.1rem;
+	border-width: 1.5px;
+}
+.tile__more {
+	display: inline-flex;
+	align-items: center;
+	min-height: 1.75rem;
+	padding: 0 0.35rem;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	text-decoration: none;
+}
+@media (min-width: 48rem) {
+	.glaze--tile {
+		width: 2rem;
+		height: 2rem;
+	}
+	.glaze--tile::before {
+		width: 1.05rem;
+		height: 1.05rem;
+	}
+	.tile__more {
+		min-height: 2rem;
+	}
+}
+
+/* Rail: a horizontal row of tiles (related mugs, new in). */
+.rail {
+	display: flex;
+	gap: var(--s-4);
+	padding: 0 var(--gutter);
+	overflow-x: auto;
+	scroll-snap-type: x proximity;
+	scroll-padding-inline: var(--gutter);
+	scrollbar-width: none;
+	cursor: grab;
+}
+.rail::-webkit-scrollbar {
+	display: none;
+}
+.rail.is-dragging {
+	scroll-snap-type: none;
+	cursor: grabbing;
+	user-select: none;
+}
+.rail > .tile {
+	flex: 0 0 min(68vw, 17rem);
+	scroll-snap-align: start;
+}

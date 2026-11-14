@@ -1,0 +1,298 @@
+/* Buttons, links, chips, glaze dots, form fields. Everything reads --room / --ink. */
+
+/* Button: filled with the ink colour, text in the room colour. Inverts on dark rooms. */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.6em;
+	min-height: 3.25rem;
+	padding: 0 1.6rem;
+	border: 1.5px solid var(--ink);
+	border-radius: var(--r-btn);
+	background: var(--ink);
+	color: var(--room);
+	font-size: var(--t-small);
+	font-stretch: 90%;
+	font-weight: 600;
+	line-height: 1;
+	text-decoration: none;
+	white-space: nowrap;
+	transition:
+		background-color var(--dur-ui) var(--ease-out),
+		color var(--dur-ui) var(--ease-out),
+		transform var(--dur-press) var(--ease-out);
+}
+.btn:active {
+	transform: scale(0.97);
+}
+.btn--outline {
+	background: transparent;
+	color: var(--ink);
+}
+.btn--sm {
+	min-height: 2.75rem;
+	padding: 0 1.1rem;
+}
+.btn--block {
+	width: 100%;
+}
+.btn[disabled],
+.btn[aria-disabled="true"] {
+	opacity: 0.4;
+	pointer-events: none;
+}
+.btn--lg {
+	min-height: 4.25rem;
+	padding: 0 2.4rem;
+	font-size: 1.0625rem;
+}
+@media (max-width: 30rem) {
+	.btn--lg {
+		width: 100%;
+	}
+}
+/* Text button (header actions, filter popovers) */
+.text-btn {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
+	padding: 0 0.25rem;
+	border: 0;
+	background: none;
+	font-size: var(--t-small);
+	font-stretch: 90%;
+	font-weight: 600;
+	color: inherit;
+	text-decoration: none;
+	text-decoration-line: underline;
+	text-decoration-color: transparent;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 0.3em;
+	transition: text-decoration-color var(--dur-ui) var(--ease-out);
+}
+.text-btn:active {
+	transform: scale(0.97);
+}
+
+/* Link: underlined, no arrows */
+.link {
+	text-decoration: underline;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 0.18em;
+	transition: text-decoration-thickness var(--dur-ui) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.btn:hover {
+		background: color-mix(in srgb, var(--ink) 82%, var(--room));
+	}
+	.btn--outline:hover {
+		background: var(--ink);
+		color: var(--room);
+	}
+	.text-btn:hover {
+		text-decoration-color: currentColor;
+	}
+	.link:hover {
+		text-decoration-thickness: 4px;
+	}
+}
+
+/* Chip: filters and active-filter tags */
+.chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	min-height: 2.5rem;
+	padding: 0 0.9rem;
+	border: 1.5px solid var(--line);
+	border-radius: var(--r-s);
+	background: transparent;
+	color: var(--ink);
+	font-size: var(--t-small);
+	font-weight: 550;
+	line-height: 1;
+	transition:
+		background-color var(--dur-ui) var(--ease-out),
+		border-color var(--dur-ui) var(--ease-out),
+		color var(--dur-ui) var(--ease-out),
+		transform var(--dur-press) var(--ease-out);
+}
+.chip:active {
+	transform: scale(0.97);
+}
+.chip[aria-pressed="true"],
+.chip.is-active {
+	background: var(--ink);
+	border-color: var(--ink);
+	color: var(--room);
+}
+.chip__count {
+	opacity: 0.6;
+	font-variant-numeric: tabular-nums;
+}
+@media (hover: hover) and (pointer: fine) {
+	.chip:hover {
+		border-color: var(--ink);
+	}
+}
+
+/* Glaze dot: one colour, a 44px tap area around a 28px dot. Set --glaze on it. */
+.glaze {
+	--glaze: #888;
+	position: relative;
+	display: inline-grid;
+	place-items: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: none;
+	transition: transform var(--dur-press) var(--ease-out);
+}
+.glaze::before {
+	content: "";
+	width: 1.75rem;
+	height: 1.75rem;
+	border-radius: 50%;
+	background: var(--glaze);
+	box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.16);
+	transition: box-shadow var(--dur-ui) var(--ease-out);
+}
+.glaze::after {
+	content: "";
+	position: absolute;
+	inset: 0.15rem;
+	border: 2px solid var(--ink);
+	border-radius: 50%;
+	opacity: 0;
+	transform: scale(0.88);
+	transition:
+		opacity var(--dur-ui) var(--ease-out),
+		transform var(--dur-ui) var(--ease-out);
+}
+.glaze:active {
+	transform: scale(0.92);
+}
+.glaze[aria-pressed="true"]::after,
+.glaze[aria-checked="true"]::after {
+	opacity: 1;
+	transform: none;
+}
+.glaze--multi::before {
+	background: conic-gradient(#d94b4b, #e8a23a, #e9d44f, #5aa86a, #2f80b5, #6d5bb5, #d94b4b);
+}
+@media (hover: hover) and (pointer: fine) {
+	.glaze:hover::after {
+		opacity: 0.45;
+		transform: none;
+	}
+	.glaze[aria-pressed="true"]:hover::after,
+	.glaze[aria-checked="true"]:hover::after {
+		opacity: 1;
+	}
+}
+
+.glaze--static {
+	width: 1.5rem;
+	height: 1.5rem;
+	flex: none;
+}
+.glaze--static::before {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+.glaze--static::after {
+	display: none;
+}
+
+/* Form fields */
+.field {
+	display: grid;
+	gap: 0.5rem;
+}
+.field > label,
+.field__label {
+	font-size: var(--t-small);
+	font-weight: 600;
+}
+.field__hint {
+	font-size: 0.8125rem;
+	color: var(--ink-2);
+}
+.field__error {
+	font-size: 0.8125rem;
+	font-weight: 600;
+}
+.input,
+.select,
+.textarea {
+	width: 100%;
+	min-height: 3.25rem;
+	padding: 0.8rem 1rem;
+	border: 1.5px solid var(--line);
+	border-radius: var(--r-s);
+	background: transparent;
+	color: var(--ink);
+	font-size: 1rem; /* 16px: stops iOS zooming into the field */
+	transition: border-color var(--dur-ui) var(--ease-out);
+}
+.input::placeholder,
+.textarea::placeholder {
+	color: var(--ink-2);
+	opacity: 0.8;
+}
+.input:focus,
+.select:focus,
+.textarea:focus {
+	outline: 2px solid var(--ink);
+	outline-offset: 2px;
+	border-color: var(--ink);
+}
+.input[aria-invalid="true"],
+.select[aria-invalid="true"],
+.textarea[aria-invalid="true"] {
+	border-color: var(--ink);
+	border-width: 2.5px;
+}
+.textarea {
+	min-height: 9rem;
+	resize: vertical;
+}
+.select {
+	appearance: none;
+	padding-right: 2.75rem;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23161616' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 1rem center;
+	background-size: 1.1rem;
+}
+[data-tone="dark"] .select {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23efefec' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+.check {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.7rem;
+	min-height: 2.75rem;
+	font-size: var(--t-small);
+	font-weight: 500;
+	cursor: pointer;
+}
+.check input {
+	appearance: none;
+	flex: none;
+	width: 1.3rem;
+	height: 1.3rem;
+	margin: 0;
+	border: 1.5px solid var(--ink);
+	border-radius: 4px;
+	background: transparent center / 0.85rem no-repeat;
+	transition: background-color var(--dur-press) var(--ease-out);
+}
+.check input:checked {
+	background-color: var(--ink);
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23efefec' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");
+}
