@@ -1,6 +1,7 @@
 // Generates a transparent studio-style SVG mug, tinted with the variant colours, for every
-// product variant that has no real photo, and writes its path into the variant's images[].
-// A variant is "mock" when its images are empty or its first image is under assets/img/mock/.
+// product variant. The path goes in variant.render (the Collection tile image). A variant
+// with no real photo also gets it as images[0]: "mock" means images is empty or its first
+// image is under assets/img/mock/.
 // The look matches the 3D mug (mug3d.js): glossy glaze, rolled rim, inner colour, soft contact shadow.
 // Run with: npm run mock-images
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
@@ -124,8 +125,6 @@ await mkdir(outDir, { recursive: true });
 let count = 0;
 for (const product of data.products) {
 	for (const variant of product.variants) {
-		const first = variant.images?.[0];
-		if (first && !first.startsWith(MOCK_PREFIX)) continue;
 		const rel = `${MOCK_PREFIX}${product.slug}-${variant.slug}.svg`;
 		const svg = mugSvg({
 			shape: product.shape,
@@ -134,7 +133,11 @@ for (const product of data.products) {
 			handle: variant.handle || variant.hex,
 		});
 		await writeFile(join(outDir, `${product.slug}-${variant.slug}.svg`), svg);
-		variant.images = [rel, ...(variant.images || []).filter((p) => !p.startsWith(MOCK_PREFIX))];
+		variant.render = rel;
+		const first = variant.images?.[0];
+		if (!first || first.startsWith(MOCK_PREFIX)) {
+			variant.images = [rel, ...(variant.images || []).filter((p) => !p.startsWith(MOCK_PREFIX))];
+		}
 		count++;
 	}
 }

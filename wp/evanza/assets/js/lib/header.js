@@ -22,7 +22,11 @@ export function initHeader() {
 		header.style.setProperty('--room', (style.getPropertyValue('--room-header') || style.getPropertyValue('--room')).trim());
 	}
 
-	// Hide on scroll down, show on scroll up.
+	// Hide on scroll down, show on scroll up. The state is mirrored on <html> so sticky bars can follow.
+	function setHidden(hidden) {
+		header.toggleAttribute('data-hidden', hidden);
+		document.documentElement.toggleAttribute('data-header-hidden', hidden);
+	}
 	let lastY = window.scrollY;
 	let ticking = false;
 	function onScroll() {
@@ -32,8 +36,8 @@ export function initHeader() {
 			ticking = false;
 			const y = window.scrollY;
 			const delta = y - lastY;
-			if (y < 40 || delta < -6 || menuOpen()) header.removeAttribute('data-hidden');
-			else if (delta > 6 && y > header.offsetHeight * 2) header.setAttribute('data-hidden', '');
+			if (y < 40 || delta < -6 || menuOpen()) setHidden(false);
+			else if (delta > 6 && y > header.offsetHeight * 2) setHidden(true);
 			if (Math.abs(delta) > 6) lastY = y;
 			syncRoom();
 		});
@@ -41,7 +45,7 @@ export function initHeader() {
 	window.addEventListener('scroll', onScroll, { passive: true });
 	window.addEventListener('resize', syncRoom);
 	document.addEventListener('evanza:room', syncRoom);
-	header.addEventListener('focusin', () => header.removeAttribute('data-hidden'));
+	header.addEventListener('focusin', () => setHidden(false));
 	syncRoom();
 
 	// Mobile menu
@@ -61,7 +65,7 @@ export function initHeader() {
 		toggle.setAttribute('aria-expanded', String(open));
 		toggle.textContent = open ? 'Close' : 'Menu';
 		if (open) {
-			header.removeAttribute('data-hidden');
+			setHidden(false);
 			header.dataset.tone = 'dark';
 			header.style.setProperty('--room', 'var(--graphite)');
 			links[0]?.focus({ preventScroll: true });

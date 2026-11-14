@@ -78,6 +78,9 @@ a {
 	color: inherit;
 	touch-action: manipulation;
 }
+[hidden] {
+	display: none !important;
+}
 ul,
 ol {
 	margin: 0;

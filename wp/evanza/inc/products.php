@@ -48,8 +48,8 @@ function evanza_get_categories() {
 	foreach ( $terms as $term ) {
 		$out[] = array(
 			'slug'        => $term->slug,
-			'name'        => $term->name,
-			'description' => $term->description,
+			'name'        => wp_specialchars_decode( $term->name, ENT_QUOTES ),
+			'description' => wp_specialchars_decode( $term->description, ENT_QUOTES ),
 			'cover'       => evanza_resolve_asset( get_term_meta( $term->term_id, 'evanza_cover', true ) ),
 			'catalogue'   => evanza_resolve_asset( get_term_meta( $term->term_id, 'evanza_catalogue', true ) ) ?: evanza_catalogue_url(),
 		);
@@ -63,13 +63,14 @@ function evanza_build_product( $post ) {
 	$variants = array();
 	foreach ( (array) get_post_meta( $post->ID, '_evanza_variants', true ) as $v ) {
 		$v['images'] = array_map( 'evanza_resolve_asset', isset( $v['images'] ) ? (array) $v['images'] : array() );
+		$v['render'] = evanza_resolve_asset( isset( $v['render'] ) ? $v['render'] : ( $v['images'][0] ?? '' ) );
 		$variants[]  = $v;
 	}
 	return array(
 		'id'          => $post->ID,
 		'slug'        => $post->post_name,
 		'url'         => get_permalink( $post ),
-		'name'        => get_the_title( $post ),
+		'name'        => wp_specialchars_decode( get_the_title( $post ), ENT_QUOTES ),
 		'category'    => $category,
 		'badges'      => array_values( (array) get_post_meta( $post->ID, '_evanza_badges', true ) ),
 		'featured'    => (bool) get_post_meta( $post->ID, '_evanza_featured', true ),

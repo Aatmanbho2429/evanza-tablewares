@@ -161,7 +161,8 @@
 					"images": [
 						"assets/img/products/IMG_5241-1600.webp",
 						"assets/img/products/IMG_4750-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/everyday-classic-mug-white.svg"
 				},
 				{
 					"slug": "powder",
@@ -172,7 +173,8 @@
 					"handle": "#bcd7e6",
 					"images": [
 						"assets/img/products/IMG_5251-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/everyday-classic-mug-powder.svg"
 				},
 				{
 					"slug": "green",
@@ -183,7 +185,8 @@
 					"handle": "#8cc152",
 					"images": [
 						"assets/img/products/016A1271-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/everyday-classic-mug-green.svg"
 				},
 				{
 					"slug": "red",
@@ -194,7 +197,8 @@
 					"handle": "#c8202a",
 					"images": [
 						"assets/img/mock/everyday-classic-mug-red.svg"
-					]
+					],
+					"render": "assets/img/mock/everyday-classic-mug-red.svg"
 				},
 				{
 					"slug": "black",
@@ -205,7 +209,8 @@
 					"handle": "#1b1a1a",
 					"images": [
 						"assets/img/mock/everyday-classic-mug-black.svg"
-					]
+					],
+					"render": "assets/img/mock/everyday-classic-mug-black.svg"
 				}
 			]
 		},
@@ -238,7 +243,8 @@
 					"handle": "#1d2346",
 					"images": [
 						"assets/img/products/016A1265-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/aura-latte-mug-navy.svg"
 				},
 				{
 					"slug": "white",
@@ -249,7 +255,8 @@
 					"handle": "#f4f1ec",
 					"images": [
 						"assets/img/products/IMG_5249-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/aura-latte-mug-white.svg"
 				},
 				{
 					"slug": "teal",
@@ -260,7 +267,8 @@
 					"handle": "#1f6f6a",
 					"images": [
 						"assets/img/products/IMG_4718-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/aura-latte-mug-teal.svg"
 				},
 				{
 					"slug": "black",
@@ -271,7 +279,8 @@
 					"handle": "#1b1a1a",
 					"images": [
 						"assets/img/mock/aura-latte-mug-black.svg"
-					]
+					],
+					"render": "assets/img/mock/aura-latte-mug-black.svg"
 				},
 				{
 					"slug": "red",
@@ -282,7 +291,8 @@
 					"handle": "#c8202a",
 					"images": [
 						"assets/img/mock/aura-latte-mug-red.svg"
-					]
+					],
+					"render": "assets/img/mock/aura-latte-mug-red.svg"
 				}
 			]
 		},
@@ -316,7 +326,8 @@
 					"handle": "#1b1a1a",
 					"images": [
 						"assets/img/products/016A1315-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/noir-two-tone-mug-black.svg"
 				},
 				{
 					"slug": "red",
@@ -328,7 +339,8 @@
 					"handle": "#c8202a",
 					"images": [
 						"assets/img/products/IMG_5264-1-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/noir-two-tone-mug-red.svg"
 				},
 				{
 					"slug": "sky",
@@ -340,7 +352,8 @@
 					"handle": "#5fb4e0",
 					"images": [
 						"assets/img/products/IMG_4085-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/noir-two-tone-mug-sky.svg"
 				},
 				{
 					"slug": "navy",
@@ -352,7 +365,8 @@
 					"handle": "#1d2346",
 					"images": [
 						"assets/img/mock/noir-two-tone-mug-navy.svg"
-					]
+					],
+					"render": "assets/img/mock/noir-two-tone-mug-navy.svg"
 				}
 			]
 		},
@@ -386,7 +400,8 @@
 					"images": [
 						"assets/img/products/016A1290-1600.webp",
 						"assets/img/products/IMG_3697-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/love-heart-mug-black.svg"
 				},
 				{
 					"slug": "red",
@@ -397,7 +412,8 @@
 					"handle": "#c8202a",
 					"images": [
 						"assets/img/mock/love-heart-mug-red.svg"
-					]
+					],
+					"render": "assets/img/mock/love-heart-mug-red.svg"
 				},
 				{
 					"slug": "navy",
@@ -408,7 +424,8 @@
 					"handle": "#1d2346",
 					"images": [
 						"assets/img/mock/love-heart-mug-navy.svg"
-					]
+					],
+					"render": "assets/img/mock/love-heart-mug-navy.svg"
 				}
 			]
 		},
@@ -441,7 +458,8 @@
 					"handle": "#1b1a1a",
 					"images": [
 						"assets/img/products/009-01-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/noir-marble-mug-black.svg"
 				},
 				{
 					"slug": "white",
@@ -452,7 +470,8 @@
 					"handle": "#e9e6e0",
 					"images": [
 						"assets/img/mock/noir-marble-mug-white.svg"
-					]
+					],
+					"render": "assets/img/mock/noir-marble-mug-white.svg"
 				}
 			]
 		},
@@ -487,7 +506,8 @@
 					"images": [
 						"assets/img/products/001-2-1600.webp",
 						"assets/img/products/black-mug-desk-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/executive-black-gift-set-black.svg"
 				},
 				{
 					"slug": "navy",
@@ -498,7 +518,8 @@
 					"handle": "#1d2346",
 					"images": [
 						"assets/img/mock/executive-black-gift-set-navy.svg"
-					]
+					],
+					"render": "assets/img/mock/executive-black-gift-set-navy.svg"
 				},
 				{
 					"slug": "white",
@@ -509,7 +530,8 @@
 					"handle": "#f4f1ec",
 					"images": [
 						"assets/img/mock/executive-black-gift-set-white.svg"
-					]
+					],
+					"render": "assets/img/mock/executive-black-gift-set-white.svg"
 				}
 			]
 		},
@@ -540,7 +562,8 @@
 					"handle": "#f4f1ec",
 					"images": [
 						"assets/img/products/AURA-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/aura-mug-white.svg"
 				},
 				{
 					"slug": "stone",
@@ -551,7 +574,8 @@
 					"handle": "#b9b6b0",
 					"images": [
 						"assets/img/mock/aura-mug-stone.svg"
-					]
+					],
+					"render": "assets/img/mock/aura-mug-stone.svg"
 				},
 				{
 					"slug": "black",
@@ -562,7 +586,8 @@
 					"handle": "#1b1a1a",
 					"images": [
 						"assets/img/mock/aura-mug-black.svg"
-					]
+					],
+					"render": "assets/img/mock/aura-mug-black.svg"
 				}
 			]
 		},
@@ -594,7 +619,8 @@
 					"images": [
 						"assets/img/products/IMG_3977-1600.webp",
 						"assets/img/products/IMG_3706-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/verde-tall-mug-teal.svg"
 				},
 				{
 					"slug": "navy",
@@ -605,7 +631,8 @@
 					"handle": "#1d2346",
 					"images": [
 						"assets/img/mock/verde-tall-mug-navy.svg"
-					]
+					],
+					"render": "assets/img/mock/verde-tall-mug-navy.svg"
 				},
 				{
 					"slug": "red",
@@ -616,7 +643,8 @@
 					"handle": "#c8202a",
 					"images": [
 						"assets/img/mock/verde-tall-mug-red.svg"
-					]
+					],
+					"render": "assets/img/mock/verde-tall-mug-red.svg"
 				},
 				{
 					"slug": "mustard",
@@ -627,7 +655,8 @@
 					"handle": "#d9a521",
 					"images": [
 						"assets/img/mock/verde-tall-mug-mustard.svg"
-					]
+					],
+					"render": "assets/img/mock/verde-tall-mug-mustard.svg"
 				}
 			]
 		},
@@ -662,7 +691,8 @@
 						"assets/img/products/IMG_4815-3-1600.webp",
 						"assets/img/products/IMG_4793-1600.webp",
 						"assets/img/products/IMG_4531-1-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/bella-belly-mug-pink.svg"
 				},
 				{
 					"slug": "yellow",
@@ -673,7 +703,8 @@
 					"handle": "#f0c93a",
 					"images": [
 						"assets/img/mock/bella-belly-mug-yellow.svg"
-					]
+					],
+					"render": "assets/img/mock/bella-belly-mug-yellow.svg"
 				},
 				{
 					"slug": "green",
@@ -684,7 +715,8 @@
 					"handle": "#8cc152",
 					"images": [
 						"assets/img/mock/bella-belly-mug-green.svg"
-					]
+					],
+					"render": "assets/img/mock/bella-belly-mug-green.svg"
 				},
 				{
 					"slug": "sky",
@@ -695,7 +727,8 @@
 					"handle": "#5fb4e0",
 					"images": [
 						"assets/img/mock/bella-belly-mug-sky.svg"
-					]
+					],
+					"render": "assets/img/mock/bella-belly-mug-sky.svg"
 				},
 				{
 					"slug": "orange",
@@ -706,7 +739,8 @@
 					"handle": "#e0662b",
 					"images": [
 						"assets/img/mock/bella-belly-mug-orange.svg"
-					]
+					],
+					"render": "assets/img/mock/bella-belly-mug-orange.svg"
 				}
 			]
 		},
@@ -738,7 +772,8 @@
 					"images": [
 						"assets/img/mock/cortado-latte-mug-black.svg",
 						"assets/img/products/IMG_4540-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/cortado-latte-mug-black.svg"
 				},
 				{
 					"slug": "pink",
@@ -749,7 +784,8 @@
 					"handle": "#efb3c4",
 					"images": [
 						"assets/img/mock/cortado-latte-mug-pink.svg"
-					]
+					],
+					"render": "assets/img/mock/cortado-latte-mug-pink.svg"
 				},
 				{
 					"slug": "red",
@@ -760,7 +796,8 @@
 					"handle": "#c8202a",
 					"images": [
 						"assets/img/mock/cortado-latte-mug-red.svg"
-					]
+					],
+					"render": "assets/img/mock/cortado-latte-mug-red.svg"
 				},
 				{
 					"slug": "sky",
@@ -771,7 +808,8 @@
 					"handle": "#5fb4e0",
 					"images": [
 						"assets/img/mock/cortado-latte-mug-sky.svg"
-					]
+					],
+					"render": "assets/img/mock/cortado-latte-mug-sky.svg"
 				}
 			]
 		},
@@ -802,7 +840,8 @@
 					"handle": "#5d6064",
 					"images": [
 						"assets/img/mock/barista-latte-mug-charcoal.svg"
-					]
+					],
+					"render": "assets/img/mock/barista-latte-mug-charcoal.svg"
 				},
 				{
 					"slug": "white",
@@ -813,7 +852,8 @@
 					"handle": "#f4f1ec",
 					"images": [
 						"assets/img/mock/barista-latte-mug-white.svg"
-					]
+					],
+					"render": "assets/img/mock/barista-latte-mug-white.svg"
 				},
 				{
 					"slug": "teal",
@@ -824,7 +864,8 @@
 					"handle": "#1f6f6a",
 					"images": [
 						"assets/img/mock/barista-latte-mug-teal.svg"
-					]
+					],
+					"render": "assets/img/mock/barista-latte-mug-teal.svg"
 				}
 			]
 		},
@@ -857,7 +898,8 @@
 						"assets/img/mock/cafe-duo-mug-green.svg",
 						"assets/img/products/IMG_4802-1600.webp",
 						"assets/img/products/IMG_4800-2-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/cafe-duo-mug-green.svg"
 				},
 				{
 					"slug": "pink",
@@ -868,7 +910,8 @@
 					"handle": "#efb3c4",
 					"images": [
 						"assets/img/mock/cafe-duo-mug-pink.svg"
-					]
+					],
+					"render": "assets/img/mock/cafe-duo-mug-pink.svg"
 				},
 				{
 					"slug": "orange",
@@ -879,7 +922,8 @@
 					"handle": "#e0662b",
 					"images": [
 						"assets/img/mock/cafe-duo-mug-orange.svg"
-					]
+					],
+					"render": "assets/img/mock/cafe-duo-mug-orange.svg"
 				},
 				{
 					"slug": "teal",
@@ -890,7 +934,8 @@
 					"handle": "#1f6f6a",
 					"images": [
 						"assets/img/mock/cafe-duo-mug-teal.svg"
-					]
+					],
+					"render": "assets/img/mock/cafe-duo-mug-teal.svg"
 				}
 			]
 		},
@@ -924,7 +969,8 @@
 					"handle": "#1d2346",
 					"images": [
 						"assets/img/products/016A1307-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/amour-heart-mug-navy.svg"
 				},
 				{
 					"slug": "red",
@@ -936,7 +982,8 @@
 					"handle": "#c8202a",
 					"images": [
 						"assets/img/products/IMG_4215-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/amour-heart-mug-red.svg"
 				},
 				{
 					"slug": "pink",
@@ -948,7 +995,8 @@
 					"handle": "#efb3c4",
 					"images": [
 						"assets/img/mock/amour-heart-mug-pink.svg"
-					]
+					],
+					"render": "assets/img/mock/amour-heart-mug-pink.svg"
 				}
 			]
 		},
@@ -979,7 +1027,8 @@
 					"handle": "#d9c3a0",
 					"images": [
 						"assets/img/products/012-01-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/sunrise-gradient-mug-sand.svg"
 				},
 				{
 					"slug": "rose",
@@ -990,7 +1039,8 @@
 					"handle": "#e9a6c7",
 					"images": [
 						"assets/img/products/IMG_5235-2-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/sunrise-gradient-mug-rose.svg"
 				},
 				{
 					"slug": "sky",
@@ -1001,7 +1051,8 @@
 					"handle": "#5fb4e0",
 					"images": [
 						"assets/img/mock/sunrise-gradient-mug-sky.svg"
-					]
+					],
+					"render": "assets/img/mock/sunrise-gradient-mug-sky.svg"
 				}
 			]
 		},
@@ -1035,7 +1086,8 @@
 					"handle": "#c8202a",
 					"images": [
 						"assets/img/products/IMG_4022-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/teddy-love-printed-mug-red.svg"
 				},
 				{
 					"slug": "sky",
@@ -1047,7 +1099,8 @@
 					"handle": "#5fb4e0",
 					"images": [
 						"assets/img/mock/teddy-love-printed-mug-sky.svg"
-					]
+					],
+					"render": "assets/img/mock/teddy-love-printed-mug-sky.svg"
 				},
 				{
 					"slug": "yellow",
@@ -1059,7 +1112,8 @@
 					"handle": "#f0c93a",
 					"images": [
 						"assets/img/mock/teddy-love-printed-mug-yellow.svg"
-					]
+					],
+					"render": "assets/img/mock/teddy-love-printed-mug-yellow.svg"
 				}
 			]
 		},
@@ -1093,7 +1147,8 @@
 					"handle": "#efb3c4",
 					"images": [
 						"assets/img/products/IMG_5364-1-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/valentine-print-mug-pink.svg"
 				},
 				{
 					"slug": "red",
@@ -1105,7 +1160,8 @@
 					"handle": "#c8202a",
 					"images": [
 						"assets/img/mock/valentine-print-mug-red.svg"
-					]
+					],
+					"render": "assets/img/mock/valentine-print-mug-red.svg"
 				}
 			]
 		},
@@ -1137,7 +1193,8 @@
 					"images": [
 						"assets/img/products/IMG_5250-1600.webp",
 						"assets/img/products/IMG_5244-1-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/petite-espresso-cup-white.svg"
 				},
 				{
 					"slug": "black",
@@ -1148,7 +1205,8 @@
 					"handle": "#1b1a1a",
 					"images": [
 						"assets/img/mock/petite-espresso-cup-black.svg"
-					]
+					],
+					"render": "assets/img/mock/petite-espresso-cup-black.svg"
 				},
 				{
 					"slug": "teal",
@@ -1159,7 +1217,8 @@
 					"handle": "#1f6f6a",
 					"images": [
 						"assets/img/mock/petite-espresso-cup-teal.svg"
-					]
+					],
+					"render": "assets/img/mock/petite-espresso-cup-teal.svg"
 				},
 				{
 					"slug": "red",
@@ -1170,7 +1229,8 @@
 					"handle": "#c8202a",
 					"images": [
 						"assets/img/mock/petite-espresso-cup-red.svg"
-					]
+					],
+					"render": "assets/img/mock/petite-espresso-cup-red.svg"
 				}
 			]
 		},
@@ -1205,7 +1265,8 @@
 						"assets/img/mock/mini-pastel-cup-yellow.svg",
 						"assets/img/products/016A1383-1600.webp",
 						"assets/img/products/016A1396-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/mini-pastel-cup-yellow.svg"
 				},
 				{
 					"slug": "pink",
@@ -1216,7 +1277,8 @@
 					"handle": "#efb3c4",
 					"images": [
 						"assets/img/mock/mini-pastel-cup-pink.svg"
-					]
+					],
+					"render": "assets/img/mock/mini-pastel-cup-pink.svg"
 				},
 				{
 					"slug": "teal",
@@ -1227,7 +1289,8 @@
 					"handle": "#1f6f6a",
 					"images": [
 						"assets/img/mock/mini-pastel-cup-teal.svg"
-					]
+					],
+					"render": "assets/img/mock/mini-pastel-cup-teal.svg"
 				},
 				{
 					"slug": "lilac",
@@ -1238,7 +1301,8 @@
 					"handle": "#9b8bd0",
 					"images": [
 						"assets/img/mock/mini-pastel-cup-lilac.svg"
-					]
+					],
+					"render": "assets/img/mock/mini-pastel-cup-lilac.svg"
 				},
 				{
 					"slug": "stone",
@@ -1249,7 +1313,8 @@
 					"handle": "#b9b6b0",
 					"images": [
 						"assets/img/mock/mini-pastel-cup-stone.svg"
-					]
+					],
+					"render": "assets/img/mock/mini-pastel-cup-stone.svg"
 				}
 			]
 		},
@@ -1282,7 +1347,8 @@
 						"assets/img/mock/cappuccino-cup-sky.svg",
 						"assets/img/products/IMG_4858-1600.webp",
 						"assets/img/products/IMG_4857-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/cappuccino-cup-sky.svg"
 				},
 				{
 					"slug": "black",
@@ -1293,7 +1359,8 @@
 					"handle": "#1b1a1a",
 					"images": [
 						"assets/img/mock/cappuccino-cup-black.svg"
-					]
+					],
+					"render": "assets/img/mock/cappuccino-cup-black.svg"
 				},
 				{
 					"slug": "mustard",
@@ -1304,7 +1371,8 @@
 					"handle": "#d9a521",
 					"images": [
 						"assets/img/mock/cappuccino-cup-mustard.svg"
-					]
+					],
+					"render": "assets/img/mock/cappuccino-cup-mustard.svg"
 				}
 			]
 		},
@@ -1336,7 +1404,8 @@
 					"handle": "#c9c3b8",
 					"images": [
 						"assets/img/products/IMG_4551-1600.webp"
-					]
+					],
+					"render": "assets/img/mock/festive-mug-gift-box-multi.svg"
 				},
 				{
 					"slug": "teal",
@@ -1347,7 +1416,8 @@
 					"handle": "#1f6f6a",
 					"images": [
 						"assets/img/mock/festive-mug-gift-box-teal.svg"
-					]
+					],
+					"render": "assets/img/mock/festive-mug-gift-box-teal.svg"
 				},
 				{
 					"slug": "red",
@@ -1358,7 +1428,8 @@
 					"handle": "#c8202a",
 					"images": [
 						"assets/img/mock/festive-mug-gift-box-red.svg"
-					]
+					],
+					"render": "assets/img/mock/festive-mug-gift-box-red.svg"
 				}
 			]
 		}

@@ -21,6 +21,9 @@ function evanza_enqueue_assets() {
 	if ( is_front_page() ) {
 		$styles[] = 'home';
 	}
+	if ( is_post_type_archive( 'evanza_product' ) ) {
+		$styles[] = 'collection';
+	}
 	$previous = array();
 	foreach ( $styles as $name ) {
 		$handle = 'evanza-' . $name;
@@ -28,6 +31,9 @@ function evanza_enqueue_assets() {
 		$previous = array( $handle );
 	}
 	wp_enqueue_script_module( 'evanza-main', evanza_asset_url( 'js/main.js' ), array(), evanza_asset_version( 'js/main.js' ) );
+	if ( is_post_type_archive( 'evanza_product' ) ) {
+		wp_enqueue_script_module( 'evanza-collection', evanza_asset_url( 'js/collection.js' ), array(), evanza_asset_version( 'js/collection.js' ) );
+	}
 	if ( is_front_page() ) {
 		wp_enqueue_script_module( 'evanza-home', evanza_asset_url( 'js/home.js' ), array(), evanza_asset_version( 'js/home.js' ) );
 	}
@@ -75,4 +81,13 @@ function evanza_head_extras() {
 		printf( '<link rel="icon" type="image/png" sizes="32x32" href="%s">' . "\n", esc_url( evanza_asset_url( 'img/brand/mark-32.png' ) ) );
 		printf( '<link rel="apple-touch-icon" href="%s">' . "\n", esc_url( evanza_asset_url( 'img/brand/mark-180.png' ) ) );
 	}
+}
+
+// Readable document titles for the product archive.
+add_filter( 'document_title_parts', 'evanza_document_title' );
+function evanza_document_title( $parts ) {
+	if ( is_post_type_archive( 'evanza_product' ) ) {
+		$parts['title'] = 'The collection';
+	}
+	return $parts;
 }
