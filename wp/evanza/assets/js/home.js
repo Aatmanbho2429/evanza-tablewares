@@ -39,6 +39,8 @@ async function initHero(hero) {
 
 	await Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 900))]);
 	hero.classList.add('is-entering');
+	// Once the characters have risen, the line masks are no longer needed.
+	setTimeout(() => hero.classList.add('is-entered'), 1800);
 
 	// Glaze dots
 	const dots = [...hero.querySelectorAll('[data-glaze]')];
@@ -67,12 +69,31 @@ async function initHero(hero) {
 	const canvas = hero.querySelector('[data-hero-canvas]');
 	try {
 		const { createMugViewer } = await import('./mug3d.js');
-		viewer = createMugViewer(canvas, { colors: glaze(current), shape: 'classic', autoRotate: true, interactive: true });
-		// On phones the mug sits lower so only the front line overlaps its base.
-		const phone = window.matchMedia('(max-width: 30rem)');
-		const frame = () => viewer.setFraming(phone.matches ? { offsetY: 0.12 } : { offsetY: 0 });
-		frame();
-		phone.addEventListener('change', frame);
+		viewer = createMugViewer(canvas, {
+			colors: glaze(current),
+			shape: 'classic',
+			autoRotate: true,
+			interactive: true,
+			onFail: () => (hero.dataset.gl = 'off'),
+		});
+		// The mug stands between the lines: its top below the back line, its base overlapping the front line.
+		const stage = hero.querySelector('.hero__stage');
+		const lineEl = back.querySelector('.hero__line');
+		const place = () => {
+			const S = stage.clientHeight;
+			const L = lineEl.offsetHeight;
+			const W = canvas.clientWidth;
+			if (!S || !L) return;
+			// Height the mug may take: the gap plus a 35% overlap with the front line, never wider than the canvas allows.
+			const byGap = (S - 2.04 * L) / 0.65;
+			const byWidth = (W * 0.8) / 1.64;
+			const height = Math.max(S * 0.3, Math.min(byGap, byWidth, S - 1.1 * L));
+			const bottom = Math.min(S - L + 0.35 * height, S - 0.05 * L);
+			const centre = bottom - height / 2;
+			viewer.setFraming({ fit: height / S, offsetY: (centre - S / 2) / S });
+		};
+		place();
+		new ResizeObserver(place).observe(stage);
 		viewer.enter({ delay: reducedMotion.matches ? 0 : 120 });
 		canvas.classList.add('is-ready');
 		hero.dataset.gl = 'on';

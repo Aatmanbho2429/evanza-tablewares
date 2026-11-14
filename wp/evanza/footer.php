@@ -10,7 +10,7 @@ $biz = evanza_business();
 
 		<div class="site-footer__grid">
 			<nav aria-label="<?php esc_attr_e( 'Footer', 'evanza' ); ?>">
-				<h2>Pages</h2>
+				<p class="site-footer__label">Pages</p>
 				<?php
 				wp_nav_menu(
 					array(
@@ -28,7 +28,7 @@ $biz = evanza_business();
 			</nav>
 
 			<div>
-				<h2>Directors</h2>
+				<p class="site-footer__label">Directors</p>
 				<ul>
 					<?php foreach ( $biz['people'] as $person ) : ?>
 						<li><a class="link" href="tel:+91<?php echo esc_attr( $person['phone'] ); ?>"><?php echo esc_html( $person['name'] ); ?>, <?php echo esc_html( evanza_format_phone( $person['phone'] ) ); ?></a></li>
@@ -37,14 +37,14 @@ $biz = evanza_business();
 			</div>
 
 			<div>
-				<h2>Write to us</h2>
+				<p class="site-footer__label">Write to us</p>
 				<address>
 					<a class="link" href="mailto:<?php echo esc_attr( $biz['email'] ); ?>"><?php echo esc_html( $biz['email'] ); ?></a>
 				</address>
 			</div>
 
 			<div>
-				<h2>The factory</h2>
+				<p class="site-footer__label">The factory</p>
 				<address><?php echo esc_html( $biz['address'] ); ?></address>
 			</div>
 		</div>

@@ -105,6 +105,10 @@
 .thumb[aria-pressed="true"] {
 	outline-color: var(--ink);
 }
+.thumb:focus-visible {
+	outline-color: var(--ink);
+	outline-offset: 4px;
+}
 .thumb:active {
 	transform: scale(0.96);
 }
@@ -121,6 +125,11 @@
 	display: grid;
 	gap: var(--s-5);
 	align-content: start;
+}
+.crumbs a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
 }
 .crumbs ol {
 	display: flex;
@@ -142,6 +151,11 @@
 	font-stretch: 75%;
 	font-weight: 800;
 	line-height: 0.92;
+}
+.product__buy .link {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
 }
 .product__badges {
 	margin-top: calc(var(--s-3) * -1);
@@ -211,6 +225,9 @@
 }
 .related .container {
 	margin-bottom: var(--s-5);
+}
+.related h2 {
+	font-size: var(--t-3);
 }
 .rail {
 	display: flex;

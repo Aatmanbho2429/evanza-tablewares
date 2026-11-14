@@ -7,7 +7,7 @@
 //   viewer.enter();                    // the mug rises and settles
 //   viewer.dispose();
 //
-// Shapes: classic, latte, belly, espresso, heart. The canvas is transparent; the page room colour
+// Shapes: classic, latte, belly, espresso, heart. Option onFail runs if a shader does not compile. The canvas is transparent; the page room colour
 // shows through. Rendering pauses while the canvas is offscreen or the tab is hidden.
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
@@ -90,7 +90,7 @@ function handleGeometry(s) {
 			// rotate so the tip points at the wall: (x, y) -> (y, -x)
 			pts.push(new THREE.Vector3(tipX + (hy + 17) * k, yMid - hx * k, 0));
 		}
-		return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, true, 'centripetal'), 96, h.r, 16, true);
+		return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, true, 'centripetal'), 160, h.r, 32, true);
 	}
 	const x1 = wallRadius(s, yTop) - 0.04;
 	const x2 = wallRadius(s, yBot) - 0.04;
@@ -100,7 +100,7 @@ function handleGeometry(s) {
 		new THREE.Vector3(x2 + h.reach * 1.45, yBot - 0.08 * s.H, 0),
 		new THREE.Vector3(x2, yBot, 0)
 	);
-	return new THREE.TubeGeometry(curve, 48, h.r, 16, false);
+	return new THREE.TubeGeometry(curve, 96, h.r, 32, false);
 }
 
 function shadowTexture() {
@@ -123,28 +123,33 @@ function shadowTexture() {
 // A physical material with a clearcoat glaze. A "glaze" uniform rises the glaze up the mug from
 // the base over matte raw clay (bisque); "kiln" adds a warm glow.
 
-function glazeMaterial(color, uniforms, { inner = false } = {}) {
+function glazeMaterial(color, uniforms) {
 	const mat = new THREE.MeshPhysicalMaterial({
 		color,
 		roughness: 0.1,
 		metalness: 0,
-		clearcoat: 1,
-		clearcoatRoughness: 0.02,
+		// Below 1: a full-strength clearcoat turns thin edges (the rim crest, the handle) into a dotted dark line.
+		clearcoat: 0.6,
+		clearcoatRoughness: 0.08,
 		ior: 1.5,
 		specularIntensity: 1,
-		envMapIntensity: inner ? 0.55 : 1,
-		side: THREE.DoubleSide,
+		side: THREE.FrontSide,
 	});
+	// The cup's inside shares the shell's mesh (so the rim is one smooth surface) and takes uInnerColor.
+	mat.userData.innerColor = new THREE.Color(color);
 	mat.onBeforeCompile = (shader) => {
 		Object.assign(shader.uniforms, uniforms);
+		shader.uniforms.uInnerColor = { value: mat.userData.innerColor };
 		shader.vertexShader = shader.vertexShader
-			.replace('#include <common>', '#include <common>\nvarying vec3 vOP;')
-			.replace('#include <begin_vertex>', '#include <begin_vertex>\nvOP = position;');
+			.replace('#include <common>', '#include <common>\nattribute float aInner;\nvarying vec3 vOP;\nvarying float vInner;')
+			.replace('#include <begin_vertex>', '#include <begin_vertex>\nvOP = position;\nvInner = aInner;');
 		shader.fragmentShader = shader.fragmentShader
 			.replace(
 				'#include <common>',
 				`#include <common>
 varying vec3 vOP;
+varying float vInner;
+uniform vec3 uInnerColor;
 uniform float uGlaze;
 uniform float uKiln;
 uniform float uH;
@@ -159,11 +164,12 @@ float vnoise(vec3 x){
 			.replace(
 				'#include <color_fragment>',
 				`#include <color_fragment>
+diffuseColor.rgb = mix(diffuseColor.rgb, uInnerColor, vInner);
 float hN = clamp(vOP.y / uH, 0.0, 1.0);
 float gMask = smoothstep(0.0, 0.08, uGlaze * 1.4 - hN - 0.1 + (vnoise(vOP * 7.0) - 0.5) * 0.2);
 vec3 clay = uBisque * (0.9 + 0.2 * vnoise(vOP * 38.0));
 diffuseColor.rgb = mix(clay, diffuseColor.rgb, gMask);
-${inner ? 'diffuseColor.rgb *= mix(0.5, 1.0, smoothstep(0.0, 1.0, hN));' : ''}`
+diffuseColor.rgb *= mix(1.0, mix(0.5, 1.0, smoothstep(0.0, 1.0, hN)), vInner);`
 			)
 			.replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = mix(0.96, roughnessFactor, gMask);')
 			.replace('#include <lights_physical_fragment>', '#include <lights_physical_fragment>\nmaterial.clearcoat *= gMask;')
@@ -190,6 +196,8 @@ export function createMugViewer(canvas, options = {}) {
 		err.cause = error;
 		throw err;
 	}
+	// A rejected shader leaves an empty canvas: tell the page so it can show its still image.
+	renderer.debug.onShaderError = () => opts.onFail?.();
 	renderer.setClearColor(0x000000, 0);
 	renderer.outputColorSpace = THREE.SRGBColorSpace;
 	renderer.toneMapping = THREE.NeutralToneMapping;
@@ -205,6 +213,10 @@ export function createMugViewer(canvas, options = {}) {
 		m.lookAt(0, y, 0);
 		envScene.add(m);
 	};
+	// Lift the room's walls a little so edges that reflect them at grazing angles do not turn black.
+	envScene.traverse((o) => {
+		if (o.isMesh && o.material?.side === THREE.BackSide) o.material.emissive?.setScalar(0.35);
+	});
 	softbox(-4.2, 3.2, 1.2, 0.9, 5.2, 22);
 	softbox(4.4, 3, -0.8, 0.35, 5, 14);
 	softbox(0.5, 6.2, 1.5, 4, 1, 8);
@@ -234,9 +246,11 @@ export function createMugViewer(canvas, options = {}) {
 	};
 	const mats = {
 		body: glazeMaterial(colors.body, uniforms),
-		inner: glazeMaterial(colors.inner, uniforms, { inner: true }),
 		handle: glazeMaterial(colors.handle, uniforms),
 	};
+	// Body and cup colour live on one material; this applies a colour set to it.
+	const paint = (key) => (key === 'inner' ? mats.body.userData.innerColor : mats[key].color).copy(colors[key]);
+	mats.body.userData.innerColor.copy(colors.inner);
 
 	const group = new THREE.Group(); // positioned and scaled by the entrance
 	const spin = new THREE.Group(); // rotated by auto-rotate and drag
@@ -259,11 +273,16 @@ export function createMugViewer(canvas, options = {}) {
 		}
 		const s = SHAPES[shape];
 		const { outer, inner } = profiles(s);
-		const body = new THREE.Mesh(new THREE.LatheGeometry(outer, 160), mats.body);
-		const cup = new THREE.Mesh(new THREE.LatheGeometry(inner, 160), mats.inner);
+		// One continuous profile: outside up over the rim, then down the inside (the crest point is shared).
+		const geometry = new THREE.LatheGeometry([...outer, ...inner.slice(1)], 320);
+		const perRing = outer.length + inner.length - 1;
+		const flags = new Float32Array(geometry.attributes.position.count);
+		for (let i = 0; i < flags.length; i++) flags[i] = i % perRing >= outer.length ? 1 : 0;
+		geometry.setAttribute('aInner', new THREE.BufferAttribute(flags, 1));
+		const body = new THREE.Mesh(geometry, mats.body);
 		const handle = new THREE.Mesh(handleGeometry(s), mats.handle);
 		handle.scale.z = 0.8;
-		meshes = [body, cup, handle];
+		meshes = [body, handle];
 		spin.add(...meshes);
 		uniforms.uH.value = s.H;
 		spin.position.y = 0;
@@ -320,7 +339,7 @@ export function createMugViewer(canvas, options = {}) {
 		if (!animate || reduced.matches) {
 			for (const key of Object.keys(to)) {
 				colors[key].copy(to[key]);
-				mats[key].color.copy(to[key]);
+				paint(key);
 			}
 			colorAnim = null;
 			requestRender();
@@ -378,7 +397,7 @@ export function createMugViewer(canvas, options = {}) {
 		const e = easeOutCubic(t);
 		for (const key of Object.keys(colorAnim.to)) {
 			colors[key].copy(colorAnim.from[key]).lerp(colorAnim.to[key], e);
-			mats[key].color.copy(colors[key]);
+			paint(key);
 		}
 		if (t >= 1) colorAnim = null;
 		return true;

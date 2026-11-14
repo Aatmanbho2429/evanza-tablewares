@@ -32,7 +32,7 @@ $first = $glazes[0];
 
 		<div class="hero__bar">
 			<div class="hero__sub hero__support" style="--i: 0">
-				<p>Made in Morbi, Gujarat, in every glaze. Everyday mugs, gift sets, cafe and hotel ranges, and custom printing, in bulk.</p>
+				<p>Made in Morbi, Gujarat, since 2022. Everyday mugs, gift sets, cafe and hotel ranges, and custom printing, in bulk.</p>
 				<div class="hero__cta">
 					<a class="btn" href="<?php echo esc_url( home_url( '/collection/' ) ); ?>">See the collection</a>
 					<a class="btn btn--outline" href="<?php echo esc_url( evanza_catalogue_url() ); ?>" target="_blank" rel="noopener">Download catalogue</a>

@@ -47,7 +47,7 @@
 	--s-8: 4.5rem;
 	--s-9: 7rem;
 	--s-10: 11rem;
-	--gutter: clamp(1.25rem, 0.5rem + 3.2vw, 3rem);
+	--gutter: clamp(1.25rem, 0.5rem + 3.9vw, 4rem);
 	--max: 90rem;
 
 	/* Shape */
@@ -71,7 +71,7 @@
 
 [data-tone="dark"] {
 	--ink: var(--chalk);
-	--ink-2: color-mix(in srgb, var(--chalk) 72%, transparent);
+	--ink-2: color-mix(in srgb, var(--chalk) 86%, transparent);
 }
 /* Secondary text on glaze rooms: Graphite at 78% keeps AA contrast on every light glaze. */
 [data-tone="light"] {

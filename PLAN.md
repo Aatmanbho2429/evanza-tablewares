@@ -147,7 +147,9 @@ Each phase ends with a **git commit** (`Phase N: …`) and its **Verify** checks
 ### Phase 0: Project setup & local WordPress ✅ done
 Theme skeleton, Playground blueprint, idempotent activation routine (pages, front page, menus), `npm run dev`.
 
-> **Status:** Phases 1 (v2) and 2 are done and the client approved the look. Lead review fixes carried into the Phase 3 batch: (a) on mobile (≤ 480 px) the mug covers the bottom of the back headline line, and there's a large empty gap under the headline; (b) the "Midnight" dot recolours the mug bright cobalt, so rename that glaze "Cobalt" (the room can stay midnight); (c) replace the coffee-specific hero headline, site tagline and any copy per *Content voice*.
+> **Status (latest):** Phases 0–4 are done and reviewed (commits `dba9600`, `2242e40`, `cdefb10`). Next: Phases 5–6. Open review items: (d) at 1440 px the mug still hides the "s" of "Ceramic mugs" on the back headline line; (e) check the white glaze for speckle/shadow-acne artifacts on the inner rim at full resolution; (f) run the `design-taste-frontend` finish gate, which hasn't been run yet.
+>
+> **Earlier status:** Phases 1 (v2) and 2 are done and the client approved the look. Lead review fixes carried into the Phase 3 batch: (a) on mobile (≤ 480 px) the mug covers the bottom of the back headline line, and there's a large empty gap under the headline; (b) the "Midnight" dot recolours the mug bright cobalt, so rename that glaze "Cobalt" (the room can stay midnight); (c) replace the coffee-specific hero headline, site tagline and any copy per *Content voice*.
 
 ### Phase 1 (REDO for v2): Design system, shell, signature prototype
 - Write **`DESIGN.md`**: the tokens above (colour, type scale, spacing, radii, motion curves and durations), type specimen notes, and **ASCII wireframes for all 5 pages + product page**, reviewed against the brief and the "Do not" list.

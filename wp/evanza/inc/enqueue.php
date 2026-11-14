@@ -85,6 +85,18 @@ add_action( 'wp_head', 'evanza_head_extras', 2 );
 function evanza_head_extras() {
 	printf( '<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n", esc_url( evanza_asset_url( 'fonts/bricolage-grotesque.woff2' ) ) );
 	echo '<meta name="theme-color" content="#efefec">' . "\n";
+	$og = array(
+		'og:type'        => 'website',
+		'og:site_name'   => 'Evanza Tablewares',
+		'og:title'       => wp_get_document_title(),
+		'og:description' => 'Ceramic mug manufacturer in Morbi, Gujarat. Everyday mugs, gift sets, cafe and hotel ranges and custom printing, in bulk.',
+		'og:image'       => evanza_asset_url( 'img/brand/mark-512.png' ),
+		'og:url'         => home_url( add_query_arg( null, null ) ),
+	);
+	foreach ( $og as $property => $content ) {
+		printf( '<meta property="%s" content="%s">' . "\n", esc_attr( $property ), esc_attr( $content ) );
+	}
+	echo '<meta name="twitter:card" content="summary">' . "\n";
 	echo '<meta name="description" content="' . esc_attr( 'Evanza Tablewares is a ceramic mug manufacturer in Morbi, Gujarat. Everyday mugs, gift sets, cafe and hotel ranges and custom printing, in every glaze and in bulk.' ) . '">' . "\n";
 	if ( ! has_site_icon() ) {
 		printf( '<link rel="icon" type="image/png" sizes="32x32" href="%s">' . "\n", esc_url( evanza_asset_url( 'img/brand/mark-32.png' ) ) );
@@ -96,7 +108,7 @@ function evanza_head_extras() {
 add_filter( 'document_title_parts', 'evanza_document_title' );
 function evanza_document_title( $parts ) {
 	if ( is_post_type_archive( 'evanza_product' ) ) {
-		$parts['title'] = 'The collection';
+		$parts['title'] = 'Ceramic mug collection';
 	}
 	return $parts;
 }

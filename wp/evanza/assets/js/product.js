@@ -144,7 +144,16 @@ async function init(root) {
 
 	try {
 		const { createMugViewer } = await import('./mug3d.js');
-		viewer = createMugViewer(canvas, { colors: colorsOf(variant), shape: product.shape, autoRotate: true, interactive: true });
+		viewer = createMugViewer(canvas, {
+			colors: colorsOf(variant),
+			shape: product.shape,
+			autoRotate: true,
+			interactive: true,
+			onFail: () => {
+				still.hidden = false;
+				canvas.hidden = true;
+			},
+		});
 		viewer.enter({ duration: 900 });
 		canvas.classList.add('is-ready');
 		still.hidden = true;

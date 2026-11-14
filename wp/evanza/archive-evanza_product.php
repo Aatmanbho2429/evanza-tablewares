@@ -10,7 +10,7 @@ $count     = count( $catalogue['products'] );
 <main id="main" class="site-main" data-collection>
 	<section class="coll-head room" data-room data-coll-head data-tone="light" style="--room: var(--chalk)">
 		<div class="container">
-			<h1>The collection.</h1>
+			<h1>Ceramic mug collection.</h1>
 			<div class="coll-head__row">
 				<p class="lede">Everyday, cafe, gift and custom-printed mugs, in <?php echo esc_html( count( $catalogue['colorFamilies'] ) ); ?> colour families. Pick a glaze to see only the mugs that come in it.</p>
 				<a class="btn" href="<?php echo esc_url( $catalogue['catalogue'] ); ?>" target="_blank" rel="noopener">Download full catalogue (PDF)</a>

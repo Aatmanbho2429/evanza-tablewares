@@ -195,7 +195,9 @@ h3,
 }
 .skip-link:focus {
 	transform: none;
-	outline-color: var(--chalk);
+	outline: 2px solid var(--chalk);
+	outline-offset: 0;
+	box-shadow: 0 0 0 5px var(--graphite);
 }
 
 @media (prefers-reduced-motion: reduce) {
