@@ -1,0 +1,12 @@
+<?php
+/**
+ * Evanza Tablewares theme bootstrap.
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+define( 'EVANZA_VERSION', '1.0.0' );
+define( 'EVANZA_DIR', get_template_directory() );
+define( 'EVANZA_URI', get_template_directory_uri() );
+
+require_once EVANZA_DIR . '/inc/setup.php';
