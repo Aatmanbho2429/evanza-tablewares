@@ -45,7 +45,7 @@ export function variantFor(product, colors) {
 }
 
 /** Real photos of a variant (anything that is not a generated render). */
-export const photosOf = (variant) => variant.images.filter((src) => !src.includes('/assets/img/mock/'));
+export const photosOf = (variant) => variant.images.filter((src) => !src.includes('/assets/img/mock/') && !src.startsWith('data:'));
 
 /** state: { categories: string[], colors: string[], sort }. `skip` leaves one facet out (for facet counts). */
 export function matches(product, state, skip) {

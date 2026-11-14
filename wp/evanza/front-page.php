@@ -119,10 +119,10 @@ $first = $glazes[0];
 			<ul class="cats__list" data-cats>
 				<?php foreach ( $rows as $row ) : ?>
 					<li>
-						<a class="cats__row" href="<?php echo esc_url( add_query_arg( 'category', $row['cat']['slug'], home_url( '/collection/' ) ) ); ?>" data-render="<?php echo esc_url( $row['render'] ); ?>" data-hex="<?php echo esc_attr( $row['hex'] ); ?>">
+						<a class="cats__row" href="<?php echo esc_url( add_query_arg( 'category', $row['cat']['slug'], home_url( '/collection/' ) ) ); ?>" data-render="<?php echo evanza_esc_img( $row['render'] ); ?>" data-hex="<?php echo esc_attr( $row['hex'] ); ?>">
 							<span class="cats__name"><?php echo esc_html( $row['cat']['name'] ); ?></span>
 							<span class="cats__count"><?php echo esc_html( $row['count'] . ( 1 === $row['count'] ? ' mug' : ' mugs' ) ); ?></span>
-							<span class="cats__thumb" style="--c: <?php echo esc_attr( $row['hex'] ); ?>"><img src="<?php echo esc_url( $row['render'] ); ?>" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+							<span class="cats__thumb" style="--c: <?php echo esc_attr( $row['hex'] ); ?>"><img src="<?php echo evanza_esc_img( $row['render'] ); ?>" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
 						</a>
 					</li>
 				<?php endforeach; ?>

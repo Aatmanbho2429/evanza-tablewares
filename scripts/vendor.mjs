@@ -21,16 +21,11 @@ async function copyMinified(from, to) {
 	await writeFile(out(to), code);
 }
 
-// three.js: core build plus the two add-ons the mug viewer uses. The importmap
+// three.js: core build plus the environment add-on the mug viewer uses. The importmap
 // maps "three" to vendor/three/three.module.js and "three/addons/" to vendor/three/addons/.
 await copyMinified(nm('three/build/three.module.js'), 'vendor/three/three.module.js');
 await copyMinified(nm('three/build/three.core.js'), 'vendor/three/three.core.js');
 await copyMinified(nm('three/examples/jsm/environments/RoomEnvironment.js'), 'vendor/three/addons/environments/RoomEnvironment.js');
-await copyMinified(nm('three/examples/jsm/controls/OrbitControls.js'), 'vendor/three/addons/controls/OrbitControls.js');
-
-// GSAP + ScrollTrigger (classic scripts, expose window.gsap / window.ScrollTrigger)
-await copy(nm('gsap/dist/gsap.min.js'), 'vendor/gsap/gsap.min.js');
-await copy(nm('gsap/dist/ScrollTrigger.min.js'), 'vendor/gsap/ScrollTrigger.min.js');
 
 // Lenis (ES module, minified)
 await copyMinified(nm('lenis/dist/lenis.mjs'), 'vendor/lenis/lenis.mjs');

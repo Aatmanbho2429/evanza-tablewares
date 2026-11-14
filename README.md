@@ -18,9 +18,12 @@ The first boot downloads WordPress and takes a minute or two. `wp/blueprint.json
 | Command | What it does |
 |---|---|
 | `npm run dev` | Start WordPress on port 9400 |
-| `npm run vendor` | Copy three, GSAP, Lenis and the font from `node_modules` into the theme |
+| `npm run vendor` | Copy three, Lenis and the font from `node_modules` into the theme |
 | `npm run images` | Convert `images/` into WebP files and monochrome logos under `wp/evanza/assets/img/` |
-| `npm run mock-images` | Generate the transparent SVG mug renders for variants with no photo |
+| `npm run mock-images` | Generate the transparent SVG mug renders for the demo variants |
+| `npm run export` | Export the running site to `static/` for GitHub Pages |
+| `npm run preview:static` | Serve `static/` locally under `/evanza-tablewares/` |
+| `npm run package` | Build `dist/evanza-theme.zip`, the theme for Hostinger (see `DEPLOY-HOSTINGER.md`) |
 | `npm run export` | Crawl the running dev server into `static/` (GitHub Pages preview) |
 | `npm run preview:static` | Serve `static/` at http://127.0.0.1:9500/evanza-tablewares/ |
 

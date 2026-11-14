@@ -61,14 +61,54 @@ function evanza_get_categories() {
 	return $out;
 }
 
+/** The colour families (data/products.json): slug, name, hex. */
+function evanza_color_families() {
+	$demo = evanza_demo_data();
+	return isset( $demo['colorFamilies'] ) ? $demo['colorFamilies'] : array();
+}
+
+/** A stored image (attachment ID, theme path or URL) as a full URL. */
+function evanza_resolve_image( $item ) {
+	if ( is_numeric( $item ) ) {
+		$url = wp_get_attachment_image_url( (int) $item, 'large' );
+		return $url ? $url : '';
+	}
+	return evanza_resolve_asset( (string) $item );
+}
+
+/**
+ * Resolves a stored variant into the public shape: image URLs, a tile render (the uploaded tile
+ * image, a theme render, or one drawn from the colours) and at least one image.
+ */
+function evanza_build_variant( $v, $shape ) {
+	$images = array();
+	foreach ( isset( $v['images'] ) ? (array) $v['images'] : array() as $item ) {
+		$url = evanza_resolve_image( $item );
+		if ( $url ) {
+			$images[] = $url;
+		}
+	}
+	$render = isset( $v['render'] ) && $v['render'] ? evanza_resolve_image( $v['render'] ) : '';
+	if ( ! $render ) {
+		$body   = ! empty( $v['body'] ) ? $v['body'] : $v['hex'];
+		$inner  = ! empty( $v['inner'] ) ? $v['inner'] : $body;
+		$handle = ! empty( $v['handle'] ) ? $v['handle'] : $body;
+		$render = evanza_render_data_uri( $shape, $body, $inner, $handle );
+	}
+	$v['images'] = $images ? $images : array( $render );
+	$v['render'] = $render;
+	return $v;
+}
+
 function evanza_build_product( $post ) {
 	$terms    = get_the_terms( $post, 'evanza_category' );
 	$category = ( $terms && ! is_wp_error( $terms ) ) ? $terms[0]->slug : '';
+	$shape    = get_post_meta( $post->ID, '_evanza_shape', true ) ?: 'classic';
 	$variants = array();
 	foreach ( (array) get_post_meta( $post->ID, '_evanza_variants', true ) as $v ) {
-		$v['images'] = array_map( 'evanza_resolve_asset', isset( $v['images'] ) ? (array) $v['images'] : array() );
-		$v['render'] = evanza_resolve_asset( isset( $v['render'] ) ? $v['render'] : ( $v['images'][0] ?? '' ) );
-		$variants[]  = $v;
+		if ( ! empty( $v['slug'] ) && ! empty( $v['hex'] ) ) {
+			$variants[] = evanza_build_variant( $v, $shape );
+		}
 	}
 	return array(
 		'id'          => $post->ID,
@@ -78,7 +118,7 @@ function evanza_build_product( $post ) {
 		'category'    => $category,
 		'badges'      => array_values( (array) get_post_meta( $post->ID, '_evanza_badges', true ) ),
 		'featured'    => (bool) get_post_meta( $post->ID, '_evanza_featured', true ),
-		'shape'       => get_post_meta( $post->ID, '_evanza_shape', true ) ?: 'classic',
+		'shape'       => $shape,
 		'added'       => get_the_date( 'Y-m-d', $post ),
 		'specs'       => (array) get_post_meta( $post->ID, '_evanza_specs', true ),
 		'description' => wp_strip_all_tags( $post->post_content ),
@@ -104,11 +144,17 @@ function evanza_get_products() {
 			'suppress_filters' => false,
 		)
 	);
-	$demo     = evanza_demo_data();
-	$products = array_map( 'evanza_build_product', $posts );
+	$products = array_values(
+		array_filter(
+			array_map( 'evanza_build_product', $posts ),
+			static function ( $p ) {
+				return ! empty( $p['variants'] );
+			}
+		)
+	);
 	$cache    = array(
 		'categories'    => evanza_get_categories(),
-		'colorFamilies' => isset( $demo['colorFamilies'] ) ? $demo['colorFamilies'] : array(),
+		'colorFamilies' => evanza_color_families(),
 		'catalogue'     => evanza_catalogue_url(),
 		'products'      => $products,
 	);
@@ -157,4 +203,9 @@ function evanza_room_for( $hex ) {
 		return array( 'color' => $mix( $hex, '#efefec', 0.12 ), 'tone' => 'dark' );
 	}
 	return array( 'color' => $mix( '#efefec', $hex, 0.35 ), 'tone' => 'light' );
+}
+
+/** esc_url that also accepts the data: URIs of generated renders. */
+function evanza_esc_img( $src ) {
+	return esc_url( $src, array( 'http', 'https', 'data' ) );
 }

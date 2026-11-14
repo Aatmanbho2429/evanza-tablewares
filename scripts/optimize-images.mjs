@@ -122,4 +122,16 @@ for (const size of [32, 180, 512]) {
 }
 count++;
 
+// Theme screenshot (Appearance > Themes): a glaze room with the logo and a mug render.
+const shot = join(root, 'wp/evanza/screenshot.png');
+const mug = await sharp(join(root, 'wp/evanza/assets/img/mock/bella-belly-mug-green.svg')).resize(640, 640).png().toBuffer();
+const logo = await sharp(join(dest, 'brand/logo-dark-480.webp')).resize({ width: 220 }).png().toBuffer();
+await sharp({ create: { width: 1200, height: 900, channels: 3, background: '#c9d8a6' } })
+	.composite([
+		{ input: mug, left: 280, top: 170 },
+		{ input: logo, left: 70, top: 60 },
+	])
+	.png()
+	.toFile(shot);
+
 console.log(`images: ${count} sources written to ${dest}`);

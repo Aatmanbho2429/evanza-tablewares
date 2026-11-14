@@ -60,7 +60,7 @@ while ( have_posts() ) :
 			<div class="product__stage gallery" data-gallery>
 				<div class="gallery__track" data-track>
 					<div class="gallery__slide" data-slide="3d">
-						<img class="gallery__still" data-still src="<?php echo esc_url( $variant['render'] ); ?>" alt="<?php echo esc_attr( $product['name'] . ', ' . $variant['name'] ); ?>" width="800" height="800" fetchpriority="high">
+						<img class="gallery__still" data-still src="<?php echo evanza_esc_img( $variant['render'] ); ?>" alt="<?php echo esc_attr( $product['name'] . ', ' . $variant['name'] ); ?>" width="800" height="800" fetchpriority="high">
 						<canvas class="gallery__canvas" data-canvas role="img" aria-label="<?php echo esc_attr( '3D view of the ' . $product['name'] . '. Drag to turn it.' ); ?>"></canvas>
 					</div>
 				</div>

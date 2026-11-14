@@ -131,5 +131,20 @@ function evanza_maybe_upgrade() {
 		return;
 	}
 	evanza_update_tagline();
+	evanza_mark_demo_products();
 	update_option( 'evanza_version', EVANZA_VERSION );
+}
+
+/** Products imported by an earlier theme version get the demo flag, so they can be removed in one click. */
+function evanza_mark_demo_products() {
+	$demo  = evanza_demo_data();
+	$slugs = isset( $demo['products'] ) ? wp_list_pluck( $demo['products'], 'slug' ) : array();
+	foreach ( get_posts( array( 'post_type' => 'evanza_product', 'post_status' => 'any', 'numberposts' => -1 ) ) as $post ) {
+		if ( in_array( $post->post_name, $slugs, true ) && '' === get_post_meta( $post->ID, '_evanza_demo', true ) && get_post_meta( $post->ID, '_evanza_variants', true ) ) {
+			$first = get_post_meta( $post->ID, '_evanza_variants', true )[0];
+			if ( ! empty( $first['render'] ) && is_string( $first['render'] ) && 0 === strpos( $first['render'], 'assets/img/mock/' ) ) {
+				update_post_meta( $post->ID, '_evanza_demo', 1 );
+			}
+		}
+	}
 }

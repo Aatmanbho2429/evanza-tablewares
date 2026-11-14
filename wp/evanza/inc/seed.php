@@ -58,6 +58,7 @@ function evanza_seed_products() {
 					'_evanza_featured' => $product['featured'] ? 1 : 0,
 					'_evanza_specs'    => $product['specs'],
 					'_evanza_variants' => $product['variants'],
+					'_evanza_demo'     => 1,
 				),
 			)
 		);

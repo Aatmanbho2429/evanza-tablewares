@@ -3,3 +3,5 @@ node_modules/
 # original source photos stay local; optimized copies live in the theme
 images/
 .claude/
+dist/
+.taste-skill/
