@@ -65,7 +65,8 @@ const logos = [
 	{ file: 'white-logo.png', name: 'logo-light', widths: [240, 480] },
 ];
 
-await rm(dest, { recursive: true, force: true });
+// Only the folders this script owns; assets/img/mock is written by make-mock-images.mjs.
+for (const group of ['products', 'factory', 'certificates', 'brand']) await rm(join(dest, group), { recursive: true, force: true });
 
 async function writeSizes(input, group, name, widths, opts = {}) {
 	await mkdir(join(dest, group), { recursive: true });

@@ -15,7 +15,7 @@ function evanza_nav_link_attributes( $atts, $item ) {
 	if ( '' === $slug ) {
 		$current = is_front_page();
 	} elseif ( 'collection' === $slug ) {
-		$current = is_post_type_archive( 'evanza_product' ) || is_singular( 'evanza_product' ) || is_tax( 'evanza_category' );
+		$current = is_post_type_archive( 'evanza_product' ) || is_singular( 'evanza_product' );
 	} else {
 		$current = is_page( $slug );
 	}

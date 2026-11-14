@@ -26,8 +26,3 @@ function evanza_business() {
 function evanza_format_phone( $digits ) {
 	return '+91 ' . substr( $digits, 0, 5 ) . ' ' . substr( $digits, 5 );
 }
-
-/** Global catalogue PDF URL. Swapped for real data in the product data layer. */
-function evanza_catalogue_url() {
-	return EVANZA_URI . '/assets/catalogues/catalogue-placeholder.pdf';
-}

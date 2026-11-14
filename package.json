@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "wp-playground-cli server --port=9400 --mount=./wp/evanza:/wordpress/wp-content/themes/evanza --blueprint=./wp/blueprint.json --login",
     "vendor": "node scripts/vendor.mjs",
-    "images": "node scripts/optimize-images.mjs"
+    "images": "node scripts/optimize-images.mjs",
+    "mock-images": "node scripts/make-mock-images.mjs"
   },
   "devDependencies": {
     "@fontsource-variable/geist": "^5.3.0",
