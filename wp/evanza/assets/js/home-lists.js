@@ -13,6 +13,7 @@ if (list && window.matchMedia('(hover: hover) and (pointer: fine)').matches && !
 	float.innerHTML = '<img alt="" width="400" height="400">';
 	document.body.append(float);
 	const img = float.querySelector('img');
+	img.src = list.querySelector('.cats__row')?.dataset.render || '';
 
 	let x = 0;
 	let y = 0;

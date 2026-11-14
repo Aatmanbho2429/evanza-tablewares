@@ -237,7 +237,7 @@
 	gap: var(--s-5);
 }
 .story__copy h2 {
-	font-size: var(--t-1);
+	font-size: var(--t-2);
 }
 .story__steps {
 	display: grid;
@@ -248,7 +248,7 @@
 	font-size: clamp(1.15rem, 1rem + 0.9vw, 1.6rem);
 	font-weight: 500;
 	line-height: 1.25;
-	opacity: 0.28;
+	opacity: 0.5;
 	transition: opacity var(--dur-ui) var(--ease-out);
 }
 .story__steps li[data-active] {
@@ -436,7 +436,7 @@
 	justify-items: start;
 }
 .catalogue__inner h2 {
-	font-size: var(--t-1);
+	font-size: var(--t-2);
 }
 .catalogue__links {
 	display: flex;

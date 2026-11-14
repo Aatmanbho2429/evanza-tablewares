@@ -207,3 +207,9 @@ Removed before finishing: the scroll-down cue under the hero and a small "Pick a
 - **Collection head and Product room** both run the glaze pour. Pressing a colour filter pours the room colour from that dot; pressing a product swatch pours the room colour from the swatch and recolours the 3D mug.
 - **Mobile filters** are a bottom sheet (drag the grip to dismiss; a flick or a pull past 40% closes it). The **enquiry list** is a side drawer built on the same component (`axis: 'x'`).
 - **Product gallery** is a scroll-snap track: slide one is the live 3D mug, photos follow. On a phone a horizontal drag on the 3D slide turns the mug, so the thumbnails move between views; photos swipe natively.
+
+## 8. Built notes (Phases 5 and 6)
+- **Clay to cup** is a tall track with a sticky stage and a scroll-progress read (no scroll library, no pin spacer). Progress 0 to 14% holds raw bisque, 14 to 58% raises the glaze, 58 to 86% fires and cools the kiln glow, then it ends glazed. The mug takes the glaze picked in the hero. Under reduced motion the section is a normal block with the finished mug and all three lines.
+- **Shop by category** floats the lead mug's render beside the cursor on hover-capable desktops; elsewhere each row carries a small render.
+- **Making process** (About) is the one numbered sequence: a sticky photo stack on desktop swaps as each step crosses the middle of the screen; on phones each step carries its own photo.
+- **Contact** saves every enquiry (Enquiries in the WP admin) and emails it. The form works without JavaScript through a redirect; with JavaScript it posts in place.
