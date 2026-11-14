@@ -104,8 +104,8 @@ Mobile
 |  Made in Morbi, in every glaze.     [See the collection] [Download catalogue]  |
 |  Gift sets, cafe ranges, printing.                          o o o o o o  Pista.|
 +--------------------------------------------------------------------------------+
-2 Clay to cup (pinned scroll story, Phase 5)   3 Shop by category (big type list)
-4 New in (drag rail)   5 Made in Morbi (photo + certificates line)   6 Butter catalogue room
+2 Clay to cup (pinned scroll story, Phase 5)   3 Find your mug (category tile grid)
+4 Made in Morbi (photo + certificates line)   5 Butter catalogue room
 ```
 
 ### Collection (Phase 3)
@@ -210,6 +210,6 @@ Removed before finishing: the scroll-down cue under the hero and a small "Pick a
 
 ## 8. Built notes (Phases 5 and 6)
 - **Clay to cup** is a tall track with a sticky stage and a scroll-progress read (no scroll library, no pin spacer). Progress 0 to 14% holds raw bisque, 14 to 58% raises the glaze, 58 to 86% fires and cools the kiln glow, then it ends glazed. The mug takes the glaze picked in the hero. Under reduced motion the section is a normal block with the finished mug and all three lines.
-- **Shop by category** floats the lead mug's render beside the cursor on hover-capable desktops; elsewhere each row carries a small render.
+- **Find your mug** tiles lift 2px and zoom the render 1.03 on hover-capable desktops.
 - **Making process** (About) is the one numbered sequence: a sticky photo stack on desktop swaps as each step crosses the middle of the screen; on phones each step carries its own photo.
 - **Contact** saves every enquiry (Enquiries in the WP admin) and emails it. The form works without JavaScript through a redirect; with JavaScript it posts in place.

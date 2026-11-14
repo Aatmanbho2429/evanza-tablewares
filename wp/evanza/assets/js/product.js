@@ -1,7 +1,7 @@
 // Product page: live 3D mug in a room that takes its colour from the selected glaze, glaze pour on
 // colour change, photo gallery, enquiry buttons and the related-products rail.
 import { reducedMotion } from './lib/motion.js';
-import { createPour } from './lib/glaze-pour.js';
+import { createPour, POUR_MS } from './lib/glaze-pour.js';
 import { loadCatalogue, roomFor, photosOf } from './lib/catalogue.js';
 import { config } from './lib/config.js';
 import { addItem, openEnquiryDrawer } from './lib/enquiry.js';
@@ -79,7 +79,7 @@ async function init(root) {
 			room.dataset.tone = r.tone;
 			document.dispatchEvent(new CustomEvent('evanza:room'));
 		}
-		viewer?.setColors(colorsOf(variant), { animate: true, duration: 600, delay: origin ? 110 : 0 });
+		viewer?.setColors(colorsOf(variant), { animate: true, duration: origin ? POUR_MS : 600, delay: 0 }); // starts with the pour
 		still.src = variant.render;
 		still.alt = `${product.name}, ${variant.name}`;
 		nameEl.textContent = variant.name;

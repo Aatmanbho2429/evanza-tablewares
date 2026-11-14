@@ -54,7 +54,7 @@ $first = $glazes[0];
 	<?php
 	$data = evanza_get_products();
 
-	// Category rows: name, count and the render of the category's lead mug.
+	// Category tiles: name, count and the render of the category's lead mug.
 	$rows = array();
 	foreach ( $data['categories'] as $cat ) {
 		$lead  = null;
@@ -77,20 +77,6 @@ $first = $glazes[0];
 			);
 		}
 	}
-
-	// New in: mugs badged "new", newest first.
-	$new = array_filter(
-		$data['products'],
-		static function ( $p ) {
-			return in_array( 'new', $p['badges'], true );
-		}
-	);
-	usort(
-		$new,
-		static function ( $a, $b ) {
-			return strcmp( $b['added'], $a['added'] );
-		}
-	);
 	?>
 
 	<section class="story room" data-room data-tone="dark" data-story style="--room: var(--graphite)" aria-labelledby="story-title">
@@ -115,34 +101,20 @@ $first = $glazes[0];
 
 	<section class="cats room" data-room data-tone="light" style="--room: var(--chalk)" aria-labelledby="cats-title">
 		<div class="container">
-			<h2 id="cats-title" class="cats__title">Shop by category.</h2>
-			<ul class="cats__list" data-cats>
+			<h2 id="cats-title" class="cats__title">Find your mug.</h2>
+			<ul class="cats__grid">
 				<?php foreach ( $rows as $row ) : ?>
 					<li>
-						<a class="cats__row" href="<?php echo esc_url( add_query_arg( 'category', $row['cat']['slug'], home_url( '/collection/' ) ) ); ?>" data-render="<?php echo evanza_esc_img( $row['render'] ); ?>" data-hex="<?php echo esc_attr( $row['hex'] ); ?>">
-							<span class="cats__name"><?php echo esc_html( $row['cat']['name'] ); ?></span>
-							<span class="cats__count"><?php echo esc_html( $row['count'] . ( 1 === $row['count'] ? ' mug' : ' mugs' ) ); ?></span>
-							<span class="cats__thumb" style="--c: <?php echo esc_attr( $row['hex'] ); ?>"><img src="<?php echo evanza_esc_img( $row['render'] ); ?>" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+						<a class="cat-tile" href="<?php echo esc_url( add_query_arg( 'category', $row['cat']['slug'], home_url( '/collection/' ) ) ); ?>" style="--c: <?php echo esc_attr( $row['hex'] ); ?>">
+							<span class="cat-tile__art"><img src="<?php echo evanza_esc_img( $row['render'] ); ?>" alt="" width="320" height="320" loading="lazy" decoding="async"></span>
+							<span class="cat-tile__name t-3"><span class="u-draw"><?php echo esc_html( $row['cat']['name'] ); ?></span></span>
+							<span class="cat-tile__count"><?php echo esc_html( $row['count'] . ( 1 === $row['count'] ? ' mug' : ' mugs' ) ); ?></span>
 						</a>
 					</li>
 				<?php endforeach; ?>
 			</ul>
 		</div>
 	</section>
-
-	<?php if ( $new ) : ?>
-		<section class="newin room" data-room data-tone="light" style="--room: var(--powder)" aria-labelledby="new-title">
-			<div class="container newin__head">
-				<h2 id="new-title" class="t-2">New in.</h2>
-				<a class="link" href="<?php echo esc_url( home_url( '/collection/?sort=new' ) ); ?>">See the whole collection</a>
-			</div>
-			<ul class="rail" data-rail>
-				<?php foreach ( $new as $p ) : ?>
-					<?php get_template_part( 'template-parts/product-tile', null, array( 'product' => $p ) ); ?>
-				<?php endforeach; ?>
-			</ul>
-		</section>
-	<?php endif; ?>
 
 	<section class="morbi" aria-labelledby="morbi-title">
 		<div class="morbi__photo">

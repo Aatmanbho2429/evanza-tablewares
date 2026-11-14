@@ -25,6 +25,15 @@ function evanza_nav_link_attributes( $atts, $item ) {
 	return $atts;
 }
 
+/** Menu labels get a masked inner span (and a data-text copy) so CSS can roll the word on hover and rise it in the mobile menu. */
+function evanza_nav_label( $label ) {
+	return '<span class="nav-label"><span class="nav-label__mask"><span class="nav-label__in" data-text="' . esc_attr( $label ) . '">' . esc_html( $label ) . '</span></span></span>';
+}
+add_filter( 'nav_menu_item_title', 'evanza_nav_item_title', 10, 1 );
+function evanza_nav_item_title( $title ) {
+	return evanza_nav_label( wp_strip_all_tags( html_entity_decode( $title ) ) );
+}
+
 /** Used when a menu location has no menu assigned. */
 function evanza_fallback_menu( $args = array() ) {
 	$items = array(
@@ -36,7 +45,7 @@ function evanza_fallback_menu( $args = array() ) {
 	$class = isset( $args['menu_class'] ) ? $args['menu_class'] : 'nav-list';
 	echo '<ul class="' . esc_attr( $class ) . '">';
 	foreach ( $items as $label => $url ) {
-		echo '<li><a href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a></li>';
+		echo '<li><a href="' . esc_url( $url ) . '">' . evanza_nav_label( $label ) . '</a></li>';
 	}
 	echo '</ul>';
 }

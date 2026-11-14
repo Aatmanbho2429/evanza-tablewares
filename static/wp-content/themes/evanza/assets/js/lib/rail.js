@@ -1,4 +1,6 @@
 // A horizontal rail: native scroll-snap on touch, drag with momentum for a mouse.
+import { reducedMotion } from './motion.js';
+
 export function initRail(el) {
 	let down = false;
 	let moved = false;
@@ -35,6 +37,10 @@ export function initRail(el) {
 		if (!down) return;
 		down = false;
 		if (!moved) return;
+		if (reducedMotion.matches) {
+			el.classList.remove('is-dragging');
+			return;
+		}
 		let v = Math.max(-30, Math.min(30, velocity * 16)); // px per frame
 		const glide = () => {
 			el.scrollLeft += v;

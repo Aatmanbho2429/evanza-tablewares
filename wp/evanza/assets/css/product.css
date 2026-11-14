@@ -6,7 +6,7 @@
 	overflow: clip;
 	padding-top: calc(var(--header-h) + var(--adminbar) + var(--s-5));
 	padding-bottom: var(--s-8);
-	transition: color var(--dur-ui) var(--ease-out);
+	transition: color var(--dur-tone) var(--ease-out);
 }
 .product-room > .container {
 	position: relative;
@@ -16,10 +16,11 @@
 	display: grid;
 	gap: var(--s-6);
 }
-@media (min-width: 56rem) {
+/* Two columns from 56rem, and on wide-and-short screens (a foldable held landscape) from 36rem. */
+@media (min-width: 56rem), (min-width: 36rem) and (min-aspect-ratio: 11/10) {
 	.product {
 		grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-		gap: var(--s-8);
+		gap: clamp(var(--s-6), 5vw, var(--s-8));
 		align-items: start;
 	}
 	.product__stage {
@@ -148,9 +149,9 @@
 }
 .product__name {
 	font-size: var(--t-2);
-	font-stretch: 75%;
+	font-stretch: 80%;
 	font-weight: 800;
-	line-height: 0.92;
+	line-height: 0.94;
 }
 .product__buy .link {
 	display: inline-flex;

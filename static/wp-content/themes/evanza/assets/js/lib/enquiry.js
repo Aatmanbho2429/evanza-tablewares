@@ -59,7 +59,13 @@ export const mailtoUrl = (items) => `mailto:${config().email}?subject=${encodeUR
 // ---------- header count ----------
 function renderCount() {
 	const n = getItems().length;
-	document.querySelectorAll('[data-enquiry-count]').forEach((el) => (el.textContent = String(n)));
+	document.querySelectorAll('[data-enquiry-count]').forEach((el) => {
+		if (el.textContent === String(n)) return;
+		el.textContent = String(n);
+		el.classList.remove('is-pop');
+		void el.offsetWidth; // restart the badge pop
+		el.classList.add('is-pop');
+	});
 	document.querySelectorAll('[data-enquiry-open]').forEach((el) => el.setAttribute('aria-label', n ? `Enquiry list, ${n} mug${n === 1 ? '' : 's'}` : 'Enquiry list, empty'));
 }
 

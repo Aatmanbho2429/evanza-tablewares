@@ -134,7 +134,7 @@ function init(root) {
 		li.innerHTML = `<a class="tile__link" href="${esc(p.url)}">
 				<span class="tile__art">
 					<img class="tile__render" alt="" width="800" height="800" loading="lazy" decoding="async">
-					<img class="tile__photo" alt="" width="800" height="800" loading="lazy" decoding="async" hidden>
+					<img class="tile__photo" alt="" width="800" height="800" decoding="async" hidden>
 				</span>
 				<span class="tile__name t-3">${esc(p.name)}<span class="visually-hidden" data-tile-variant></span></span>
 				<span class="tile__meta">${esc([p.specs.capacity, p.badges[0]].filter(Boolean).join(', '))}</span>
@@ -161,19 +161,26 @@ function init(root) {
 		render.src = variant.render || variant.images[0];
 		const photo = li.querySelector('.tile__photo');
 		const photos = photosOf(variant);
+		// The hover photo loads on first hover, not with the page.
+		photo.removeAttribute('src');
 		if (photos.length) {
-			photo.src = photoSrc(photos[0]);
+			photo.dataset.src = photoSrc(photos[0]);
 			photo.hidden = false;
 			art.classList.add('has-photo');
 		} else {
 			photo.hidden = true;
-			photo.removeAttribute('src');
+			delete photo.dataset.src;
 			art.classList.remove('has-photo');
 		}
 		li.querySelector('.tile__link').href = `${p.url}?colour=${variant.slug}`;
 		li.querySelector('[data-tile-variant]').textContent = `, ${variant.name}`;
 		li.querySelectorAll('[data-variant]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.variant === variant.slug)));
 	}
+
+	grid.addEventListener('pointerover', (e) => {
+		const photo = e.target.closest('.tile__art')?.querySelector('.tile__photo');
+		if (photo && !photo.getAttribute('src') && photo.dataset.src) photo.src = photo.dataset.src;
+	});
 
 	// Dots: hover previews a colour with a mouse, a click or tap pins it.
 	grid.addEventListener('pointerover', (e) => {

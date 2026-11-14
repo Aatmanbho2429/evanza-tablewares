@@ -37,8 +37,11 @@ $biz = evanza_business();
 		</nav>
 
 		<div class="site-header__actions">
-			<a class="text-btn enquiry-btn" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-enquiry-open aria-label="<?php esc_attr_e( 'Enquiry list, 0 items', 'evanza' ); ?>">Enquiry (<span data-enquiry-count>0</span>)</a>
-			<button class="text-btn menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>Menu</button>
+			<a class="enquiry-btn" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-enquiry-open aria-label="<?php esc_attr_e( 'Enquiry list, 0 items', 'evanza' ); ?>"><span class="enquiry-btn__label">Enquiry</span><span class="enquiry-btn__count" data-enquiry-count>0</span></a>
+			<button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+				<span class="menu-btn__bars" aria-hidden="true"><span></span><span></span></span>
+				<span class="visually-hidden" data-menu-label>Open menu</span>
+			</button>
 		</div>
 	</div>
 </header>

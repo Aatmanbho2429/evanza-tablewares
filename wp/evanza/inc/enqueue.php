@@ -21,7 +21,7 @@ function evanza_enqueue_assets() {
 	if ( is_front_page() ) {
 		$styles[] = 'home';
 	}
-	if ( is_front_page() || is_post_type_archive( 'evanza_product' ) || is_singular( 'evanza_product' ) ) {
+	if ( is_post_type_archive( 'evanza_product' ) || is_singular( 'evanza_product' ) ) {
 		$styles[] = 'tiles';
 	}
 	if ( is_post_type_archive( 'evanza_product' ) ) {
@@ -52,7 +52,7 @@ function evanza_enqueue_assets() {
 		wp_enqueue_script_module( 'evanza-product', evanza_asset_url( 'js/product.js' ), array(), evanza_asset_version( 'js/product.js' ) );
 	}
 	if ( is_front_page() ) {
-		foreach ( array( 'home', 'story', 'home-lists' ) as $name ) {
+		foreach ( array( 'home', 'story' ) as $name ) {
 			wp_enqueue_script_module( 'evanza-' . $name, evanza_asset_url( "js/{$name}.js" ), array(), evanza_asset_version( "js/{$name}.js" ) );
 		}
 	}
@@ -71,9 +71,11 @@ remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 remove_action( 'wp_print_styles', 'print_emoji_styles' );
 
 // Flag JS early. If the page scripts never run, a timeout reveals anything they would have prepared.
+// A reload starts at the top of the page; back and forward still return to where the visitor was.
 add_action( 'wp_head', 'evanza_head_js_flag', 0 );
 function evanza_head_js_flag() {
-	echo "<script>document.documentElement.className=document.documentElement.className.replace('no-js','js');setTimeout(function(){document.documentElement.classList.add('js-ready')},2500);</script>\n";
+	echo "<script>document.documentElement.className=document.documentElement.className.replace('no-js','js');setTimeout(function(){document.documentElement.classList.add('js-ready')},2500);";
+	echo "(function(){var n=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'&&'scrollRestoration' in history){history.scrollRestoration='manual';var t=function(){scrollTo(0,0)};t();addEventListener('DOMContentLoaded',t);addEventListener('load',t);addEventListener('pagehide',function(){history.scrollRestoration='auto'})}})()</script>\n";
 }
 
 // Import map for three.js, only where it is used. Must come before any module script.

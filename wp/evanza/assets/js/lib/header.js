@@ -1,5 +1,5 @@
-// Header: takes the colour and tone of the room beneath it, hides on scroll down and returns on
-// scroll up, and runs the accessible full-screen mobile menu.
+// Header: a floating bar that takes the colour and tone of the room beneath it, gains an edge once the
+// page has scrolled, hides on scroll down and returns on scroll up, and runs the accessible mobile menu.
 const DESKTOP = window.matchMedia('(min-width: 56rem)');
 
 export function initHeader() {
@@ -35,6 +35,7 @@ export function initHeader() {
 		requestAnimationFrame(() => {
 			ticking = false;
 			const y = window.scrollY;
+			header.toggleAttribute('data-scrolled', y > 40);
 			const delta = y - lastY;
 			if (y < 40 || delta < -6 || menuOpen()) setHidden(false);
 			else if (delta > 6 && y > header.offsetHeight * 2) setHidden(true);
@@ -42,6 +43,7 @@ export function initHeader() {
 			syncRoom();
 		});
 	}
+	header.toggleAttribute('data-scrolled', window.scrollY > 40);
 	window.addEventListener('scroll', onScroll, { passive: true });
 	window.addEventListener('resize', syncRoom);
 	document.addEventListener('evanza:room', syncRoom);
@@ -50,6 +52,7 @@ export function initHeader() {
 
 	// Mobile menu
 	const toggle = header.querySelector('[data-menu-toggle]');
+	const toggleLabel = toggle?.querySelector('[data-menu-label]');
 	const menu = document.querySelector('[data-mobile-menu]');
 	if (!toggle || !menu) return;
 	const links = [...menu.querySelectorAll('a')];
@@ -63,7 +66,7 @@ export function initHeader() {
 		menu.inert = !open;
 		document.documentElement.classList.toggle('menu-open', open);
 		toggle.setAttribute('aria-expanded', String(open));
-		toggle.textContent = open ? 'Close' : 'Menu';
+		if (toggleLabel) toggleLabel.textContent = open ? 'Close menu' : 'Open menu';
 		if (open) {
 			setHidden(false);
 			header.dataset.tone = 'dark';

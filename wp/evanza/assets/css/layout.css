@@ -1,21 +1,32 @@
 /* Site shell: header, mobile menu, footer, inner page heading. */
 
-/* Header: a solid bar in the colour of the room beneath it. JS sets --room and data-tone. */
+/* Header: a floating bar in the colour of the room beneath it. JS sets --room, data-tone and data-scrolled. */
 .site-header {
 	position: fixed;
-	top: var(--adminbar);
-	inset-inline: 0;
+	top: calc(var(--adminbar) + var(--s-3));
+	inset-inline: var(--s-3);
 	z-index: 50;
-	height: var(--header-h);
+	height: var(--header-bar);
+	border: 1px solid transparent;
+	border-radius: var(--r-m);
 	background: var(--room);
 	color: var(--ink);
 	transition:
-		background-color var(--dur-ui) var(--ease-out),
-		color var(--dur-ui) var(--ease-out),
+		background-color var(--dur-tone) var(--ease-out),
+		color var(--dur-tone) var(--ease-out),
+		border-color var(--dur-ui) var(--ease-out),
+		box-shadow var(--dur-ui) var(--ease-out),
+		height var(--dur-ui) var(--ease-out),
 		transform var(--dur-sheet) var(--ease-drawer);
 }
+/* Once the page has scrolled the bar gets an edge and a soft shadow, and shrinks a little. */
+.site-header[data-scrolled] {
+	height: 3.5rem;
+	border-color: var(--line);
+	box-shadow: 0 8px 24px rgb(0 0 0 / 0.1);
+}
 .site-header[data-hidden] {
-	transform: translateY(-100%);
+	transform: translateY(calc(-100% - var(--adminbar) - var(--s-3) - 1rem));
 }
 .site-header__inner {
 	height: 100%;
@@ -23,6 +34,8 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: var(--s-5);
+	/* Content lines up with the page gutter, which starts outside the inset bar. */
+	padding-inline: max(calc(var(--gutter) - var(--s-3)), var(--s-3));
 }
 .brand {
 	display: inline-flex;
@@ -44,9 +57,132 @@
 .site-header__actions {
 	display: flex;
 	align-items: center;
-	gap: var(--s-4);
+	gap: var(--s-3);
 }
 
+/* Enquiry: a small pill with the count in a round badge */
+.enquiry-btn {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	min-height: 2.5rem;
+	padding: 0 0.4rem 0 0.95rem;
+	border: 1.5px solid var(--ink);
+	border-radius: 999px;
+	font-size: var(--t-small);
+	font-stretch: 90%;
+	font-weight: 600;
+	line-height: 1;
+	text-decoration: none;
+	transition:
+		background-color 120ms var(--ease-out),
+		color 120ms var(--ease-out),
+		transform 90ms var(--ease-out);
+}
+/* Reaches the 44px touch target without making the pill taller. */
+.enquiry-btn::after {
+	content: "";
+	position: absolute;
+	inset: -0.25rem -0.2rem;
+}
+.enquiry-btn:active {
+	transform: scale(0.985);
+}
+.enquiry-btn__count {
+	display: inline-grid;
+	place-items: center;
+	min-width: 1.5rem;
+	height: 1.5rem;
+	padding-inline: 0.3rem;
+	border-radius: 999px;
+	background: var(--ink);
+	color: var(--room);
+	font-size: 0.75rem;
+	font-variant-numeric: tabular-nums;
+	transition:
+		background-color 120ms var(--ease-out),
+		color 120ms var(--ease-out);
+}
+.enquiry-btn__count.is-pop {
+	animation: badge-pop 220ms var(--ease-out);
+}
+@keyframes badge-pop {
+	from {
+		transform: scale(0.8);
+	}
+}
+@media (hover: hover) and (pointer: fine) {
+	.enquiry-btn:hover {
+		background: var(--ink);
+		color: var(--room);
+		transition-duration: 150ms;
+	}
+	.enquiry-btn:hover .enquiry-btn__count {
+		background: var(--room);
+		color: var(--ink);
+		transition-duration: 150ms;
+	}
+}
+
+/* Menu button: two bars that become an X */
+.menu-btn {
+	position: relative;
+	display: inline-grid;
+	place-items: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: inherit;
+}
+.menu-btn__bars {
+	position: relative;
+	display: block;
+	width: 1.375rem;
+	height: 1rem;
+}
+.menu-btn__bars span {
+	position: absolute;
+	top: calc(50% - 1px);
+	left: 0;
+	width: 100%;
+	height: 2px;
+	border-radius: 1px;
+	background: currentColor;
+	/* Closing: the bars turn back first, then spread. */
+	transition:
+		rotate 150ms var(--ease-out),
+		translate 200ms var(--ease-out) 100ms;
+}
+.menu-btn__bars span:first-child {
+	translate: 0 -4px;
+}
+.menu-btn__bars span:last-child {
+	translate: 0 4px;
+}
+/* Opening: the bars meet in the middle, then cross. */
+.menu-btn[aria-expanded="true"] .menu-btn__bars span {
+	translate: 0 0;
+	transition:
+		translate 150ms var(--ease-out),
+		rotate 200ms var(--ease-out) 100ms;
+}
+.menu-btn[aria-expanded="true"] .menu-btn__bars span:first-child {
+	rotate: 45deg;
+}
+.menu-btn[aria-expanded="true"] .menu-btn__bars span:last-child {
+	rotate: -45deg;
+}
+.menu-btn:active .menu-btn__bars {
+	transform: scale(0.94);
+}
+.menu-btn__bars {
+	transition: transform 90ms var(--ease-out);
+}
+
+/* Desktop nav */
 .primary-nav {
 	display: none;
 }
@@ -63,18 +199,64 @@
 	font-size: var(--t-small);
 	font-stretch: 90%;
 	font-weight: 600;
-	text-decoration: underline;
-	text-decoration-color: transparent;
-	text-decoration-thickness: 2px;
-	text-underline-offset: 0.35em;
-	transition: text-decoration-color var(--dur-ui) var(--ease-out);
+	text-decoration: none;
 }
-.nav-list a[aria-current="page"] {
-	text-decoration-color: currentColor;
+/* The label: the word sits in a mask so it can roll; the underline lives outside the mask. */
+.nav-label {
+	position: relative;
+	display: inline-block;
+	line-height: 1.3;
+}
+.nav-label__mask {
+	display: block;
+	overflow: hidden;
+}
+.nav-label__in {
+	position: relative;
+	display: block;
+}
+/* A 1px line draws left to right 4px under the word; the current page keeps a still 2px bar. */
+.primary-nav .nav-label::after,
+.site-footer .nav-label::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: calc(100% + 4px);
+	height: 1px;
+	background: currentColor;
+	transform: scaleX(0);
+	transform-origin: right;
+	transition: transform 220ms var(--ease-out);
+}
+.primary-nav a[aria-current="page"] .nav-label::after {
+	height: 2px;
+	transform: scaleX(1);
+}
+.primary-nav a:focus-visible .nav-label::after,
+.site-footer a:focus-visible .nav-label::after {
+	transform: scaleX(1);
+	transform-origin: left;
 }
 @media (hover: hover) and (pointer: fine) {
-	.nav-list a:hover {
-		text-decoration-color: currentColor;
+	/* The word rolls up and an identical copy rolls in from below. */
+	.primary-nav .nav-label__in {
+		transition: transform 300ms var(--ease-out);
+	}
+	.primary-nav .nav-label__in::after {
+		content: attr(data-text);
+		content: attr(data-text) / "";
+		position: absolute;
+		left: 0;
+		top: 100%;
+	}
+	.primary-nav a:hover .nav-label__in {
+		transform: translateY(-100%);
+	}
+	.primary-nav a:hover .nav-label::after,
+	.site-footer a:hover .nav-label::after {
+		transform: scaleX(1);
+		transform-origin: left;
 	}
 }
 @media (min-width: 56rem) {
@@ -89,7 +271,7 @@
 	}
 }
 
-/* Mobile menu: full screen, Graphite, big type */
+/* Mobile menu: a Graphite sheet that wipes down from the top, big type */
 .mobile-menu {
 	position: fixed;
 	inset: 0;
@@ -104,42 +286,105 @@
 	background: var(--graphite);
 	color: var(--chalk);
 	visibility: hidden;
-	opacity: 0;
+	clip-path: inset(0 0 100% 0);
+	/* Closing is quicker than opening. */
 	transition:
-		opacity var(--dur-ui) var(--ease-out),
-		visibility 0s linear var(--dur-ui);
+		clip-path 250ms var(--ease-in-out),
+		visibility 0s linear 250ms;
 }
 .mobile-menu.is-open {
 	visibility: visible;
-	opacity: 1;
-	transition-delay: 0s;
+	clip-path: inset(0);
+	transition:
+		clip-path var(--dur-sheet) var(--ease-drawer),
+		visibility 0s;
 }
 .mobile-menu .nav-list {
 	flex-direction: column;
 	align-items: stretch;
 	gap: 0;
-}
-.mobile-menu .nav-list a {
-	min-height: 2.75rem;
-	padding: 0.1em 0;
-	font-size: clamp(3.5rem, 19vw, 7rem);
-	font-stretch: 75%;
-	font-weight: 800;
-	line-height: 0.95;
-	letter-spacing: -0.03em;
-	text-decoration: none;
+	counter-reset: menu;
 }
 .mobile-menu .nav-list li {
-	opacity: 0;
-	transform: translateY(1.25rem);
-	transition:
-		opacity var(--dur-sheet) var(--ease-out),
-		transform var(--dur-sheet) var(--ease-out);
+	counter-increment: menu;
 }
-.mobile-menu.is-open .nav-list li {
+.mobile-menu .nav-list a {
+	position: relative;
+	display: flex;
+	align-items: flex-start;
+	gap: var(--s-3);
+	min-height: 2.75rem;
+	padding: 0.1em 0;
+	/* Sized by width and by height, so four words fit a 280px cover screen and a 512px-tall landscape. */
+	font-size: clamp(2.75rem, min(18vw, 12.5svh), 7rem);
+	font-stretch: 80%;
+	font-weight: 800;
+	line-height: 1;
+	letter-spacing: var(--track-display);
+	text-decoration: none;
+	transition: transform 220ms var(--ease-out);
+}
+/* The index number is decoration: it is skipped by screen readers where alt text is supported. */
+.mobile-menu .nav-list a::before {
+	content: counter(menu, decimal-leading-zero);
+	content: counter(menu, decimal-leading-zero) / "";
+	flex: none;
+	min-width: 1.6rem;
+	margin-top: 0.55rem;
+	font-size: var(--t-small);
+	font-stretch: 100%;
+	font-weight: 500;
+	line-height: 1;
+	letter-spacing: 0;
+	opacity: 0.6;
+}
+.mobile-menu .nav-list a::after {
+	content: "";
+	position: absolute;
+	right: 0;
+	top: calc(50% - 0.2em);
+	width: 0.4em;
+	height: 0.4em;
+	background: currentColor;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='square'%3E%3Cpath d='M3 12h17M13 5l7 7-7 7'/%3E%3C/svg%3E") center / contain no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='square'%3E%3Cpath d='M3 12h17M13 5l7 7-7 7'/%3E%3C/svg%3E") center / contain no-repeat;
+	opacity: 0;
+	transform: translateX(-0.5rem);
+	transition:
+		opacity 150ms var(--ease-out),
+		transform 220ms var(--ease-out);
+}
+.mobile-menu .nav-list a:active,
+.mobile-menu .nav-list a:focus-visible {
+	transform: translateX(0.5rem);
+}
+.mobile-menu .nav-list a:active::after,
+.mobile-menu .nav-list a:focus-visible::after {
 	opacity: 1;
 	transform: none;
-	transition-delay: calc(var(--i, 0) * 50ms + 60ms);
+}
+@media (hover: hover) and (pointer: fine) {
+	.mobile-menu .nav-list a:hover {
+		transform: translateX(0.5rem);
+	}
+	.mobile-menu .nav-list a:hover::after {
+		opacity: 1;
+		transform: none;
+	}
+}
+/* Each word rises inside its mask, one after another. Closing is quick and together. */
+.mobile-menu .nav-label__mask {
+	padding-block: 0.08em;
+	margin-block: -0.08em;
+}
+.mobile-menu .nav-label__in {
+	transform: translateY(110%);
+	transition: transform 200ms var(--ease-in-out);
+}
+.mobile-menu.is-open .nav-label__in {
+	transform: none;
+	transition:
+		transform 700ms var(--ease-out) calc(var(--i, 0) * 60ms + 180ms);
 }
 .mobile-menu__foot {
 	display: flex;
@@ -153,18 +398,69 @@
 	align-items: center;
 	min-height: 2.75rem;
 }
+/* Wide and short (a foldable held landscape): the words take the left, the contact links the right. */
+@media (min-aspect-ratio: 11/10) and (max-height: 40rem) {
+	.mobile-menu {
+		flex-direction: row;
+		align-items: flex-end;
+		padding-top: calc(var(--header-h) + var(--adminbar) + 0.5rem);
+	}
+	.mobile-menu nav {
+		flex: 1;
+		align-self: stretch;
+	}
+	.mobile-menu .nav-list a {
+		font-size: clamp(2.5rem, min(18vw, 11svh), 7rem);
+	}
+	.mobile-menu__foot {
+		flex-direction: column;
+		align-items: flex-start;
+		flex: none;
+	}
+}
 .no-js .menu-btn {
 	display: none;
 }
 .no-js .mobile-menu {
 	position: static;
 	visibility: visible;
-	opacity: 1;
+	clip-path: none;
 	padding-top: calc(var(--header-h) + var(--adminbar));
 }
-.no-js .mobile-menu .nav-list li {
-	opacity: 1;
+.no-js .mobile-menu .nav-label__in {
 	transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.menu-btn__bars span,
+	.menu-btn[aria-expanded="true"] .menu-btn__bars span,
+	.mobile-menu,
+	.mobile-menu.is-open,
+	.mobile-menu .nav-label__in,
+	.mobile-menu.is-open .nav-label__in,
+	.mobile-menu .nav-list a,
+	.mobile-menu .nav-list a::after,
+	.primary-nav .nav-label__in,
+	.primary-nav .nav-label::after,
+	.site-footer .nav-label::after,
+	.site-footer__arrow,
+	.u-draw {
+		transition: none;
+	}
+	.primary-nav a:hover .nav-label__in {
+		transform: none;
+	}
+	.primary-nav .nav-label__in::after {
+		display: none;
+	}
+	.mobile-menu .nav-list a:hover,
+	.mobile-menu .nav-list a:active,
+	.mobile-menu .nav-list a:focus-visible {
+		transform: none;
+	}
+	.enquiry-btn__count.is-pop {
+		animation: none;
+	}
 }
 
 /* Inner page heading: a colour room with a big title */
@@ -178,9 +474,11 @@
 	justify-items: start;
 }
 
-/* Footer: Graphite room */
+/* Footer: a statement. Graphite room, a stripe of glazes along its top edge, a giant wordmark at the bottom. */
 .site-footer {
 	--room: var(--graphite);
+	position: relative;
+	overflow: clip;
 	background: var(--room);
 	color: var(--ink);
 	margin-top: auto;
@@ -188,16 +486,71 @@
 .site-footer a {
 	text-underline-offset: 0.2em;
 }
+.site-footer__stripe {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	height: 6px;
+}
+.site-footer__stripe span:nth-child(1) {
+	background: var(--pistachio);
+}
+.site-footer__stripe span:nth-child(2) {
+	background: var(--butter);
+}
+.site-footer__stripe span:nth-child(3) {
+	background: var(--powder);
+}
+.site-footer__stripe span:nth-child(4) {
+	background: var(--blush);
+}
+.site-footer__stripe span:nth-child(5) {
+	background: var(--bottle);
+}
+.site-footer__stripe span:nth-child(6) {
+	background: var(--midnight);
+}
 .site-footer__talk {
 	display: block;
 	padding-block: clamp(3.5rem, 2rem + 7vw, 8rem) clamp(2rem, 1.5rem + 3vw, 4.5rem);
 	font-size: var(--t-1);
-	font-stretch: 75%;
+	font-stretch: 80%;
 	font-weight: 800;
-	line-height: 0.88;
-	letter-spacing: -0.03em;
+	line-height: 0.9;
+	letter-spacing: var(--track-display);
 	text-decoration: none;
 	text-wrap: balance;
+}
+/* The line draws under the words, left to right in and out to the right. It follows wrapped lines. */
+.u-draw {
+	padding-bottom: 0.06em;
+	background: linear-gradient(currentColor, currentColor) 100% 100% / 0 0.05em no-repeat;
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+	transition: background-size 220ms var(--ease-out);
+}
+.site-footer__arrow {
+	display: inline-block;
+	width: 0.62em;
+	height: 0.62em;
+	margin-left: 0.18em;
+	vertical-align: -0.02em;
+	transition: transform 150ms var(--ease-out);
+}
+.site-footer a:focus-visible .u-draw {
+	background-position: 0 100%;
+	background-size: 100% 0.05em;
+}
+.site-footer a:focus-visible .site-footer__arrow {
+	transform: translateX(3px);
+}
+@media (hover: hover) and (pointer: fine) {
+	.site-footer__talk:hover .u-draw {
+		background-position: 0 100%;
+		background-size: 100% 0.05em;
+	}
+	.site-footer__talk:hover .site-footer__arrow {
+		transform: translateX(3px);
+	}
 }
 .site-footer__grid {
 	display: grid;
@@ -223,6 +576,11 @@
 	align-items: center;
 	min-height: 2.75rem;
 }
+.site-footer li a,
+.site-footer address a {
+	justify-self: start;
+	text-decoration: none;
+}
 .site-footer address {
 	display: grid;
 	gap: var(--s-3);
@@ -235,7 +593,7 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: var(--s-4) var(--s-6);
-	padding-block: var(--s-5) max(var(--s-5), env(safe-area-inset-bottom));
+	padding-block: var(--s-5) var(--s-6);
 	border-top: 1.5px solid var(--line);
 	font-size: var(--t-small);
 	color: var(--ink-2);
@@ -243,6 +601,71 @@
 .site-footer__bottom img {
 	height: 2.5rem;
 	width: auto;
+}
+.site-footer__bottom span {
+	flex: 1 1 18rem;
+}
+.site-footer__top {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	min-height: 2.75rem;
+	padding: 0 1.1rem;
+	border: 1.5px solid var(--line);
+	border-radius: var(--r-btn);
+	background: none;
+	color: var(--ink);
+	font-size: var(--t-small);
+	font-stretch: 90%;
+	font-weight: 600;
+	transition:
+		background-color 120ms var(--ease-out),
+		color 120ms var(--ease-out),
+		border-color 120ms var(--ease-out),
+		transform 90ms var(--ease-out);
+}
+.site-footer__top svg {
+	width: 1em;
+	height: 1em;
+	transition: transform 120ms var(--ease-out);
+}
+.site-footer__top:active {
+	transform: scale(0.985);
+}
+@media (hover: hover) and (pointer: fine) {
+	.site-footer__top:hover {
+		background: var(--ink);
+		border-color: var(--ink);
+		color: var(--room);
+		transition-duration: 150ms;
+	}
+	.site-footer__top:hover svg {
+		transform: translateY(-2px);
+		transition-duration: 150ms;
+	}
+}
+/* The wordmark spans the container exactly and is cropped by the footer's bottom edge. */
+.site-footer__word {
+	container-type: inline-size;
+	margin-top: var(--s-6);
+	line-height: 0;
+	color: color-mix(in srgb, var(--chalk) 12%, var(--graphite));
+	user-select: none;
+	pointer-events: none;
+}
+.site-footer__word span {
+	display: block;
+	/* "Evanza" is 2.26em wide at this stretch and weight, so the line spans its container exactly. */
+	font-size: 29vw;
+	font-size: calc(100cqw / 2.26);
+	font-stretch: 75%;
+	font-weight: 800;
+	/* A line box as tall as the capitals, pulled 0.1em past the footer's bottom edge: the glyphs lose their bottom ~15%. */
+	line-height: 0.72;
+	margin-bottom: -0.1em;
+	letter-spacing: 0;
+	white-space: nowrap;
+	text-align: center;
 }
 @media (min-width: 40rem) {
 	.site-footer__grid {

@@ -4,7 +4,7 @@
 .coll-head {
 	padding-top: calc(var(--header-h) + var(--adminbar) + clamp(2.5rem, 1.5rem + 5vw, 6rem));
 	padding-bottom: var(--s-5);
-	transition: color var(--dur-ui) var(--ease-out);
+	transition: color var(--dur-tone) var(--ease-out);
 }
 .coll-head > .container {
 	display: grid;
@@ -247,7 +247,7 @@ html[data-header-hidden] .filter-bar {
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: var(--s-6) var(--s-4);
 }
-@media (min-width: 48rem) {
+@media (min-width: 36rem) {
 	.tile-grid {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: var(--s-7) var(--s-5);

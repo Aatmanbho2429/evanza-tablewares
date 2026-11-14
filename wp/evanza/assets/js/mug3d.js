@@ -5,6 +5,7 @@
 //   viewer.setColors({ body: '#78a04a' }, { animate: true });
 //   viewer.setState('glazing', 0.4);   // bisque | glazing | fired | glazed
 //   viewer.enter();                    // the mug rises and settles
+//   viewer.enter({ glaze: true });     // the Home hero: drops in as bisque, spins and is glazed (once, ~1.7s)
 //   viewer.dispose();
 //
 // Shapes: classic, latte, belly, espresso, heart. Option onFail runs if a shader does not compile. The canvas is transparent; the page room colour
@@ -26,6 +27,10 @@ const BISQUE = new THREE.Color('#cdbba3');
 const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 const easeOutBack = (t) => 1 + 2.2 * Math.pow(t - 1, 3) + 1.2 * Math.pow(t - 1, 2);
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
+
+// The hero's "glazing" entrance, in ms from its start: the mug falls, lands with a soft squash-settle,
+// spins 1.5 turns that fade into the auto-rotate, and the glaze washes over it.
+const INTRO = { fall: 560, settle: 440, total: 1700, glazeAt: 810, glazeFor: 900, turns: 1.5 };
 
 // --- geometry ---------------------------------------------------------------
 
@@ -294,11 +299,13 @@ export function createMugViewer(canvas, options = {}) {
 	// Camera framing: the whole mug (with handle) fits the canvas, centred.
 	let width = 1;
 	let height = 1;
+	let visHeight = 1; // world height visible at the mug, for the entrance drop
 	function frame() {
 		const s = SHAPES[shape];
 		const aspect = width / height;
 		const mugW = s.rt * 2 + s.handle.reach * 1.3 + 0.2;
 		const visH = Math.max(s.H / opts.fit, mugW / (0.9 * aspect));
+		visHeight = visH;
 		const dist = visH / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
 		const tilt = THREE.MathUtils.degToRad(13);
 		const target = new THREE.Vector3(0, s.H * 0.5 + opts.offsetY * visH, 0);
@@ -365,8 +372,15 @@ export function createMugViewer(canvas, options = {}) {
 		requestRender();
 	}
 
-	function enter({ duration = 1100, delay = 0 } = {}) {
+	function enter({ duration = 1100, delay = 0, glaze = false } = {}) {
 		if (reduced.matches) return;
+		if (glaze) {
+			intro = { glaze: true, start: performance.now() + delay };
+			uniforms.uGlaze.value = 0; // raw clay until the glaze washes over
+			updateIntro(performance.now() - 1e6); // pose the first frame (above the canvas, bisque)
+			requestRender();
+			return;
+		}
 		intro = { start: performance.now() + delay, duration };
 		group.position.y = -0.55;
 		group.scale.setScalar(0.88);
@@ -376,6 +390,7 @@ export function createMugViewer(canvas, options = {}) {
 
 	function updateIntro(now) {
 		if (!intro) return false;
+		if (intro.glaze) return updateGlazeIntro(now);
 		const t = clamp01((now - intro.start) / intro.duration);
 		const e = easeOutBack(t);
 		const eRot = easeOutCubic(t);
@@ -387,6 +402,33 @@ export function createMugViewer(canvas, options = {}) {
 			introSpin = 0;
 			group.position.y = 0;
 			group.scale.setScalar(1);
+		}
+		return true;
+	}
+
+	// Falls from above the canvas, lands (squash then settle), spins and is glazed.
+	function updateGlazeIntro(now) {
+		const ms = Math.max(0, now - intro.start);
+		const s = SHAPES[shape];
+		const drop = ((0.5 + opts.offsetY) * visHeight + s.H * 0.6) * 1.08; // clear of the canvas top
+		const fall = clamp01(ms / INTRO.fall);
+		group.position.y = drop * (1 - fall * fall); // gravity: it speeds up
+		const settle = clamp01((ms - INTRO.fall) / INTRO.settle);
+		const squash = fall < 1 ? 1 : 0.96 + 0.04 * easeOutBack(settle);
+		group.scale.set(1 + (1 - squash) * 0.5, squash, 1 + (1 - squash) * 0.5);
+		introSpin = Math.PI * 2 * INTRO.turns * (1 - easeOutCubic(clamp01(ms / INTRO.total)));
+		uniforms.uGlaze.value = easeOutCubic(clamp01((ms - INTRO.glazeAt) / INTRO.glazeFor));
+		// The shadow stays on the ground and darkens as the mug comes down.
+		shadow.position.y = -0.004 - group.position.y;
+		shadowMat.opacity = fall * fall;
+		if (ms >= INTRO.total) {
+			intro = null;
+			introSpin = 0;
+			group.position.y = 0;
+			group.scale.setScalar(1);
+			uniforms.uGlaze.value = 1;
+			shadow.position.y = -0.004;
+			shadowMat.opacity = 1;
 		}
 		return true;
 	}
@@ -415,7 +457,7 @@ export function createMugViewer(canvas, options = {}) {
 				angle += velocity * dt;
 				velocity *= Math.exp(-dt * 3.2);
 				moving = true;
-			} else if (autoRotate && !intro && now - lastInput > 2500) {
+			} else if (autoRotate && (!intro || intro.glaze) && now - lastInput > 2500) {
 				angle += dt * 0.32;
 				moving = true;
 			}

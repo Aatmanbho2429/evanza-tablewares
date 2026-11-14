@@ -5,15 +5,24 @@ html.lb-open {
 }
 
 /* ---- About ---- */
+/* The photo is landscape (about 3:2), so on narrow and medium screens the frame follows its shape and the
+   building stays whole. From 56rem it is a wide band and the crop favours the building and its entrance. */
 .about-hero__photo {
 	margin-top: calc(var(--header-h) + var(--adminbar));
-	height: min(68svh, 40rem);
+	aspect-ratio: 3 / 2;
 	overflow: hidden;
 }
 .about-hero__photo img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	object-position: 50% 60%;
+}
+@media (min-width: 56rem) {
+	.about-hero__photo {
+		aspect-ratio: auto;
+		height: min(68svh, 40rem);
+	}
 }
 .about-hero__text {
 	display: grid;
@@ -60,16 +69,37 @@ html.lb-open {
 	height: 100%;
 	object-fit: cover;
 }
+.process__step h3 {
+	font-size: var(--t-3);
+}
 .process__n {
-	font-size: var(--t-1);
-	font-stretch: 75%;
+	font-size: var(--t-2);
+	font-stretch: 80%;
 	font-weight: 800;
-	line-height: 0.85;
-	letter-spacing: -0.03em;
+	line-height: 0.9;
+	letter-spacing: var(--track-display);
 }
 .process__step p {
 	max-width: 34ch;
 	color: var(--ink-2);
+}
+/* Medium widths: each step is its photo beside its words instead of a full-width photo over them. */
+@media (min-width: 36rem) and (max-width: 55.99rem) {
+	.process__step {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		grid-template-rows: repeat(3, auto);
+		align-content: center;
+		column-gap: var(--s-6);
+	}
+	.process__photo {
+		grid-column: 1;
+		grid-row: 1 / span 3;
+	}
+	.process__n,
+	.process__step h3,
+	.process__step p {
+		grid-column: 2;
+	}
 }
 @media (min-width: 56rem) {
 	.process__layout {
@@ -105,7 +135,7 @@ html.lb-open {
 	.process__step {
 		min-height: 80svh;
 		align-content: center;
-		opacity: 0.28;
+		opacity: 0.5;
 		transition: opacity var(--dur-ui) var(--ease-out);
 	}
 	.process__step.is-active {
@@ -279,7 +309,7 @@ html.lb-open {
 	text-align: center;
 	font-weight: 500;
 }
-@media (min-width: 48rem) {
+@media (min-width: 48rem), (min-aspect-ratio: 11/10) {
 	.lb__nav {
 		top: 50%;
 		bottom: auto;
@@ -299,7 +329,7 @@ html.lb-open {
 .contact__title {
 	font-size: clamp(4.5rem, 21vw, 21rem);
 	line-height: 0.82;
-	letter-spacing: -0.04em;
+	letter-spacing: var(--track-display);
 }
 .contact__grid {
 	display: grid;
@@ -355,12 +385,19 @@ html.lb-open {
 	justify-items: start;
 	padding-block: var(--s-6);
 }
-.form-success:focus {
-	outline: none;
+.form-success:focus-visible {
+	outline: 2px solid var(--ink);
+	outline-offset: 8px;
 }
 .contact__side {
 	display: grid;
 	gap: var(--s-7);
+}
+/* Stacked under the form at medium widths, the directors sit two to a row. */
+@media (min-width: 36rem) and (max-width: 55.99rem) {
+	.contact__side .people {
+		grid-template-columns: 1fr 1fr;
+	}
 }
 .contact__address {
 	display: grid;
@@ -383,6 +420,10 @@ html.lb-open {
 	max-height: 34rem;
 	width: 100%;
 	background: color-mix(in srgb, var(--ink) 10%, transparent);
+}
+.contact__map iframe:focus-visible {
+	outline: 3px solid var(--ink);
+	outline-offset: 3px;
 }
 .contact__map iframe {
 	width: 100%;
