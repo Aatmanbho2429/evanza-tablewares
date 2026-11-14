@@ -10,8 +10,8 @@ function evanza_business() {
 		'name'     => 'Evanza Tablewares',
 		'tagline'  => 'Ceramic mugs for every table.',
 		'since'    => 2022,
-		'email'    => 'evanzatableware@gmail.com',
-		'whatsapp' => '919898798986',
+		'email'    => evanza_enquiry_email(),
+		'whatsapp' => evanza_whatsapp_number(),
 		'address'  => 'Survey no. 79/2 79/3, Pipaliya Maliya Highway, At. Chachavadarda, Tal: Maliya, Morbi, Gujarat, India',
 		'people'   => array(
 			array( 'name' => 'Amish Patel', 'role' => 'Managing Director', 'phone' => '9898798986' ),

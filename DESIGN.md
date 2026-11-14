@@ -200,3 +200,10 @@ Mobile: [Filter & sort (2)] opens a bottom sheet with "Show 12 mugs".
 | Numbered markers, big-number stat hero | Numbers only for the making process |
 
 Removed before finishing: the scroll-down cue under the hero and a small "Pick a glaze" label above the dots (the dots and their name already say it).
+
+## 7. Built notes (Phases 3 and 4)
+- **Collection tiles** are square with no radius or shadow; the field is the variant colour at 36% over `#dcdcd6`. Colour dots on a tile have a 28px (phone) or 32px (desktop) hit area, smaller than the 44px glaze dots, so five dots and "+N" fit a two-column phone grid.
+- **Rooms for dark glazes** (luminance below 0.05: black, navy) flip to a dark room: the glaze lifted 12% toward Chalk, with Chalk text. Light glazes use 35% of the glaze over Chalk.
+- **Collection head and Product room** both run the glaze pour. Pressing a colour filter pours the room colour from that dot; pressing a product swatch pours the room colour from the swatch and recolours the 3D mug.
+- **Mobile filters** are a bottom sheet (drag the grip to dismiss; a flick or a pull past 40% closes it). The **enquiry list** is a side drawer built on the same component (`axis: 'x'`).
+- **Product gallery** is a scroll-snap track: slide one is the live 3D mug, photos follow. On a phone a horizontal drag on the 3D slide turns the mug, so the thumbnails move between views; photos swipe natively.

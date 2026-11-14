@@ -17,12 +17,18 @@ function evanza_uses_3d() {
 
 add_action( 'wp_enqueue_scripts', 'evanza_enqueue_assets' );
 function evanza_enqueue_assets() {
-	$styles = array( 'tokens', 'base', 'components', 'layout' );
+	$styles = array( 'tokens', 'base', 'components', 'layout', 'enquiry' );
 	if ( is_front_page() ) {
 		$styles[] = 'home';
 	}
+	if ( is_post_type_archive( 'evanza_product' ) || is_singular( 'evanza_product' ) ) {
+		$styles[] = 'tiles';
+	}
 	if ( is_post_type_archive( 'evanza_product' ) ) {
 		$styles[] = 'collection';
+	}
+	if ( is_singular( 'evanza_product' ) ) {
+		$styles[] = 'product';
 	}
 	$previous = array();
 	foreach ( $styles as $name ) {
@@ -33,6 +39,9 @@ function evanza_enqueue_assets() {
 	wp_enqueue_script_module( 'evanza-main', evanza_asset_url( 'js/main.js' ), array(), evanza_asset_version( 'js/main.js' ) );
 	if ( is_post_type_archive( 'evanza_product' ) ) {
 		wp_enqueue_script_module( 'evanza-collection', evanza_asset_url( 'js/collection.js' ), array(), evanza_asset_version( 'js/collection.js' ) );
+	}
+	if ( is_singular( 'evanza_product' ) ) {
+		wp_enqueue_script_module( 'evanza-product', evanza_asset_url( 'js/product.js' ), array(), evanza_asset_version( 'js/product.js' ) );
 	}
 	if ( is_front_page() ) {
 		wp_enqueue_script_module( 'evanza-home', evanza_asset_url( 'js/home.js' ), array(), evanza_asset_version( 'js/home.js' ) );
@@ -90,4 +99,17 @@ function evanza_document_title( $parts ) {
 		$parts['title'] = 'The collection';
 	}
 	return $parts;
+}
+
+// Settings the enquiry list and product buttons read (Customizer values).
+add_action( 'wp_footer', 'evanza_print_config', 1 );
+function evanza_print_config() {
+	$config = array(
+		'whatsapp'   => evanza_whatsapp_number(),
+		'email'      => evanza_enquiry_email(),
+		'contactUrl' => home_url( '/contact/' ),
+		'collection' => home_url( '/collection/' ),
+		'siteName'   => 'Evanza Tablewares',
+	);
+	echo '<script type="application/json" id="evanza-config">' . wp_json_encode( $config, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP ) . "</script>\n"; // phpcs:ignore WordPress.Security.EscapeOutput
 }

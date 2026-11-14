@@ -1,9 +1,10 @@
-// Bottom sheet (mobile filters). Opens with a drawer curve, closes with Escape, the backdrop,
+// Bottom sheet (mobile filters) or side drawer (enquiry list, axis: 'x'). Opens with a drawer curve, closes with Escape, the backdrop,
 // the close button or a drag on its handle. The drag tracks the finger 1:1; on release a flick
 // or a pull past 40% dismisses, otherwise it springs back. Focus is trapped while open.
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])';
 
-export function createSheet(root, { onClose } = {}) {
+export function createSheet(root, { onClose, axis = 'y' } = {}) {
+	const horizontal = axis === 'x';
 	const panel = root.querySelector('[data-sheet-panel]');
 	const backdrop = root.querySelector('[data-sheet-backdrop]');
 	const handle = root.querySelector('[data-sheet-handle]');
@@ -65,35 +66,38 @@ export function createSheet(root, { onClose } = {}) {
 		}
 	});
 
-	// Drag to dismiss
+	// Drag to dismiss (down for a bottom sheet, right for a side drawer)
+	const pos = (e) => (horizontal ? e.clientX : e.clientY);
+	const size = () => (horizontal ? panel.offsetWidth : panel.offsetHeight);
+	const move = (d) => `translate${horizontal ? 'X' : 'Y'}(${d}px)`;
 	let start = null;
 	handle.addEventListener('pointerdown', (e) => {
 		if (!isOpen || start) return; // ignore a second finger
 		handle.setPointerCapture(e.pointerId);
 		panel.style.transition = 'none';
 		backdrop.style.transition = 'none';
-		start = { id: e.pointerId, y: e.clientY, samples: [{ y: e.clientY, t: performance.now() }] };
+		start = { id: e.pointerId, p: pos(e), samples: [{ p: pos(e), t: performance.now() }] };
 	});
 	handle.addEventListener('pointermove', (e) => {
 		if (!start || e.pointerId !== start.id) return;
-		const dy = e.clientY - start.y;
-		// Pulling up meets resistance; pulling down follows the finger.
-		const y = dy < 0 ? -Math.sqrt(-dy) * 2.2 : dy;
-		panel.style.transform = `translateY(${y}px)`;
-		backdrop.style.opacity = String(Math.max(0, 1 - y / panel.offsetHeight));
-		start.samples.push({ y: e.clientY, t: performance.now() });
+		const d = pos(e) - start.p;
+		// Pulling the wrong way meets resistance; pulling toward closed follows the finger.
+		const v = d < 0 ? -Math.sqrt(-d) * 2.2 : d;
+		panel.style.transform = move(v);
+		backdrop.style.opacity = String(Math.max(0, 1 - v / size()));
+		start.samples.push({ p: pos(e), t: performance.now() });
 		if (start.samples.length > 5) start.samples.shift();
 	});
 	const release = (e) => {
 		if (!start || e.pointerId !== start.id) return;
-		const dy = e.clientY - start.y;
+		const d = pos(e) - start.p;
 		const a = start.samples[0];
 		const b = start.samples[start.samples.length - 1];
-		const velocity = b.t > a.t ? (b.y - a.y) / (b.t - a.t) : 0; // px per ms, down is positive
+		const velocity = b.t > a.t ? (b.p - a.p) / (b.t - a.t) : 0; // px per ms, toward closed is positive
 		start = null;
 		panel.style.transition = '';
 		backdrop.style.transition = '';
-		if (dy > panel.offsetHeight * 0.4 || velocity > 0.5) close();
+		if (d > size() * 0.4 || velocity > 0.5) close();
 		else {
 			panel.style.transform = '';
 			backdrop.style.opacity = '';

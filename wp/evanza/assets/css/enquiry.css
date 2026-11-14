@@ -1,0 +1,166 @@
+/* Enquiry list drawer and the quantity stepper (global: the header button opens it on every page). */
+
+.glaze {
+	cursor: pointer;
+}
+
+.qty {
+	display: inline-flex;
+	align-items: stretch;
+	width: fit-content;
+	border: 1.5px solid var(--ink);
+	border-radius: var(--r-btn);
+	overflow: hidden;
+}
+.qty__btn {
+	display: grid;
+	place-items: center;
+	width: 3rem;
+	min-height: 3.1rem;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font-size: 1.25rem;
+	line-height: 1;
+	transition: background-color var(--dur-press) var(--ease-out);
+}
+.qty__btn:active {
+	background: color-mix(in srgb, var(--ink) 14%, transparent);
+}
+.qty__input {
+	width: 5.5rem;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font-size: 1rem;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+	text-align: center;
+	appearance: textfield;
+	-moz-appearance: textfield;
+}
+.qty__input::-webkit-inner-spin-button,
+.qty__input::-webkit-outer-spin-button {
+	appearance: none;
+	margin: 0;
+}
+.qty__input:focus-visible {
+	outline: 2px solid var(--ink);
+	outline-offset: -4px;
+}
+.qty--sm .qty__btn {
+	width: 2.5rem;
+	min-height: 2.5rem;
+}
+.qty--sm .qty__input {
+	width: 4rem;
+	font-size: 0.9375rem;
+}
+@media (hover: hover) and (pointer: fine) {
+	.qty__btn:hover {
+		background: color-mix(in srgb, var(--ink) 9%, transparent);
+	}
+}
+
+/* Drawer */
+.drawer {
+	position: fixed;
+	inset: 0;
+	z-index: 95;
+	visibility: hidden;
+	transition: visibility 0s linear 450ms;
+}
+.drawer.is-open {
+	visibility: visible;
+	transition-delay: 0s;
+}
+.drawer__backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgb(22 22 22 / 0.5);
+	opacity: 0;
+	transition: opacity 300ms var(--ease-out);
+}
+.drawer.is-open .drawer__backdrop {
+	opacity: 1;
+}
+.drawer__panel {
+	position: absolute;
+	inset: 0 0 0 auto;
+	display: flex;
+	flex-direction: column;
+	width: min(100%, 28rem);
+	background: var(--chalk);
+	color: var(--graphite);
+	transform: translateX(100%);
+	transition: transform 450ms var(--ease-drawer);
+	padding-top: var(--adminbar);
+}
+.drawer.is-open .drawer__panel {
+	transform: none;
+}
+.drawer__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--s-4) var(--s-5);
+	touch-action: pan-y;
+}
+.drawer__body {
+	flex: 1;
+	padding: var(--s-2) var(--s-5) var(--s-5);
+	overflow-y: auto;
+	overscroll-behavior: contain;
+}
+.drawer__empty {
+	display: grid;
+	gap: var(--s-4);
+	justify-items: start;
+	padding-top: var(--s-6);
+}
+.lines {
+	display: grid;
+	gap: var(--s-5);
+}
+.line {
+	display: grid;
+	grid-template-columns: 5.5rem 1fr auto;
+	gap: var(--s-3) var(--s-4);
+	align-items: start;
+}
+.line__art {
+	display: block;
+	width: 5.5rem;
+	aspect-ratio: 1;
+	background: color-mix(in oklch, var(--c, #ccc) 36%, #dcdcd6);
+}
+.line__art img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	padding: 4%;
+}
+.line__info {
+	display: grid;
+	gap: 0.35rem;
+	justify-items: start;
+	min-width: 0;
+}
+.line__name {
+	font-weight: 700;
+	font-size: 1.0625rem;
+}
+.line__colour {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: var(--t-small);
+	color: var(--ink-2);
+}
+.drawer__foot {
+	display: grid;
+	gap: var(--s-2);
+	justify-items: center;
+	padding: var(--s-4) var(--s-5) max(var(--s-5), env(safe-area-inset-bottom));
+	border-top: 1.5px solid var(--line);
+}

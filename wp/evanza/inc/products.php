@@ -29,6 +29,10 @@ function evanza_resolve_asset( $path ) {
 
 /** Global "Download catalogue" PDF. */
 function evanza_catalogue_url() {
+	$custom = get_theme_mod( 'evanza_catalogue', '' );
+	if ( $custom ) {
+		return $custom;
+	}
 	$data = evanza_demo_data();
 	return evanza_resolve_asset( isset( $data['catalogue'] ) ? $data['catalogue'] : 'assets/catalogues/catalogue-placeholder.pdf' );
 }
@@ -125,4 +129,32 @@ function evanza_get_product( $id_or_slug ) {
 function evanza_print_products_json() {
 	$json = wp_json_encode( evanza_get_products(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP );
 	echo '<script type="application/json" id="evanza-products">' . $json . '</script>' . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput
+}
+
+/** Room colour for a glaze: 35% of it over Chalk, or a dark room for very dark glazes. Mirrors roomFor() in lib/catalogue.js. */
+function evanza_room_for( $hex ) {
+	$rgb = static function ( $h ) {
+		return array_map( 'hexdec', str_split( ltrim( $h, '#' ), 2 ) );
+	};
+	$mix = static function ( $a, $b, $t ) use ( $rgb ) {
+		$x   = $rgb( $a );
+		$y   = $rgb( $b );
+		$out = array();
+		foreach ( $x as $i => $v ) {
+			$out[] = str_pad( dechex( (int) round( $v + ( $y[ $i ] - $v ) * $t ) ), 2, '0', STR_PAD_LEFT );
+		}
+		return '#' . implode( '', $out );
+	};
+	$lin = array_map(
+		static function ( $v ) {
+			$c = $v / 255;
+			return $c <= 0.03928 ? $c / 12.92 : pow( ( $c + 0.055 ) / 1.055, 2.4 );
+		},
+		$rgb( $hex )
+	);
+	$lum = 0.2126 * $lin[0] + 0.7152 * $lin[1] + 0.0722 * $lin[2];
+	if ( $lum < 0.05 ) {
+		return array( 'color' => $mix( $hex, '#efefec', 0.12 ), 'tone' => 'dark' );
+	}
+	return array( 'color' => $mix( '#efefec', $hex, 0.35 ), 'tone' => 'light' );
 }

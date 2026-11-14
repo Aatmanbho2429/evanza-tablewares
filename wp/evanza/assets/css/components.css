@@ -185,6 +185,19 @@
 	}
 }
 
+.glaze--static {
+	width: 1.5rem;
+	height: 1.5rem;
+	flex: none;
+}
+.glaze--static::before {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+.glaze--static::after {
+	display: none;
+}
+
 /* Form fields */
 .field {
 	display: grid;

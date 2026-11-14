@@ -28,10 +28,10 @@ export function luminance(hex) {
 
 /**
  * The room colour and tone for a glaze: 35% of the glaze over Chalk. Very dark glazes
- * flip to a dark room so the mug and light text read as a pair.
+ * flip to a dark room (the glaze lifted 12% toward Chalk) with light text.
  */
 export function roomFor(hex) {
-	if (luminance(hex) < 0.05) return { color: mixHex(hex, GRAPHITE, 0.35), tone: 'dark' };
+	if (luminance(hex) < 0.05) return { color: mixHex(hex, CHALK, 0.12), tone: 'dark' };
 	return { color: mixHex(CHALK, hex, 0.35), tone: 'light' };
 }
 
