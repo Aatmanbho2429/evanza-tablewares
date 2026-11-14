@@ -68,6 +68,11 @@ async function initHero(hero) {
 	try {
 		const { createMugViewer } = await import('./mug3d.js');
 		viewer = createMugViewer(canvas, { colors: glaze(current), shape: 'classic', autoRotate: true, interactive: true });
+		// On phones the mug sits lower so only the front line overlaps its base.
+		const phone = window.matchMedia('(max-width: 30rem)');
+		const frame = () => viewer.setFraming(phone.matches ? { offsetY: 0.12 } : { offsetY: 0 });
+		frame();
+		phone.addEventListener('change', frame);
 		viewer.enter({ delay: reducedMotion.matches ? 0 : 120 });
 		canvas.classList.add('is-ready');
 		hero.dataset.gl = 'on';

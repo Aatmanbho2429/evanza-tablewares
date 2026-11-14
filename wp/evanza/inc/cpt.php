@@ -29,7 +29,7 @@ function evanza_register_product_types() {
 				'slug'       => 'collection',
 				'with_front' => false,
 			),
-			'menu_icon'     => 'dashicons-coffee',
+			'menu_icon'     => 'dashicons-products',
 			'menu_position' => 20,
 			'supports'      => array( 'title', 'editor', 'page-attributes' ),
 			'show_in_rest'  => false,

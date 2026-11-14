@@ -34,7 +34,7 @@ No gradients anywhere, no shadows on tiles. The only shadow is the 3D mug's soft
 ### Type (one family: Bricolage Grotesque variable, `opsz` `wdth` `wght`)
 | Token | Size | Settings | Use |
 |---|---|---|---|
-| `--t-hero` | `clamp(3.6rem, 14.6vw, 16rem)` | wdth 75, wght 800, lh .84, tracking -0.035em | Home hero headline |
+| `--t-hero` | `clamp(3.6rem, 13.6vw, 16rem)` | wdth 75, wght 800, lh .84, tracking -0.035em | Home hero headline |
 | `--t-1` | `clamp(3rem, 9vw, 9rem)` | wdth 75, wght 800, lh .88, -0.03em | Page titles, big list rows |
 | `--t-2` | `clamp(2.25rem, 5.4vw, 5rem)` | wdth 80, wght 750, lh .94, -0.025em | Section titles |
 | `--t-3` | `clamp(1.5rem, 2.4vw, 2.25rem)` | wdth 90, wght 650, lh 1.05, -0.015em | Product names, lead lines |
@@ -65,7 +65,7 @@ Sentence case everywhere. No tracked caps, no monospace, no italic emphasis, no 
 4. On finish the layers are removed and the new colour becomes the room. Pressing another dot mid-pour commits the running pour first, then starts the next (interruptible).
 
 ## 4. Hero depth
-Three stacked layers in one room: the real `h1` (back, "Crafted for" and "coffee lovers."), the WebGL canvas (the mug, transparent), and a clone of the second line in front (`aria-hidden`, `pointer-events: none`). The mug stands between the lines: its rim sits over the first line, its base is covered by the second. Characters are split into masked spans for the entrance.
+Three stacked layers in one room: the real `h1` (back, "Ceramic mugs" and "for every table."), the WebGL canvas (the mug, transparent), and a clone of the second line in front (`aria-hidden`, `pointer-events: none`). The mug stands between the lines: its rim sits over the first line, its base is covered by the second. Characters are split into masked spans for the entrance.
 
 Entrance (one orchestrated moment): back line chars rise (700ms, 22ms apart) → mug rises from below and settles (1.1s, starts 120ms in) → front line rises (starts 260ms in) → sub-line, buttons, then dots fade up (starts 700ms, 60ms apart).
 
@@ -96,13 +96,13 @@ Mobile
 +--------------------------------------------------------------------------------+
 | [evanza]                      Collection   About   Gallery   Contact  Enquiry (0)|
 |                                                                                |
-|  Crafted for                      <- back layer, 14.6vw, wdth 75               |
+|  Ceramic mugs                     <- back layer, 13.6vw, wdth 75               |
 |              .--------.                                                        |
 |             (  MUG 3D  )--.       <- canvas between the layers, drag to spin   |
-|  coffee lovers.'--------' |       <- front layer overlaps the mug base         |
+|  for every table.'------' |       <- front layer overlaps the mug base         |
 |                                                                                |
-|  Ceramic mugs made in Morbi,        [See the collection] [Download catalogue]  |
-|  in every glaze.                                            o o o o o o  Pista.|
+|  Made in Morbi, in every glaze.     [See the collection] [Download catalogue]  |
+|  Gift sets, cafe ranges, printing.                          o o o o o o  Pista.|
 +--------------------------------------------------------------------------------+
 2 Clay to cup (pinned scroll story, Phase 5)   3 Shop by category (big type list)
 4 New in (drag rail)   5 Made in Morbi (photo + certificates line)   6 Butter catalogue room

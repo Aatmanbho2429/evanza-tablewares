@@ -11,28 +11,28 @@ $glazes = array(
 	array( 'name' => 'Powder', 'room' => '#BCD3E6', 'body' => '#5B96CE', 'tone' => 'light' ),
 	array( 'name' => 'Blush', 'room' => '#EEC3C9', 'body' => '#DC7A8A', 'tone' => 'light' ),
 	array( 'name' => 'Bottle', 'room' => '#1F4A42', 'body' => '#3C8C74', 'tone' => 'dark' ),
-	array( 'name' => 'Midnight', 'room' => '#1E2340', 'body' => '#4766C9', 'tone' => 'dark' ),
+	array( 'name' => 'Cobalt', 'room' => '#1E2340', 'body' => '#4766C9', 'tone' => 'dark' ),
 );
 $first = $glazes[0];
 ?>
 <main id="main" class="site-main">
 	<section class="hero room" data-room data-hero data-tone="<?php echo esc_attr( $first['tone'] ); ?>" style="--room: <?php echo esc_attr( $first['room'] ); ?>">
 		<div class="hero__stage">
-			<h1 class="hero__title t-hero" data-hero-title aria-label="Crafted for coffee lovers.">
-				<span class="hero__line" data-split>Crafted for</span>
-				<span class="hero__line" data-split>coffee lovers.</span>
+			<h1 class="hero__title t-hero" data-hero-title aria-label="Ceramic mugs for every table.">
+				<span class="hero__line" data-split>Ceramic mugs</span>
+				<span class="hero__line" data-split>for every table.</span>
 			</h1>
 			<canvas class="hero__canvas" data-hero-canvas role="img" aria-label="A glossy ceramic mug. Drag to turn it."></canvas>
 			<img class="hero__still" data-hero-still src="<?php echo esc_url( evanza_asset_url( 'img/mock/bella-belly-mug-green.svg' ) ); ?>" alt="A green ceramic mug" width="800" height="800">
 			<p class="hero__front t-hero" data-hero-front aria-hidden="true">
-				<span class="hero__line" data-split>Crafted for</span>
-				<span class="hero__line" data-split>coffee lovers.</span>
+				<span class="hero__line" data-split>Ceramic mugs</span>
+				<span class="hero__line" data-split>for every table.</span>
 			</p>
 		</div>
 
 		<div class="hero__bar">
 			<div class="hero__sub hero__support" style="--i: 0">
-				<p>Ceramic mugs made in Morbi, Gujarat, in every glaze. Sold to cafes, brands and shops.</p>
+				<p>Made in Morbi, Gujarat, in every glaze. Everyday mugs, gift sets, cafe and hotel ranges, and custom printing, in bulk.</p>
 				<div class="hero__cta">
 					<a class="btn" href="<?php echo esc_url( home_url( '/collection/' ) ); ?>">See the collection</a>
 					<a class="btn btn--outline" href="<?php echo esc_url( evanza_catalogue_url() ); ?>" target="_blank" rel="noopener">Download catalogue</a>

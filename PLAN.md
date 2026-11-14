@@ -45,9 +45,12 @@ Goal: a **brand-new, unique** website that is aesthetic, minimal, 3D and animate
 
 On product and collection pages the room colour is derived from the selected **variant hex**: field = `color-mix(in oklch, <variant> 35%, Chalk)` for a tone-on-tone look. Dark variants (luminance check in JS) flip the room to `data-tone="dark"` with light text. The logo is shown **monochrome** (Graphite or white). Generate single-colour logo assets; don't use the teal logo.
 
+### Content voice (client feedback, v2.1)
+Evanza is a **ceramic mug manufacturer for every use**, not a coffee brand. Copy must speak to the whole market: everyday mugs, tea and coffee, gifting, cafés and hotels (HoReCa), corporate and branded or custom-printed mugs, retailers, distributors and exporters. The old tagline "Crafted for coffee lovers." is **retired**: don't use it in the hero, site tagline, footer or meta. Coffee can appear only where it's specific to a product (e.g. latte mugs). Tone: plain, confident, manufacturer-to-buyer, with facts over adjectives (made in Morbi, glazes, capacities, MOQ, custom printing, bulk orders).
+
 ### Typography
 - **One family: Bricolage Grotesque** (variable: `opsz`, `wdth`, `wght`), via `@fontsource-variable/bricolage-grotesque`, self-hosted. Headlines condensed (`wdth` ~75), heavy, very large, tight leading, and treated as a design element. Body uses the text optical size at regular weight, max ~70ch.
-- Sentence case everywhere. Plain, warm, direct copy in Evanza's own voice ("Crafted for coffee lovers." is their tagline).
+- Sentence case everywhere. Plain, warm, direct copy in Evanza's own voice (see Content voice).
 
 ### Do not (anti-generic list)
 Cream background + serif + terracotta/teal accent · Instrument Serif / Geist / Inter / Space Grotesk · tracked ALL-CAPS eyebrows · monospace "data" labels · middle‑dot meta strings · hairline-rule broadsheet layouts · identical rounded cards with uniform soft shadows · gradient washes / glassmorphism · italic or coloured emphasis on one headline word · arrows on every link · fade-and-slide on every section · hover effects on everything · numbered markers (except the genuinely sequential making process) · the "big number + small label" stat hero.
@@ -143,6 +146,8 @@ Each phase ends with a **git commit** (`Phase N: …`) and its **Verify** checks
 
 ### Phase 0: Project setup & local WordPress ✅ done
 Theme skeleton, Playground blueprint, idempotent activation routine (pages, front page, menus), `npm run dev`.
+
+> **Status:** Phases 1 (v2) and 2 are done and the client approved the look. Lead review fixes carried into the Phase 3 batch: (a) on mobile (≤ 480 px) the mug covers the bottom of the back headline line, and there's a large empty gap under the headline; (b) the "Midnight" dot recolours the mug bright cobalt, so rename that glaze "Cobalt" (the room can stay midnight); (c) replace the coffee-specific hero headline, site tagline and any copy per *Content voice*.
 
 ### Phase 1 (REDO for v2): Design system, shell, signature prototype
 - Write **`DESIGN.md`**: the tokens above (colour, type scale, spacing, radii, motion curves and durations), type specimen notes, and **ASCII wireframes for all 5 pages + product page**, reviewed against the brief and the "Do not" list.

@@ -70,6 +70,7 @@ add_action( 'wp_head', 'evanza_head_extras', 2 );
 function evanza_head_extras() {
 	printf( '<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n", esc_url( evanza_asset_url( 'fonts/bricolage-grotesque.woff2' ) ) );
 	echo '<meta name="theme-color" content="#efefec">' . "\n";
+	echo '<meta name="description" content="' . esc_attr( 'Evanza Tablewares is a ceramic mug manufacturer in Morbi, Gujarat. Everyday mugs, gift sets, cafe and hotel ranges and custom printing, in every glaze and in bulk.' ) . '">' . "\n";
 	if ( ! has_site_icon() ) {
 		printf( '<link rel="icon" type="image/png" sizes="32x32" href="%s">' . "\n", esc_url( evanza_asset_url( 'img/brand/mark-32.png' ) ) );
 		printf( '<link rel="apple-touch-icon" href="%s">' . "\n", esc_url( evanza_asset_url( 'img/brand/mark-180.png' ) ) );

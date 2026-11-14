@@ -178,7 +178,7 @@ ${inner ? 'diffuseColor.rgb *= mix(0.5, 1.0, smoothstep(0.0, 1.0, hN));' : ''}`
 // --- viewer -------------------------------------------------------------------
 
 export function createMugViewer(canvas, options = {}) {
-	const opts = { colors: {}, shape: 'classic', autoRotate: true, interactive: true, state: 'glazed', fit: 0.62, ...options };
+	const opts = { colors: {}, shape: 'classic', autoRotate: true, interactive: true, state: 'glazed', fit: 0.62, offsetY: 0, ...options };
 	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 	let renderer;
@@ -282,7 +282,7 @@ export function createMugViewer(canvas, options = {}) {
 		const visH = Math.max(s.H / opts.fit, mugW / (0.9 * aspect));
 		const dist = visH / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
 		const tilt = THREE.MathUtils.degToRad(13);
-		const target = new THREE.Vector3(0, s.H * 0.5, 0);
+		const target = new THREE.Vector3(0, s.H * 0.5 + opts.offsetY * visH, 0);
 		camera.position.set(0, target.y + Math.sin(tilt) * dist, Math.cos(tilt) * dist);
 		camera.lookAt(target);
 		camera.aspect = aspect;
@@ -491,6 +491,12 @@ export function createMugViewer(canvas, options = {}) {
 		setShape,
 		setState,
 		enter,
+		/** fit: share of the canvas height the mug fills; offsetY: positive moves the mug down (fraction of the view). */
+		setFraming(next) {
+			Object.assign(opts, next);
+			frame();
+			requestRender();
+		},
 		setAutoRotate(value) {
 			autoRotate = !!value && !reduced.matches;
 			requestRender();

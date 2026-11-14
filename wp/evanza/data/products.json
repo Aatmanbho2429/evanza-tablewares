@@ -3,49 +3,49 @@
 		{
 			"slug": "classic-mugs",
 			"name": "Classic Mugs",
-			"description": "Straight-sided everyday mugs in every glaze, made for offices, cafes and kitchens.",
+			"description": "Straight-sided everyday mugs in every glaze, made for homes, offices, cafes and hotels.",
 			"cover": "assets/img/products/IMG_4551-1600.webp",
 			"catalogue": "assets/catalogues/catalogue-placeholder.pdf"
 		},
 		{
 			"slug": "latte-mugs",
 			"name": "Latte Mugs",
-			"description": "Wide-mouthed conical mugs shaped for latte art and long, slow coffees.",
+			"description": "Wide-mouthed conical mugs for lattes, tea and long, slow drinks.",
 			"cover": "assets/img/products/IMG_4540-1600.webp",
 			"catalogue": "assets/catalogues/catalogue-placeholder.pdf"
 		},
 		{
 			"slug": "two-tone-mugs",
 			"name": "Two-Tone Mugs",
-			"description": "A clean outer glaze with a bold colour inside and on the handle.",
+			"description": "A clean outer glaze with a bold colour inside and on the handle. Popular for branded and corporate orders.",
 			"cover": "assets/img/products/IMG_4800-2-1600.webp",
 			"catalogue": "assets/catalogues/catalogue-placeholder.pdf"
 		},
 		{
 			"slug": "heart-handle-mugs",
 			"name": "Heart Handle Mugs",
-			"description": "Mugs with a heart-shaped handle, a favourite for gifting.",
+			"description": "Mugs with a heart-shaped handle, a favourite for gifting and retail.",
 			"cover": "assets/img/products/016A1290-1600.webp",
 			"catalogue": "assets/catalogues/catalogue-placeholder.pdf"
 		},
 		{
 			"slug": "marble-gradient",
 			"name": "Marble & Gradient",
-			"description": "Gold-veined marble and soft ombre glazes for a premium look.",
+			"description": "Gold-veined marble and soft ombre glazes for a premium shelf.",
 			"cover": "assets/img/products/009-01-1600.webp",
 			"catalogue": "assets/catalogues/catalogue-placeholder.pdf"
 		},
 		{
 			"slug": "printed-mugs",
 			"name": "Printed & Sublimation",
-			"description": "White-canvas mugs ready for custom prints, logos and festive designs.",
+			"description": "White-canvas mugs ready for custom prints, logos and festive designs, in bulk.",
 			"cover": "assets/img/products/IMG_5364-1-1600.webp",
 			"catalogue": "assets/catalogues/catalogue-placeholder.pdf"
 		},
 		{
 			"slug": "espresso-small-cups",
 			"name": "Espresso & Small Cups",
-			"description": "Small cups for espresso, cappuccino and tea in bright, stackable colours.",
+			"description": "Small cups for espresso, tea and cappuccino in bright, stackable colours.",
 			"cover": "assets/img/products/016A1383-1600.webp",
 			"catalogue": "assets/catalogues/catalogue-placeholder.pdf"
 		},
@@ -149,7 +149,7 @@
 				"dishwasherSafe": true,
 				"moq": "500 pcs"
 			},
-			"description": "The straight-sided mug that goes in every kitchen. A balanced handle, a thick rim that stays comfortable to sip from and a glossy glaze that survives daily dishwashing.",
+			"description": "The straight-sided mug that goes in every kitchen, office and cafe. A balanced handle, a thick rim that stays comfortable to sip from and a glossy glaze that survives daily dishwashing.",
 			"variants": [
 				{
 					"slug": "white",
@@ -582,7 +582,7 @@
 				"dishwasherSafe": true,
 				"moq": "500 pcs"
 			},
-			"description": "A tall, slightly tapered mug with a generous handle, for the coffee drinker who refills less often.",
+			"description": "A tall, slightly tapered mug with a generous handle, for a bigger pour.",
 			"variants": [
 				{
 					"slug": "teal",
@@ -844,7 +844,7 @@
 				"dishwasherSafe": true,
 				"moq": "500 pcs"
 			},
-			"description": "A coloured outer glaze with a cream interior that shows off the coffee. Stackable for the counter.",
+			"description": "A coloured outer glaze with a cream interior that shows off what is inside. Stackable for the counter.",
 			"variants": [
 				{
 					"slug": "green",

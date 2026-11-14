@@ -11,7 +11,7 @@
       "step": "setSiteOptions",
       "options": {
         "blogname": "Evanza Tablewares",
-        "blogdescription": "Crafted for coffee lovers.",
+        "blogdescription": "Ceramic mugs for every table.",
         "permalink_structure": "/%postname%/"
       }
     },

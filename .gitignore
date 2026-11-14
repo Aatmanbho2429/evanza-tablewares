@@ -2,3 +2,4 @@ node_modules/
 .DS_Store
 # original source photos stay local; optimized copies live in the theme
 images/
+.claude/

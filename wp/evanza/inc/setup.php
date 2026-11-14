@@ -47,6 +47,7 @@ function evanza_on_activation() {
 }
 
 function evanza_run_activation() {
+	evanza_update_tagline();
 	evanza_create_pages();
 	evanza_create_menus();
 	do_action( 'evanza_activated' );
@@ -113,4 +114,22 @@ function evanza_ensure_menu( $name, $items ) {
 		);
 	}
 	return $menu_id;
+}
+
+/** Replaces the WordPress default or retired tagline with the current one; a custom tagline is left alone. */
+function evanza_update_tagline() {
+	$retired = array( '', 'Just another WordPress site', 'Crafted for coffee lovers.' );
+	if ( in_array( get_option( 'blogdescription' ), $retired, true ) ) {
+		update_option( 'blogdescription', evanza_business()['tagline'] );
+	}
+}
+
+/** One-off updates for sites that were activated on an earlier theme version. */
+add_action( 'init', 'evanza_maybe_upgrade', 99 );
+function evanza_maybe_upgrade() {
+	if ( get_option( 'evanza_version' ) === EVANZA_VERSION ) {
+		return;
+	}
+	evanza_update_tagline();
+	update_option( 'evanza_version', EVANZA_VERSION );
 }

@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 function evanza_business() {
 	return array(
 		'name'     => 'Evanza Tablewares',
-		'tagline'  => 'Crafted for coffee lovers.',
+		'tagline'  => 'Ceramic mugs for every table.',
 		'since'    => 2022,
 		'email'    => 'evanzatableware@gmail.com',
 		'whatsapp' => '919898798986',
