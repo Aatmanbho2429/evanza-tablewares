@@ -209,3 +209,259 @@
 		gap: 0;
 	}
 }
+
+/* ---- Clay to cup (pinned scroll story) ---- */
+.story {
+	background: var(--room);
+	color: var(--ink);
+}
+.story__track {
+	height: 420svh;
+}
+.story__pin {
+	position: sticky;
+	top: 0;
+	display: grid;
+	align-items: center;
+	height: 100svh;
+	padding-top: calc(var(--header-h) + var(--adminbar));
+	overflow: clip;
+}
+.story__layout {
+	display: grid;
+	gap: var(--s-5);
+	align-items: center;
+}
+.story__copy {
+	display: grid;
+	gap: var(--s-5);
+}
+.story__copy h2 {
+	font-size: var(--t-1);
+}
+.story__steps {
+	display: grid;
+	gap: var(--s-3);
+	max-width: 22em;
+}
+.story__steps li {
+	font-size: clamp(1.15rem, 1rem + 0.9vw, 1.6rem);
+	font-weight: 500;
+	line-height: 1.25;
+	opacity: 0.28;
+	transition: opacity var(--dur-ui) var(--ease-out);
+}
+.story__steps li[data-active] {
+	opacity: 1;
+}
+.story__stage {
+	position: relative;
+	height: min(46svh, 26rem);
+}
+.story__canvas {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	cursor: grab;
+}
+@media (min-width: 56rem) {
+	.story__layout {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: var(--s-8);
+	}
+	.story__stage {
+		height: min(72svh, 40rem);
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.story__track {
+		height: auto;
+	}
+	.story__pin {
+		position: static;
+		height: auto;
+		padding-block: calc(var(--header-h) + var(--s-8)) var(--s-8);
+	}
+	.story__steps li {
+		opacity: 1;
+	}
+}
+
+/* ---- Shop by category ---- */
+.cats {
+	padding-block: var(--s-9);
+}
+.cats__title {
+	margin-bottom: var(--s-6);
+	font-size: var(--t-2);
+}
+.cats__row {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	align-items: center;
+	gap: 0.25rem var(--s-4);
+	padding-block: 0.1em;
+	text-decoration: none;
+	transition: opacity var(--dur-ui) var(--ease-out);
+}
+.cats__name {
+	font-size: clamp(2.4rem, 7.6vw, 6.6rem);
+	font-stretch: 75%;
+	font-weight: 800;
+	line-height: 0.98;
+	letter-spacing: -0.03em;
+}
+.cats__count {
+	grid-column: 1;
+	font-size: var(--t-small);
+	font-weight: 600;
+	color: var(--ink-2);
+}
+.cats__thumb {
+	grid-row: 1 / span 2;
+	grid-column: 2;
+	width: 4.25rem;
+	aspect-ratio: 1;
+	background: color-mix(in oklch, var(--c, #ccc) 36%, #dcdcd6);
+}
+.cats__thumb img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	padding: 6%;
+}
+@media (hover: hover) and (pointer: fine) and (min-width: 56rem) {
+	.cats__row {
+		grid-template-columns: 1fr auto;
+		align-items: baseline;
+	}
+	.cats__count {
+		grid-column: 2;
+		grid-row: 1;
+	}
+	.cats__thumb {
+		display: none;
+	}
+	.cats__list:has(.cats__row:hover) .cats__row:not(:hover),
+	.cats__list:has(.cats__row:focus-visible) .cats__row:not(:focus-visible) {
+		opacity: 0.25;
+	}
+}
+.cats__float {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 30;
+	width: 15rem;
+	aspect-ratio: 1;
+	background: color-mix(in oklch, var(--c, #ccc) 36%, #dcdcd6);
+	opacity: 0;
+	pointer-events: none;
+	transition:
+		opacity 160ms var(--ease-out),
+		background-color 240ms var(--ease-out);
+}
+.cats__float.is-on {
+	opacity: 1;
+}
+.cats__float img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	padding: 6%;
+}
+
+/* ---- New in ---- */
+.newin {
+	padding-block: var(--s-9);
+}
+.newin__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: var(--s-3) var(--s-6);
+	margin-bottom: var(--s-6);
+}
+.newin__head .link {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
+}
+
+/* ---- Made in Morbi ---- */
+.morbi__photo {
+	height: min(78svh, 46rem);
+	overflow: hidden;
+}
+.morbi__photo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.morbi__text {
+	display: grid;
+	gap: var(--s-5);
+	padding-block: var(--s-8) var(--s-9);
+}
+.morbi__body {
+	display: grid;
+	gap: var(--s-4);
+	max-width: 44ch;
+	justify-items: start;
+}
+.morbi__certs {
+	font-weight: 600;
+}
+.morbi__body .link {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
+}
+@media (min-width: 56rem) {
+	.morbi__text {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: var(--s-8);
+	}
+}
+
+/* ---- Catalogue and contact room ---- */
+.catalogue {
+	padding-block: var(--s-9);
+}
+.catalogue__inner {
+	display: grid;
+	gap: var(--s-5);
+	justify-items: start;
+}
+.catalogue__inner h2 {
+	font-size: var(--t-1);
+}
+.catalogue__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 var(--s-6);
+}
+.catalogue__links .link {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
+	font-weight: 600;
+}
+.btn--lg {
+	min-height: 4.25rem;
+	padding: 0 2.4rem;
+	font-size: 1.0625rem;
+}
+@media (max-width: 30rem) {
+	.btn--lg {
+		width: 100%;
+	}
+}
+
+@media (max-width: 40rem) {
+	.morbi__photo {
+		height: 52svh;
+	}
+}

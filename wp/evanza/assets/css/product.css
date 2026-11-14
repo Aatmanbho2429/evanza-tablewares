@@ -229,25 +229,3 @@
 .related h2 {
 	font-size: var(--t-3);
 }
-.rail {
-	display: flex;
-	gap: var(--s-4);
-	padding: 0 var(--gutter);
-	overflow-x: auto;
-	scroll-snap-type: x proximity;
-	scroll-padding-inline: var(--gutter);
-	scrollbar-width: none;
-	cursor: grab;
-}
-.rail::-webkit-scrollbar {
-	display: none;
-}
-.rail.is-dragging {
-	scroll-snap-type: none;
-	cursor: grabbing;
-	user-select: none;
-}
-.rail > .tile {
-	flex: 0 0 min(68vw, 17rem);
-	scroll-snap-align: start;
-}

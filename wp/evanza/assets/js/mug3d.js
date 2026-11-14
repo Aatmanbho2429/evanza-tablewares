@@ -175,7 +175,7 @@ diffuseColor.rgb *= mix(1.0, mix(0.5, 1.0, smoothstep(0.0, 1.0, hN)), vInner);`
 			.replace('#include <lights_physical_fragment>', '#include <lights_physical_fragment>\nmaterial.clearcoat *= gMask;')
 			.replace(
 				'#include <emissivemap_fragment>',
-				'#include <emissivemap_fragment>\ntotalEmissiveRadiance += vec3(1.0, 0.34, 0.07) * uKiln * (0.55 + 0.45 * vnoise(vOP * 5.0));'
+				'#include <emissivemap_fragment>\ntotalEmissiveRadiance += vec3(1.0, 0.34, 0.07) * 1.7 * uKiln * (0.55 + 0.45 * vnoise(vOP * 5.0));'
 			);
 	};
 	return mat;

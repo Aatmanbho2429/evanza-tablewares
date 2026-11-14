@@ -59,6 +59,7 @@ async function initHero(hero) {
 			current = dot;
 			label.textContent = dot.dataset.name;
 			pour(dot.dataset.room, dot);
+			document.dispatchEvent(new CustomEvent('evanza:glaze', { detail: glaze(dot) }));
 			viewer?.setColors(glaze(dot), { animate: true, duration: 600, delay: 110 });
 			const still = hero.querySelector('[data-hero-still]');
 			if (still && dot.dataset.still) still.src = dot.dataset.still;
